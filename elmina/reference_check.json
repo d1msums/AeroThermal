@@ -1,0 +1,8 @@
+{
+  "mode": "simulation",
+  "route_length_m": 753.832,
+  "added_tree_route_shade_pct": 5.3,
+  "actual_existing_shade": null,
+  "actual_improvement": null,
+  "note": "Added-tree-only geometric experiment; empty baseline is NOT evidence of zero existing shade."
+}

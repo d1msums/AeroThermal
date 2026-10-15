@@ -4,6 +4,7 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+*.pyc
 
 # Local secrets
 .env
@@ -14,6 +15,7 @@ local_settings.py
 # Local databases
 *.sqlite3
 *.sqlite3-*
+db.sqlite3
 
 # Logs and generated assets
 *.log
@@ -27,3 +29,4 @@ backups/
 *.bak
 *.before-fit-fix
 .DS_Store
+elmina_backups/

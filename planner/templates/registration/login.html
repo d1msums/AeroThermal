@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoCool Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef5f0;
+      padding: 60px 20px;
+    }
+    main {
+      max-width: 380px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #176b50;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>EcoCool</h1>
+    <p>Planner dashboard</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit">Log in</button>
+    </form>
+  </main>
+</body>
+</html>

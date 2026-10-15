@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ project.name }} | EcoCool</title>
+<link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}">
+<link rel="stylesheet" href="{% static 'planner/dashboard.css' %}?v=concept2">
+</head><body>
+<header class="topbar"><a class="brand" href="{% url 'home' %}"><span class="brand-mark">e</span>EcoCool<span class="brand-tag">PLANNING STUDIO</span></a>
+<div class="account"><span class="role-pill">{% if can_edit %}Planner{% else %}Viewer{% endif %}</span><span>{{ request.user.username }}</span>
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="quiet" type="submit">Log out</button></form></div></header>
+<main id="app" data-project-id="{{ project.id }}" data-site-version="{{ project.site_version }}" data-can-edit="{{ can_edit|yesno:'true,false' }}" data-action-url="{% url 'project_action' project.id %}">
+<div class="page-heading"><div><a class="back" href="{% url 'home' %}">Projects / Landscape scenarios</a><h1>{{ project.name }}</h1><p>Explore tree placement. Compare shade. Plan a more comfortable park.</p></div><span class="concept-badge">ILLUSTRATIVE SITE</span></div>
+<div class="workspace">
+<aside>
+<div class="section-label">01 / DESIGN SCENARIO</div><h2>Shape the landscape</h2>
+<label for="timestamp">Date &amp; time <span>Malaysia · UTC+08</span></label><input id="timestamp" type="datetime-local">
+<div class="time-presets"><button type="button" data-hour="09">9 AM</button><button type="button" data-hour="12">12 PM</button><button type="button" data-hour="15">3 PM</button><button type="button" data-hour="17">5 PM</button></div>
+<div class="divider"></div><div class="section-label">CANOPY ASSUMPTIONS</div>
+<div class="input-pair"><div><label for="radius">Radius <span>m</span></label><input id="radius" type="number" min="0.5" max="15" step="0.5" value="5"></div><div><label for="height">Model height <span>m</span></label><input id="height" type="number" min="1" max="30" step="0.5" value="7"></div></div>
+<p class="hint">Assumed canopy dimensions. Select a proposed tree to edit; drag it to reposition.</p>
+{% if can_edit %}<button id="add-mode" class="primary" type="button">+ Place a tree</button><button id="example" class="secondary" type="button">Try an example layout</button>{% endif %}
+<div class="list-heading"><h3>Proposed trees</h3><span id="tree-count">0</span></div><div id="tree-list"></div>
+{% if can_edit %}<div class="mini-actions"><button id="apply" type="button">Apply dimensions</button><button id="remove" type="button">Delete selected</button><button id="reset" type="button">Reset layout</button></div>{% endif %}
+<div class="divider"></div><div class="section-label">02 / EVALUATE</div>
+{% if can_edit %}<button id="run" class="primary dark" type="button">Run shade comparison →</button><label for="scenario-name">Save this scenario</label><input id="scenario-name" maxlength="120" placeholder="e.g. Afternoon lakeside shade"><button id="save" class="secondary" type="button">Save scenario</button>{% endif %}
+<label for="saved-select">Saved layouts</label><div class="load-row"><select id="saved-select"><option value="">Choose layout</option>{% for scenario in scenarios %}<option value="{{ scenario.id }}">{{ scenario.name }}</option>{% endfor %}</select><button id="load" class="secondary" type="button">Load</button></div>
+</aside>
+<section class="main-panel">
+<div class="map-toolbar"><div><span class="live-dot"></span><b>Landscape plan</b><span class="map-meta"> / 2D concept view</span></div><div class="map-tools"><label class="compact" for="shadow-mode">Shadows</label><select id="shadow-mode"><option value="baseline">Existing</option><option value="proposed" selected>With proposal</option></select><button id="fit" class="quiet" type="button">Fit site</button></div></div>
+<div class="map-wrap"><div id="map"></div><div class="north">N<span>↑</span></div><div class="map-note">ILLUSTRATIVE GEOMETRY · {{ project.site_version }}</div></div>
+<div class="legend"><span><i class="swatch existing"></i>Existing canopy</span><span><i class="swatch proposed"></i>Proposed canopy</span><span><i class="swatch route"></i>Evaluated route</span><span><i class="swatch shadow"></i>Calculated shade</span></div>
+<div id="message" role="status" aria-live="polite">Choose a layout and time, then run a comparison.</div>
+<div class="results-title"><div><div class="section-label">03 / COMPARE</div><h2>What changes with your design?</h2></div><span id="result-badge" class="status-badge">Awaiting run</span></div>
+<div class="cards"><article><span>Existing path shade</span><strong id="baseline-value">—</strong><div class="meter"><div id="baseline-bar"></div></div><small>Selected route centreline</small></article><article><span>With proposed trees</span><strong id="proposed-value">—</strong><div class="meter"><div id="proposed-bar"></div></div><small>Same route, same time</small></article><article class="gain"><span>Shade improvement</span><strong id="delta-value">—</strong><small id="seat-value">Shaded seats: —</small></article></div>
+<p class="method">Model scope: projected canopy shade. Decorative canopy highlights do not represent calculated shade. No air-temperature or lake-cooling prediction.</p>
+<details class="history"><summary>Saved scenarios &amp; activity history</summary><div class="history-grid"><div><h3>Recent scenarios</h3><ul>{% for scenario in scenarios %}<li>{{ scenario.name }} · {{ scenario.result_data.mode }}<small>{{ scenario.created_by.username }} · {{ scenario.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No scenarios saved yet.</li>{% endfor %}</ul></div><div><h3>Activity</h3><ul>{% for event in events %}<li>{{ event.actor.username }} saved “{{ event.details.scenario_name }}”<small>{{ event.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No activity yet.</li>{% endfor %}</ul></div></div></details>
+</section></div><footer>{{ site.source_note }}</footer>
+</main>
+{{ site|json_script:"site-data" }}{{ saved_layouts|json_script:"saved-data" }}
+<script src="{% static 'planner/vendor/leaflet.js' %}"></script><script src="{% static 'planner/dashboard.js' %}?v=concept2"></script>
+</body></html>

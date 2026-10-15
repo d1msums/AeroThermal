@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoCool Projects</title>
+</head>
+<body style="font-family: Arial; max-width: 900px; margin: 40px auto;">
+  <h1>Your EcoCool Projects</h1>
+  <p>Logged in as {{ request.user.username }}</p>
+
+  <ul>
+    {% for membership in memberships %}
+      <li>
+        <a href="{% url 'dashboard' membership.project.id %}">
+          {{ membership.project.name }}
+        </a>
+        — {{ membership.get_role_display }}
+      </li>
+    {% empty %}
+      <li>No project assigned. Ask the administrator to add a membership.</li>
+    {% endfor %}
+  </ul>
+
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Log out</button>
+  </form>
+</body>
+</html>

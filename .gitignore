@@ -1,0 +1,29 @@
+# Python environment and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+local_settings.py
+
+# Local databases
+*.sqlite3
+*.sqlite3-*
+
+# Logs and generated assets
+*.log
+media/
+staticfiles/
+
+# Editor and backup files
+.vscode/
+.idea/
+backups/
+*.bak
+*.before-fit-fix
+.DS_Store

@@ -1,0 +1,7 @@
+﻿asgiref==3.12.1
+Django==5.2.18
+numpy==2.5.4
+python-dotenv==1.2.4
+shapely==2.2.0
+sqlparse==0.6.0
+tzdata==2026.5

@@ -1,0 +1,7 @@
+{% extends 'resilience/base.html' %}
+{% block heading_action %}<a class="small-button" href="{% url 'resilience:export' project.id %}"><svg><use href="#i-down"/></svg>Export scenarios</a>{% endblock %}
+{% block content %}{% include 'resilience/kpis.html' %}{% include 'resilience/map_panel.html' %}
+<div class="charts-grid"><section class="panel"><div class="panel-heading"><div><h2>Storage trend</h2><p>Reference sequence · demo</p></div><span class="data-tag">% of capacity</span></div><div id="storage-chart" class="line-chart"></div></section>
+<section class="panel"><div class="panel-heading"><div><h2>Report progress</h2><p>Current project inbox</p></div></div><div class="donut-layout"><div id="status-donut" class="status-donut"><div><strong data-value="total">0</strong><span>reports</span></div></div><div id="status-legend"></div></div></section>
+<section class="panel"><div class="panel-heading"><div><h2>Saved shade runs</h2><p>Individual saved times · route centreline</p></div><span class="data-tag">Calculated</span></div><div id="shade-chart"></div></section></div>
+{% endblock %}

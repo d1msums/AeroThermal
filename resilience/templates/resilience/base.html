@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AeroThermal · {{ project.name }}</title>
+<link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}"><link rel="stylesheet" href="{% static 'resilience/visual.css' %}?v=2"><!-- AEROTHERMAL_HALLMARK_V1 -->
+<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=2">
+<meta name="description" content="AeroThermal township workspace for lake storage, shade planning and incoming resident reports."><link rel="stylesheet" href="{% static 'resilience/climate-alerts.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'resilience/landscape-review.css' %}?v=1">
+</head><body class="hallmark-workspace"><a class="skip-link" href="#workspace-content">Skip to workspace</a>
+<svg class="icon-library" aria-hidden="true"><defs>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zM9 3v16M15 5v16"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C8 1 2 7 5 15c4 7 16 4 15-12ZM4 21 16 8"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+</defs></svg>
+{% include 'resilience/hallmark_header.html' %}
+<div class="app-shell"><header class="topbar"><div class="site-context"><span class="site-dot"></span>{{ project.name }}</div><div class="top-actions"><span class="sample-chip">Demo climate</span><button class="text-button" id="open-notes" type="button"><svg><use href="#i-info"/></svg>Data notes</button></div></header>
+<main id="workspace-content" tabindex="-1"><div class="page-heading"><div><div class="eyebrow">{% block eyebrow %}CITY OF ELMINA{% endblock %}</div><h1>{% block title %}Township overview{% endblock %}</h1><p>{% block subtitle %}Lake storage, canopy shade and resident issues.{% endblock %}</p></div>{% block heading_action %}{% endblock %}</div>
+{% block content %}{% endblock %}</main><footer class="workspace-footer">AeroThermal · B2B prototype<span>Mobile-app input is represented by labelled sample reports.</span></footer></div>
+<dialog id="data-notes"><div class="dialog-top"><h2>Data notes</h2><button class="icon-button" id="close-notes" aria-label="Close data notes"><svg><use href="#i-x"/></svg></button></div><p>Lake scenarios and storage history are demonstration inputs, not live telemetry. Hotspots are sample surface values, not imported thermal imagery.</p><p>Shade charts show saved geometric simulation results. They do not establish an air-temperature reduction, flood-safety score or energy saving.</p><p>App report examples use sample locations. Placeholder illustrations are labelled; actual stored photos appear when provided. B2C screens, app notifications and reward redemption belong to the mobile-app team.</p><p>Only project planners can update operations. A release candidate is a volume-balance illustration; no gate command is available.</p><button class="button" id="done-notes">Done</button></dialog>
+{{ visual_data|json_script:'visual-data' }}{{ ecocool_map_config|json_script:'ecocool-map-config' }}
+<script src="{% static 'planner/vendor/leaflet.js' %}"></script><script src="{% static 'planner/vendor/Leaflet.GoogleMutant.js' %}"></script><script src="{% static 'resilience/visual.js' %}?v=2"></script>
+{% block scripts %}{% endblock %}<script src="{% static 'resilience/hallmark/ui.js' %}?v=2"></script></body></html>

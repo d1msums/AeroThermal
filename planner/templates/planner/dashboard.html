@@ -1,17 +1,64 @@
 {% load static %}
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{ project.name }} | EcoCool</title>
+<title>{{ project.name }} | AeroThermal</title>
+
 <link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}">
-<link rel="stylesheet" href="{% static 'planner/dashboard.css' %}?v=concept2">
-</head><body>
-<header class="topbar"><a class="brand" href="{% url 'home' %}"><span class="brand-mark">e</span>EcoCool<span class="brand-tag">PLANNING STUDIO</span></a>
-<div class="account"><span class="role-pill">{% if can_edit %}Planner{% else %}Viewer{% endif %}</span><span>{{ request.user.username }}</span>
-<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="quiet" type="submit">Log out</button></form></div></header>
+<link rel="stylesheet" href="{% static 'planner/dashboard.css' %}?v=neon1">
+<link
+  rel="stylesheet"
+  href="{% static 'planner/climate-widgets.css' %}?v=1">
+  <link
+  rel="stylesheet"
+  href="{% static 'planner/aerothermal-theme.css' %}?v=1">
+  
+<style>.stakeholder-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.stakeholder-tabs a{padding:9px 12px;border:1px solid #587b50;border-radius:8px;background:#153b2a;color:#d8f0cb;text-decoration:none;font-size:12px}</style>
+<link rel="stylesheet" href="{% static 'resilience/designer-visual.css' %}?v=2">
+
+<meta name="description" content="AeroThermal township planning workspace: lake storage, shade scenarios and resident reports.">
+<link rel="icon" type="image/svg+xml" href="{% static 'resilience/favicon.svg' %}">
+
+<!-- AEROTHERMAL_HALLMARK_V1 -->
+<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=2">
+</head><body class="aerothermal-theme">
+<header class="topbar">
+
+  <a class="brand" href="{% url 'home' %}">
+    <span class="sdp-logo-wrap">
+      <img
+        class="sdp-logo"
+        src="{% static 'planner/images/sdp-logo.png' %}"
+        alt="Sime Darby Property"
+        width="108"
+        height="36">
+    </span>
+
+    <span class="product-brand">
+      <strong>AeroThermal</strong>
+      <small>Climate resilience dashboard</small>
+    </span>
+  </a>
+
+  <div class="account">
+    <span class="role-pill">
+      {% if can_edit %}Planner{% else %}Viewer{% endif %}
+    </span>
+
+    <span>{{ request.user.username }}</span>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button class="quiet" type="submit">Log out</button>
+    </form>
+  </div>
+
+</header>
+
 <main id="app" data-project-id="{{ project.id }}" data-site-version="{{ project.site_version }}" data-can-edit="{{ can_edit|yesno:'true,false' }}" data-action-url="{% url 'project_action' project.id %}">
 <div class="page-heading"><div><a class="back" href="{% url 'home' %}">Projects / Landscape scenarios</a><h1>{{ project.name }}</h1><p>Explore tree placement. Compare shade. Plan a more comfortable park.</p></div><span class="concept-badge">ILLUSTRATIVE SITE</span></div>
+
 <div class="workspace">
-<aside>
+<aside id="design-controls">
 <div class="section-label">01 / DESIGN SCENARIO</div><h2>Shape the landscape</h2>
 <label for="timestamp">Date &amp; time <span>Malaysia · UTC+08</span></label><input id="timestamp" type="datetime-local">
 <div class="time-presets"><button type="button" data-hour="09">9 AM</button><button type="button" data-hour="12">12 PM</button><button type="button" data-hour="15">3 PM</button><button type="button" data-hour="17">5 PM</button></div>
@@ -26,16 +73,30 @@
 <label for="saved-select">Saved layouts</label><div class="load-row"><select id="saved-select"><option value="">Choose layout</option>{% for scenario in scenarios %}<option value="{{ scenario.id }}">{{ scenario.name }}</option>{% endfor %}</select><button id="load" class="secondary" type="button">Load</button></div>
 </aside>
 <section class="main-panel">
+    
 <div class="map-toolbar"><div><span class="live-dot"></span><b>Landscape plan</b><span class="map-meta"> / 2D concept view</span></div><div class="map-tools"><label class="compact" for="shadow-mode">Shadows</label><select id="shadow-mode"><option value="baseline">Existing</option><option value="proposed" selected>With proposal</option></select><button id="fit" class="quiet" type="button">Fit site</button></div></div>
 <div class="map-wrap"><div id="map"></div><div class="north">N<span>↑</span></div><div class="map-note">ILLUSTRATIVE GEOMETRY · {{ project.site_version }}</div></div>
 <div class="legend"><span><i class="swatch existing"></i>Existing canopy</span><span><i class="swatch proposed"></i>Proposed canopy</span><span><i class="swatch route"></i>Evaluated route</span><span><i class="swatch shadow"></i>Calculated shade</span></div>
-<div id="message" role="status" aria-live="polite">Choose a layout and time, then run a comparison.</div>
-<div class="results-title"><div><div class="section-label">03 / COMPARE</div><h2>What changes with your design?</h2></div><span id="result-badge" class="status-badge">Awaiting run</span></div>
+{% include "planner/partials/climate_widgets.html" %}<div id="message" role="status" aria-live="polite">Choose a layout and time, then run a comparison.</div>
+<div class="results-title" id="shade-results"><div><div class="section-label">03 / COMPARE</div><h2>What changes with your design?</h2></div><span id="result-badge" class="status-badge">Awaiting run</span></div>
 <div class="cards"><article><span>Existing path shade</span><strong id="baseline-value">—</strong><div class="meter"><div id="baseline-bar"></div></div><small>Selected route centreline</small></article><article><span>With proposed trees</span><strong id="proposed-value">—</strong><div class="meter"><div id="proposed-bar"></div></div><small>Same route, same time</small></article><article class="gain"><span>Shade improvement</span><strong id="delta-value">—</strong><small id="seat-value">Shaded seats: —</small></article></div>
 <p class="method">Model scope: projected canopy shade. Decorative canopy highlights do not represent calculated shade. No air-temperature or lake-cooling prediction.</p>
-<details class="history"><summary>Saved scenarios &amp; activity history</summary><div class="history-grid"><div><h3>Recent scenarios</h3><ul>{% for scenario in scenarios %}<li>{{ scenario.name }} · {{ scenario.result_data.mode }}<small>{{ scenario.created_by.username }} · {{ scenario.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No scenarios saved yet.</li>{% endfor %}</ul></div><div><h3>Activity</h3><ul>{% for event in events %}<li>{{ event.actor.username }} saved “{{ event.details.scenario_name }}”<small>{{ event.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No activity yet.</li>{% endfor %}</ul></div></div></details>
+<details class="history" id="scenario-history"><summary>Saved scenarios &amp; activity history</summary><div class="history-grid"><div><h3>Recent scenarios</h3><ul>{% for scenario in scenarios %}<li>{{ scenario.name }} · {{ scenario.result_data.mode }}<small>{{ scenario.created_by.username }} · {{ scenario.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No scenarios saved yet.</li>{% endfor %}</ul></div><div><h3>Activity</h3><ul>{% for event in events %}<li>{{ event.actor.username }} saved “{{ event.details.scenario_name }}”<small>{{ event.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No activity yet.</li>{% endfor %}</ul></div></div></details>
 </section></div><footer>{{ site.source_note }}</footer>
 </main>
 {{ site|json_script:"site-data" }}{{ saved_layouts|json_script:"saved-data" }}
-<script src="{% static 'planner/vendor/leaflet.js' %}"></script><script src="{% static 'planner/dashboard.js' %}?v=concept2"></script>
+<script src="{% static 'planner/vendor/leaflet.js' %}"></script>
+<script src="{% static 'planner/dashboard.js' %}?v=neon1"></script>
+
+<!-- ECOCOOL_ELMINA_MAP_V1 -->
+{% if site.basemap.provider == "google" %}
+{{ ecocool_map_config|json_script:"ecocool-map-config" }}
+<script src="{% static 'planner/vendor/Leaflet.GoogleMutant.js' %}"></script>
+<script src="{% static 'planner/elmina-map.js' %}?v=elmina1"></script>
+{% endif %}
+<script src="{% static 'resilience/dashboard-bridge.js' %}?v=1"></script>
+<!-- AEROTHERMAL_STAKEHOLDERS_V1 -->
+<script src="{% static 'resilience/dashboard-links.js' %}?v=2"></script>
+<!-- AEROTHERMAL_VISUAL_B2B_V2 -->
+<script src="{% static 'resilience/designer-visual.js' %}?v=2"></script>
 </body></html>

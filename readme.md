@@ -268,20 +268,6 @@ To stop the server, press:
 Ctrl+C
 ```
 
-## What localhost means
-
-`127.0.0.1` and `localhost` refer to the laptop on which the browser is running.
-
-Therefore:
-- Jia opens her local Django server on her laptop.
-- Sofea opens her local Django server on her laptop.
-- Their local accounts, reports and saved scenarios are separate.
-- GitHub shares source code; it does not automatically synchronise local databases.
-
-Sending someone your localhost URL does not give them access to your server.
-
----
-
 ## Optional: Google satellite map
 
 The reference geometry can be displayed without Google satellite imagery.

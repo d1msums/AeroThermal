@@ -63,7 +63,7 @@ A production mobile-app integration is not included.
 - SQLite for local development
 - Leaflet for interactive maps
 - Google Maps satellite imagery when configured
-- Python simulation dependencies listed in requirements-sim-lock.txt
+- Python simulation dependencies listed in requirements.txt
 
 The project folder may still be named `ecocool`; the product name is AeroThermal.
 
@@ -124,7 +124,6 @@ The following commands use the virtual environment's Python directly, so activat
 ```powershell
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pip install -r requirements-sim-lock.txt
 ```
 
 If a requirements file is missing, check that you cloned the latest branch and ask Sofea to commit the file. Avoid guessing dependency versions.
@@ -365,7 +364,6 @@ When your working tree is ready:
 ```powershell
 git pull --ff-only
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pip install -r requirements-sim-lock.txt
 .\.venv\Scripts\python.exe manage.py migrate
 .\.venv\Scripts\python.exe manage.py check
 .\.venv\Scripts\python.exe manage.py runserver
@@ -450,21 +448,3 @@ The URL configuration still imports the retired Landscape Review add-on. Remove 
 Confirm that `seed_resilience` was run for the correct project.
 
 Some measurements intentionally remain unavailable because no real sensor or validated data source is connected.
-
-## Repository hygiene
-
-Do not commit:
-- `.venv/`
-- `.env` or credentials.
-- Local SQLite databases.
-- Private uploaded resident photos.
-- Installer backup folders.
-- Python cache files.
-
-Do commit:
-- Application source code.
-- Templates and static assets.
-- Requirements files.
-- Django migration files.
-- Reference geometry needed for setup.
-- Setup scripts and documentation.

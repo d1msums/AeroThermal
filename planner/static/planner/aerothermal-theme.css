@@ -1,0 +1,525 @@
+/* Load after dashboard.css and climate-widgets.css. */
+
+body.aerothermal-theme {
+  --ink: #e7f5ec;
+  --green: #b8ef75;
+  --muted: #a5bcb0;
+  --line: #315347;
+  --paper: #091b17;
+
+  color-scheme: dark;
+  background:
+    radial-gradient(circle at 65% 0, #163b2e, #091b17 65%);
+  color: var(--ink);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.aerothermal-theme * {
+  scrollbar-color: #557760 #102820;
+}
+
+.aerothermal-theme :focus-visible {
+  outline: 3px solid #82eae2;
+  outline-offset: 3px;
+}
+
+/* Header and branding */
+
+.aerothermal-theme .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  min-height: 78px;
+  height: auto;
+  padding: 12px 28px;
+  background: #0c241e;
+  border-bottom: 1px solid var(--line);
+  gap: 20px;
+}
+
+.aerothermal-theme .brand {
+  gap: 14px;
+  min-width: 0;
+  letter-spacing: 0;
+}
+
+.aerothermal-theme .sdp-logo-wrap {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  background: white;
+  padding: 7px 10px;
+  border-radius: 7px;
+}
+
+.aerothermal-theme .sdp-logo {
+  width: 108px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.aerothermal-theme .product-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aerothermal-theme .product-brand strong {
+  font-size: 23px;
+  color: #c7f58e;
+  line-height: 1.15;
+}
+
+.aerothermal-theme .product-brand small {
+  font-size: 10px;
+  font-weight: 400;
+  color: #b1c9ba;
+  letter-spacing: 0.3px;
+}
+
+.aerothermal-theme .account {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  font-size: 12px;
+}
+
+.aerothermal-theme .role-pill,
+.aerothermal-theme .status-badge,
+.aerothermal-theme .concept-badge {
+  background: #193e30;
+  color: #d0f5ad;
+  border-color: #416449;
+}
+
+/* Page heading and navigation */
+
+.aerothermal-theme main {
+  max-width: 1800px;
+  padding: 22px 28px;
+}
+
+.aerothermal-theme .page-heading {
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.aerothermal-theme .page-heading h1 {
+  font-size: 24px;
+  letter-spacing: -0.4px;
+}
+
+.aerothermal-theme .page-heading p,
+.aerothermal-theme .back {
+  color: #aec5b7;
+}
+
+.aerothermal-theme .dashboard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.aerothermal-theme .dashboard-nav a {
+  display: inline-block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  color: #dbeddf;
+  background: #143329;
+  border: 1px solid #315347;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.aerothermal-theme .dashboard-nav a:hover {
+  background: #254c37;
+  border-color: #99c969;
+}
+
+/* Large map on the left, controls on the right */
+
+.aerothermal-theme .workspace {
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+}
+
+.aerothermal-theme .workspace > aside {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100dvh - 125px);
+  overflow-y: auto;
+  padding: 22px;
+  background: #102c23;
+  border-color: #315347;
+}
+
+.aerothermal-theme .main-panel {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.aerothermal-theme #map,
+.aerothermal-theme #at-climate,
+.aerothermal-theme #design-controls,
+.aerothermal-theme #shade-results,
+.aerothermal-theme #scenario-history {
+  scroll-margin-top: 110px;
+}
+
+/* Controls */
+
+.aerothermal-theme .section-label {
+  color: #b8de95;
+  font-size: 10px;
+}
+
+.aerothermal-theme h2 {
+  font-size: 18px;
+}
+
+.aerothermal-theme label {
+  font-size: 12px;
+}
+
+.aerothermal-theme label span,
+.aerothermal-theme .hint,
+.aerothermal-theme .empty {
+  color: #afc6b9;
+}
+
+.aerothermal-theme .hint {
+  font-size: 11px;
+}
+
+.aerothermal-theme input,
+.aerothermal-theme select {
+  background: #0a211a;
+  border-color: #4a6b59;
+  color: #f0f8f2;
+  min-height: 39px;
+}
+
+.aerothermal-theme .primary {
+  background: #b8ef75;
+  color: #142816;
+  border-color: #b8ef75;
+  font-size: 12px;
+  padding: 12px;
+  font-weight: 700;
+}
+
+.aerothermal-theme .primary:hover {
+  background: #d0ff9b;
+}
+
+.aerothermal-theme .primary.active {
+  background: #ffe27b;
+  color: #322800;
+  border-color: #ffe27b;
+}
+
+.aerothermal-theme .secondary,
+.aerothermal-theme .quiet,
+.aerothermal-theme .time-presets button,
+.aerothermal-theme .mini-actions button {
+  background: #1b3c2f;
+  border: 1px solid #45664f;
+  color: #e2efdf;
+  font-size: 11px;
+  min-height: 34px;
+}
+
+.aerothermal-theme button:disabled,
+.aerothermal-theme input:disabled,
+.aerothermal-theme select:disabled {
+  opacity: 0.55;
+}
+
+.aerothermal-theme .divider {
+  border-color: #315347;
+}
+
+.aerothermal-theme .tree-row {
+  background: #153529;
+  color: #edf8ed;
+  border-color: #3d5c47;
+}
+
+.aerothermal-theme .tree-row.selected {
+  background: #3c4122;
+  border-color: #ffe27b;
+}
+
+.aerothermal-theme .tree-row small {
+  color: #bed0bd;
+}
+
+.aerothermal-theme .list-heading span {
+  background: #305436;
+  color: #dcf6c8;
+}
+
+/* Map frame */
+
+.aerothermal-theme .map-toolbar {
+  height: auto;
+  min-height: 58px;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #143329;
+  border-color: #3b5f4b;
+}
+
+.aerothermal-theme .map-meta {
+  color: #bed0c1;
+}
+
+.aerothermal-theme .map-tools {
+  flex-wrap: wrap;
+}
+
+.aerothermal-theme .map-wrap {
+  border-color: #3b5f4b;
+}
+
+.aerothermal-theme #map {
+  height: clamp(440px, 65vh, 660px);
+  background-color: #193629;
+  background-image:
+    radial-gradient(#395340 1px, transparent 1px);
+}
+
+.aerothermal-theme .north {
+  color: #ddf6b0;
+  background: #0c211be6;
+  border-radius: 7px;
+  padding: 5px 9px;
+}
+
+.aerothermal-theme .map-note {
+  bottom: 34px;
+  right: 12px;
+  max-width: calc(100% - 70px);
+  background: #0c211be6;
+  color: #e1edda;
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.aerothermal-theme .legend {
+  background: #123025;
+  border-color: #315347;
+  color: #c3d7c7;
+  font-size: 11px;
+  gap: 16px;
+}
+
+.aerothermal-theme #basemap-status {
+  background: #193b2c !important;
+  color: #d6edc5 !important;
+  border-color: #49654a !important;
+}
+
+/* Messages and results */
+
+.aerothermal-theme #message {
+  background: #193b2c;
+  border-color: #49654a;
+  color: #dcf0d1;
+}
+
+.aerothermal-theme #message.error {
+  background: #4a2a22;
+  color: #ffe0cf;
+  border-color: #aa7155;
+}
+
+.aerothermal-theme .cards article {
+  background: #123025;
+  border-color: #315347;
+}
+
+.aerothermal-theme .cards .gain {
+  background: #223c27;
+  border-color: #56703e;
+}
+
+.aerothermal-theme .cards article > span,
+.aerothermal-theme .cards small,
+.aerothermal-theme .method,
+.aerothermal-theme .history small,
+.aerothermal-theme footer {
+  color: #adc5b3;
+}
+
+.aerothermal-theme .cards strong {
+  color: #c8f58b;
+}
+
+.aerothermal-theme .meter {
+  background: #2b4935;
+}
+
+.aerothermal-theme .meter div {
+  background: #b8ef75;
+}
+
+.aerothermal-theme .history {
+  border-color: #315347;
+}
+
+.aerothermal-theme .history summary {
+  padding: 10px 0;
+  font-size: 12px;
+}
+
+/* Existing climate widgets */
+
+.aerothermal-theme .at-climate {
+  margin: 22px 0;
+}
+
+.aerothermal-theme .at-heading-row p {
+  color: #b4c9b9;
+}
+
+.aerothermal-theme .at-card {
+  background: #123025;
+  border-color: #3c5e48;
+}
+
+.aerothermal-theme .at-gauge > div {
+  background: #123025;
+}
+
+.aerothermal-theme .at-card[data-tone="storm"] {
+  background: #47351e;
+  border-color: #d7a74e;
+}
+
+.aerothermal-theme .at-card[data-tone="heat"] {
+  background: #472b24;
+  border-color: #e09b65;
+}
+
+.aerothermal-theme .at-card[data-tone="drought"] {
+  background: #3e3625;
+  border-color: #c6af6a;
+}
+
+/* Keep map text readable */
+
+.aerothermal-theme .leaflet-control-attribution {
+  color: #153226;
+}
+
+.aerothermal-theme .leaflet-tooltip {
+  color: #153226;
+  background: #f5faf1;
+}
+
+/* Responsive layout */
+
+@media (min-width: 1151px) {
+  .aerothermal-theme .at-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1050px) {
+  .aerothermal-theme .workspace {
+    grid-template-columns: minmax(0, 1fr) 265px;
+  }
+
+  .aerothermal-theme .workspace > aside {
+    padding: 16px;
+  }
+
+  .aerothermal-theme .map-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .aerothermal-theme .at-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .aerothermal-theme .topbar {
+    position: relative;
+    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
+
+  .aerothermal-theme .brand {
+    gap: 10px;
+  }
+
+  .aerothermal-theme .sdp-logo {
+    width: 85px;
+    height: 30px;
+  }
+
+  .aerothermal-theme .product-brand strong {
+    font-size: 21px;
+  }
+
+  .aerothermal-theme .product-brand small {
+    font-size: 9px;
+  }
+
+  .aerothermal-theme .account {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .aerothermal-theme main {
+    padding: 18px 14px;
+  }
+
+  .aerothermal-theme .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .aerothermal-theme .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .aerothermal-theme .workspace > aside {
+    grid-column: 1;
+    grid-row: 1;
+    position: static;
+    max-height: none;
+  }
+
+  .aerothermal-theme .main-panel {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .aerothermal-theme .cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .aerothermal-theme .at-heading-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .aerothermal-theme .at-heading-row label {
+    min-width: 0;
+  }
+
+  .aerothermal-theme .history-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aerothermal-theme #map {
+    height: 430px;
+  }
+}

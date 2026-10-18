@@ -55,7 +55,12 @@ function treeIcon(tree,isProposed,selected){
   const size=Math.max(3,2*tree.canopy_radius_m/mpp);
   const colors=isProposed?['#b8c781','#7f9253','#d8e4aa']:['#90ad7a','#66875c','#b5ca91'];
   const html=`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 18 C20 7 29 10 34 7 C46 7 48 16 55 23 C62 34 53 46 47 52 C36 61 21 55 14 49 C4 41 3 27 12 18Z" fill="${colors[0]}" stroke="${colors[1]}" stroke-width="1.7"/><path d="M17 20 C24 12 32 14 38 13 C46 17 49 24 48 31 C39 32 37 26 29 28 C21 32 13 29 17 20Z" fill="${colors[2]}" opacity=".65"/><path d="M14 38 Q30 51 49 37 Q47 55 30 54 Q18 53 14 38" fill="${colors[1]}" opacity=".22"/><circle cx="32" cy="33" r="2" fill="${colors[1]}"/>${isProposed?'<circle cx="32" cy="32" r="29" fill="none" stroke="#a67e33" stroke-width="1.4" stroke-dasharray="3 3"/>':''}</svg>`;
-  return L.divIcon({html,className:`tree-icon${selected?' selected':''}`,iconSize:[size,size],iconAnchor:[size/2,size/2]});
+  return L.divIcon({
+  html,
+  className: `tree-icon${isProposed ? ' proposed-tree' : ''}${selected ? ' selected' : ''}`,
+  iconSize: [size, size],
+  iconAnchor: [size / 2, size / 2]
+});
 }
 function renderTrees(){
   treeLayer.clearLayers();

@@ -1,0 +1,105 @@
+<section id="at-climate"
+         class="at-climate"
+         aria-labelledby="at-heading">
+
+  <div class="at-heading-row">
+    <div>
+      <h2 id="at-heading">Climate resilience overview</h2>
+      <p>DEMO DATA · No live sensor or METMalaysia connection</p>
+    </div>
+
+    <label for="at-scenario">
+      Demo scenario
+      <select id="at-scenario">
+        <option value="normal">Normal</option>
+        <option value="storm">Heavy rain · next 12h</option>
+        <option value="heat">Heatwave / heat islands</option>
+        <option value="drought">Drought / El Niño scenario</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="at-grid" aria-live="polite">
+
+    <!-- Widget 1: lake storage -->
+    <article class="at-card">
+      <h3>Lake Capacity &amp; Flood Buffer</h3>
+      <p>Elmina Central Wetland · reference demo</p>
+
+      <strong id="at-capacity" class="at-number">—</strong>
+      <span id="at-condition" class="at-pill">Loading demo</span>
+
+      <progress
+        id="at-storage"
+        max="100"
+        value="0"
+        aria-label="Illustrative lake storage percentage">
+      </progress>
+
+      <dl>
+        <div>
+          <dt>Available storm buffer</dt>
+          <dd id="at-buffer">—</dd>
+        </div>
+        <div>
+          <dt>Stored water</dt>
+          <dd id="at-stored">—</dd>
+        </div>
+      </dl>
+
+      <p id="at-water-note" class="at-note"></p>
+
+      <small>
+        Assumed total storage: 100,000 m³.
+        Percentage is stored volume, not measured water depth.
+      </small>
+    </article>
+
+    <!-- Widget 2: advisory -->
+    <article id="at-alert"
+             class="at-card"
+             data-tone="normal">
+
+      <h3>Smart Pre-Discharge Alert</h3>
+      <span id="at-alert-state" class="at-pill">Demo advisory</span>
+
+      <h4 id="at-alert-title">Loading scenario</h4>
+      <p id="at-alert-message"></p>
+      <p id="at-release" class="at-release"></p>
+
+      <small>
+        No release command is sent.
+        Actual discharge needs operator approval, downstream checks
+        and an approved operating plan.
+      </small>
+    </article>
+
+    <!-- Indicator: flood safety and cooling -->
+    <article class="at-card">
+      <h3>Dual-Benefit Index</h3>
+      <p>Flood safety + cooling · illustrative indicators</p>
+
+      <div class="at-dual">
+        <div id="at-gauge" class="at-gauge">
+          <div>
+            <strong id="at-flood">—</strong>
+            <span>Flood safety score</span>
+          </div>
+        </div>
+
+        <div class="at-cooling">
+          <span>Cooling impact</span>
+          <strong id="at-cooling">—</strong>
+          <small>Sample value</small>
+        </div>
+      </div>
+
+      <small>
+        92% is a placeholder score, not a probability of safety.
+        −2.5°C is illustrative, not calculated by the shade engine.
+        The two units are not averaged.
+      </small>
+    </article>
+
+  </div>
+</section>

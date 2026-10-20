@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My EcoPoints and Community Impact - Sime Darby Property</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#F7F5EF",
+            "on-background": "#252C27",
+            "surface": "#F7F5EF",
+            "surface-card": "#FFFFFF",
+            "surface-nude": "#E7D9C9",
+            "primary": "#667C68",
+            "primary-dark": "#425544",
+            "secondary": "#A9B9A0",
+            "text-main": "#252C27",
+            "text-muted": "#6C756E",
+            "accent-lime": "#B6FF4A",
+            "outline-soft": "#E4DEC8",
+            "surface-container-low": "#F1EEE7"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1.25rem",
+            "3xl": "1.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "sans": ["Plus Jakarta Sans", "sans-serif"],
+            "metric": ["Space Grotesk", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .aesthetic-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(37, 44, 39, 0.05), 0 1px 3px 0 rgba(37, 44, 39, 0.03);
+    }
+    body {
+      min-height: max(884px, 100dvh);
+      background-color: #F7F5EF;
+      color: #252C27;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background text-text-main antialiased min-h-screen pb-24 selection:bg-secondary/30 selection:text-text-main">
+<!-- TopAppBar: Deep Sage/Forest Green Header -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-14 bg-primary-dark/95 backdrop-blur-md shadow-sm select-none border-b border-primary/40">
+<div class="flex items-center gap-2.5">
+<button aria-label="Back" class="text-white/90 hover:bg-white/10 p-2 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center" onclick="window.history.back()">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-[17px] font-bold text-white tracking-tight">My EcoPoints</h1>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Notifications" class="relative text-white/90 hover:bg-white/10 p-2 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-accent-lime rounded-full ring-2 ring-primary-dark"></span>
+</button>
+<button aria-label="Settings" class="text-white/90 hover:bg-white/10 p-2 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="pt-14 max-w-md mx-auto relative overflow-hidden">
+<!-- Sophisticated Sage Green Hero Card -->
+<section class="relative bg-gradient-to-br from-[#667C68] via-[#566D58] to-[#425544] text-white px-5 pt-6 pb-12 rounded-b-[2.25rem] shadow-sm">
+<!-- Ambient Organic Glow Blobs -->
+<div class="absolute -right-8 -top-8 w-48 h-48 rounded-full bg-accent-lime/10 blur-3xl pointer-events-none"></div>
+<div class="absolute left-6 bottom-4 w-40 h-40 rounded-full bg-black/15 blur-2xl pointer-events-none"></div>
+<!-- Top Pill Badges -->
+<div class="relative z-10 flex items-center justify-between mb-4">
+<div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
+<span class="material-symbols-outlined text-[16px] text-accent-lime" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-[11px] font-semibold text-white/95 tracking-wide">EcoCitizen Tier 1</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-white/90 border border-white/10">
+<span class="material-symbols-outlined text-[14px] text-accent-lime">verified</span>
+<span class="text-[11px] font-medium tracking-wide">Verified Balance</span>
+</div>
+</div>
+<!-- Hero Points Number -->
+<div class="relative z-10 text-center py-2">
+<span class="text-[11px] font-semibold uppercase tracking-wider text-white/80">Available Township Balance</span>
+<div class="flex items-baseline justify-center gap-2 mt-1">
+<h2 class="text-[44px] font-extrabold text-white tracking-tight font-metric">250</h2>
+<span class="text-[20px] font-semibold text-white/90">EcoPoints</span>
+</div>
+<div class="flex items-center justify-center gap-1.5 mt-1 text-white/80">
+<span class="material-symbols-outlined text-[15px] text-accent-lime">location_on</span>
+<p class="text-[12px] font-medium">Ilham Residence 2 • City of Elmina</p>
+</div>
+</div>
+<!-- Next Milestone Progress container -->
+<div class="relative z-10 mt-6 bg-black/25 backdrop-blur-md p-4 rounded-2xl border border-white/15">
+<div class="flex justify-between items-center text-[12px] text-white/90 mb-2">
+<span class="font-semibold text-white">Next Milestone Progress</span>
+<span class="font-bold font-metric tracking-tight">250 / 300 pts</span>
+</div>
+<div class="w-full bg-black/35 rounded-full h-2.5 overflow-hidden p-0.5 border border-white/10">
+<div class="bg-accent-lime h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(182,255,74,0.6)]" style="width: 83.3%;"></div>
+</div>
+<div class="flex items-center gap-2 mt-3 text-white/90">
+<span class="material-symbols-outlined text-[16px] text-accent-lime">card_giftcard</span>
+<p class="text-[12px] leading-tight">
+<span class="font-bold text-accent-lime">50 pts away</span> from RM 20 Elmina Lakeside Mall Voucher
+</p>
+</div>
+</div>
+</section>
+<!-- Content Sections Wrapper -->
+<div class="px-4 -mt-6 relative z-20 space-y-6">
+<!-- Community Impact Indicators -->
+<section class="bg-surface-card rounded-2xl p-4 aesthetic-card-shadow border border-surface-nude/70">
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">nature_people</span>
+<h3 class="text-[16px] text-text-main font-bold tracking-tight">Community Impact</h3>
+</div>
+<span class="text-[10px] uppercase tracking-wider font-bold bg-primary/10 text-primary px-2.5 py-0.5 rounded-full">Q4 Live</span>
+</div>
+<div class="grid grid-cols-3 gap-2.5">
+<div class="bg-surface-container-low/70 p-3 rounded-xl flex flex-col justify-between border border-surface-nude/60">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] uppercase tracking-wider text-text-muted font-semibold">Reports</span>
+<span class="material-symbols-outlined text-[16px] text-primary">assignment_turned_in</span>
+</div>
+<div>
+<div class="text-[22px] font-extrabold text-text-main font-metric leading-none">3</div>
+<div class="text-[10px] text-primary font-bold mt-1.5 leading-none flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-lime inline-block"></span> 2 Resolved
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low/70 p-3 rounded-xl flex flex-col justify-between border border-surface-nude/60">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] uppercase tracking-wider text-text-muted font-semibold">Shaded</span>
+<span class="material-symbols-outlined text-[16px] text-primary">directions_walk</span>
+</div>
+<div>
+<div class="text-[22px] font-extrabold text-text-main font-metric leading-none">18.5<span class="text-[11px] font-semibold text-text-muted ml-0.5">km</span></div>
+<div class="text-[10px] text-primary font-bold mt-1.5 leading-none flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-lime inline-block"></span> -3.1°C Avoided
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low/70 p-3 rounded-xl flex flex-col justify-between border border-surface-nude/60">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] uppercase tracking-wider text-text-muted font-semibold">Offset</span>
+<span class="material-symbols-outlined text-[16px] text-primary">park</span>
+</div>
+<div>
+<div class="text-[22px] font-extrabold text-text-main font-metric leading-none">6.2<span class="text-[11px] font-semibold text-text-muted ml-0.5">kg</span></div>
+<div class="text-[10px] text-text-muted font-bold mt-1.5 leading-none">0.3 Trees Eq.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SDP Township Lifestyle Rewards & Vouchers -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-[17px] text-text-main font-bold tracking-tight">Township Lifestyle Rewards</h3>
+<p class="text-[12px] text-text-muted">Exclusive partner perks in City of Elmina</p>
+</div>
+<button class="text-primary text-[12px] font-bold flex items-center hover:opacity-80 transition-opacity">
+  View All
+  <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Horizontal scroll voucher cards -->
+<div class="flex gap-3 overflow-x-auto custom-scroll pb-2 -mx-4 px-4">
+<div class="min-w-[240px] max-w-[240px] bg-surface-card rounded-2xl p-3.5 aesthetic-card-shadow border border-surface-nude/80 flex flex-col justify-between shrink-0">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="bg-primary/10 text-primary text-[11px] px-2.5 py-0.5 rounded-full font-bold">Claimable</span>
+<span class="text-primary font-extrabold text-[13px] font-metric">150 pts</span>
+</div>
+<div class="h-24 w-full rounded-xl bg-surface-container-low overflow-hidden mb-2.5 relative">
+<img class="w-full h-full object-cover" data-alt="Warm modern lifestyle photography inside an artisanal coffee shop at Elmina Lakeside Mall Malaysia." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmBd5epD89QaDJKdPGpKHvh13S364v6NZZ3DjQNXiwB0XnPvoxQl9EwdFtiPftcb2WMiV1PI3Ibu79hGBX8I1u-NPDb_4J7tMuLWinf6YJeT6WA0wuJsY-ArC5cseewn8zbgVSNC_9FFstEKCjMx2KfIoHa-C8OTlivB8xndcsglGFdUfpz0huyPMf_3dti2weJKyDc40eDPH5yu3xw0bUMxG7T3apL1a2m7NuImWYruLeirhVTO3W"/>
+<div class="absolute bottom-1.5 left-1.5 bg-text-main/80 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded">F&amp;B</div>
+</div>
+<h4 class="text-[13px] text-text-main font-bold line-clamp-1">RM 10 Coffee Voucher</h4>
+<p class="text-[11px] text-text-muted line-clamp-1">Elmina Lakeside Mall</p>
+</div>
+<button class="mt-3 w-full bg-primary hover:bg-primary-dark text-white py-2 px-3 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1 active:scale-95 transition-all tracking-wide" onclick="openModal('RM 10 Coffee Voucher', '150 pts', 'Elmina Lakeside Mall')">
+<span class="material-symbols-outlined text-[16px]">redeem</span> Redeem
+</button>
+</div>
+<div class="min-w-[240px] max-w-[240px] bg-surface-card rounded-2xl p-3.5 aesthetic-card-shadow border border-surface-nude/80 flex flex-col justify-between shrink-0">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="bg-surface-container-low text-text-muted text-[11px] px-2.5 py-0.5 rounded-full font-bold">Need 50 pts</span>
+<span class="text-text-muted font-bold text-[13px] font-metric">300 pts</span>
+</div>
+<div class="h-24 w-full rounded-xl bg-surface-container-low overflow-hidden mb-2.5 relative">
+<img class="w-full h-full object-cover" data-alt="Chic al fresco restaurant terrace at Elmina Valley Commercial Hub surrounded by landscaped tropical gardens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUS3i5T5Cz2KEGDr8Tp06kWj-Y2-dXBPhyNXNMWaZkOtDLrJFTG0wB2GJSYumyV1jpqUWUhfTsPuZzI2jG9QShBIjqyW6YufRRVgi3kygNOxIMtAJrQFg8KPAirLYu_dY_iH9OTz2gSyM0TR71pt1ROt1ONB-aYHt7t8yG8W7CD8LIyD3u6ZmlFcMEoya0EOg8s-TSbLCuoH3YrHwr2l114eA5P2gEBvYW4rZBeJqlgd4qJEQKeHI"/>
+<div class="absolute bottom-1.5 left-1.5 bg-text-main/80 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded">Dining</div>
+</div>
+<h4 class="text-[13px] text-text-main font-bold line-clamp-1">RM 20 F&amp;B Voucher</h4>
+<p class="text-[11px] text-text-muted line-clamp-1">Elmina Valley Hub</p>
+</div>
+<button class="mt-3 w-full bg-surface-nude/50 text-text-muted cursor-not-allowed py-2 px-3 rounded-xl text-[12px] font-semibold flex items-center justify-center gap-1 border border-surface-nude" disabled="">
+<span class="material-symbols-outlined text-[16px]">lock</span> Locked
+</button>
+</div>
+<div class="min-w-[240px] max-w-[240px] bg-surface-card rounded-2xl p-3.5 aesthetic-card-shadow border border-surface-nude/80 flex flex-col justify-between shrink-0">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="bg-primary/10 text-primary text-[11px] px-2.5 py-0.5 rounded-full font-bold">Claimable</span>
+<span class="text-primary font-extrabold text-[13px] font-metric">200 pts</span>
+</div>
+<div class="h-24 w-full rounded-xl bg-surface-container-low overflow-hidden mb-2.5 relative">
+<img class="w-full h-full object-cover" data-alt="Lush green botanical tree nursery at Elmina Living Collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBmefuBFtLEQqB8ggnu_YGsymeCtqVSDnUCk2MRkIkHljS95Eo0KP89dUm0XHA_5omCKs2ve9rtjZxVL0x43g5PtUhiEtLMM6FlbFZAhyaT5bKSGS_HqyCvbO9FpdWp9okEZOoRmLYVdYLXdsNZR8huXrZPtkB2XdSarGKG7pzEc_2f4u-jkRrotCNcF7nGM4dC0PPBYIh_5CL-1Mwezlfv0kF8udgFJshDdE572FSNOgI5ncDGnKl"/>
+<div class="absolute bottom-1.5 left-1.5 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded">EcoLiving</div>
+</div>
+<h4 class="text-[13px] text-text-main font-bold line-clamp-1">1x Native Sapling</h4>
+<p class="text-[11px] text-text-muted line-clamp-1">Living Collection Nursery</p>
+</div>
+<button class="mt-3 w-full bg-primary hover:bg-primary-dark text-white py-2 px-3 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1 active:scale-95 transition-all tracking-wide" onclick="openModal('1x Free Native Sapling', '200 pts', 'Elmina Living Collection Nursery')">
+<span class="material-symbols-outlined text-[16px]">redeem</span> Redeem
+</button>
+</div>
+<div class="min-w-[240px] max-w-[240px] bg-surface-card rounded-2xl p-3.5 aesthetic-card-shadow border border-surface-nude/80 flex flex-col justify-between shrink-0">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="bg-primary/10 text-primary text-[11px] px-2.5 py-0.5 rounded-full font-bold">Claimable</span>
+<span class="text-primary font-extrabold text-[13px] font-metric">180 pts</span>
+</div>
+<div class="h-24 w-full rounded-xl bg-surface-container-low overflow-hidden mb-2.5 relative">
+<img class="w-full h-full object-cover" data-alt="Premium modern resort-style clubhouse swimming pool at Elmina Township." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtWdUJCmLeoQBnNbCoBDohs0CjMRU_cAViCw5ia_DzHT8f-MbxnP7a1Cn3noy5X0Eq5zNSupd2BHl24IJleUDSmlep1nnaUbnDNgvf0vG77NSSrvHGITeazwhiiEbOz13LAOcMi_TCH1YMPG4Ax9kKgcV4halkk1FMvDU3nR9mwLUZpZhcnUOqFHlAnhkWFKxgj-yRB9k-GCTbbCk57VX2ldkXcEZFZlIrxR1Z7h2kEK4jI8GougbW"/>
+<div class="absolute bottom-1.5 left-1.5 bg-text-main/80 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded">Recreation</div>
+</div>
+<h4 class="text-[13px] text-text-main font-bold line-clamp-1">Clubhouse Pool Pass</h4>
+<p class="text-[11px] text-text-muted line-clamp-1">Elmina Clubhouse</p>
+</div>
+<button class="mt-3 w-full bg-primary hover:bg-primary-dark text-white py-2 px-3 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1 active:scale-95 transition-all tracking-wide" onclick="openModal('Weekend Clubhouse Family Pool Pass', '180 pts', 'Elmina Clubhouse')">
+<span class="material-symbols-outlined text-[16px]">redeem</span> Redeem
+</button>
+</div>
+</div>
+</section>
+<!-- How to Earn EcoPoints -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">electric_bolt</span>
+<h3 class="text-[16px] text-text-main font-bold tracking-tight">Earn EcoPoints</h3>
+</div>
+<div class="flex items-center gap-1 bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+<span class="material-symbols-outlined text-[13px]">verified</span> SDP Verified
+</div>
+</div>
+<div class="space-y-2">
+<div class="bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">report_problem</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Verified Hotspot Report</h4>
+<p class="text-[11px] text-text-muted">Shade deficit or damage confirmed</p>
+</div>
+</div>
+<div class="text-right shrink-0 pl-2">
+<span class="inline-block bg-primary/10 text-primary font-extrabold text-[12px] px-2.5 py-1 rounded-full font-metric">+25 pts</span>
+</div>
+</div>
+<div class="bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">directions_walk</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">10 km Shaded CoolWalk</h4>
+<p class="text-[11px] text-text-muted">Weekly tracker validation</p>
+</div>
+</div>
+<div class="text-right shrink-0 pl-2">
+<span class="inline-block bg-primary/10 text-primary font-extrabold text-[12px] px-2.5 py-1 rounded-full font-metric">+30 pts</span>
+</div>
+</div>
+<div class="bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Community Tree Planting</h4>
+<p class="text-[11px] text-text-muted">Living Collection Nursery check-in</p>
+</div>
+</div>
+<div class="text-right shrink-0 pl-2">
+<span class="inline-block bg-primary/10 text-primary font-extrabold text-[12px] px-2.5 py-1 rounded-full font-metric">+50 pts</span>
+</div>
+</div>
+<div class="bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">potted_plant</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Adopt a Native Sapling</h4>
+<p class="text-[11px] text-text-muted">Township biodiversity program</p>
+</div>
+</div>
+<div class="text-right shrink-0 pl-2">
+<span class="inline-block bg-primary/10 text-primary font-extrabold text-[12px] px-2.5 py-1 rounded-full font-metric">+40 pts</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Activity History -->
+<section class="space-y-3 pb-6">
+<div class="flex items-center justify-between">
+<h3 class="text-[17px] text-text-main font-bold">Activity History</h3>
+<span class="text-[11px] font-semibold text-text-muted bg-surface-nude/40 px-2 py-0.5 rounded-md border border-surface-nude/60">SDP Ledger</span>
+</div>
+<!-- Filter Tab Toggles -->
+<div class="flex p-1 bg-surface-nude/45 rounded-xl gap-1 border border-surface-nude/70">
+<button class="flex-1 py-1.5 text-[11px] rounded-lg font-bold bg-primary text-white shadow-sm transition-all text-center" id="tab-all" onclick="filterActivity('all')">
+  All History
+</button>
+<button class="flex-1 py-1.5 text-[11px] rounded-lg font-medium text-text-muted hover:text-text-main transition-all text-center" id="tab-earned" onclick="filterActivity('earned')">
+  Points Earned
+</button>
+<button class="flex-1 py-1.5 text-[11px] rounded-lg font-medium text-text-muted hover:text-text-main transition-all text-center" id="tab-claimed" onclick="filterActivity('claimed')">
+  Rewards Claimed
+</button>
+</div>
+<!-- Activity Timeline Cards -->
+<div class="space-y-2.5" id="activity-list">
+<!-- Shaded Walk row -->
+<div class="activity-item bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between" data-category="earned">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[16px]">directions_walk</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Shaded Walk • Rainforest (1.8 km)</h4>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-[11px] text-text-muted">Today 8:15 AM</span>
+<span class="w-1 h-1 rounded-full bg-text-muted"></span>
+<span class="text-[9px] font-bold text-primary bg-primary/10 px-1.5 py-0.2 rounded">Verified</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[14px] text-primary font-extrabold font-metric tracking-tight">+5 pts</span>
+</div>
+</div>
+<!-- Damaged Mist Sprinkler row -->
+<div class="activity-item bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between" data-category="earned">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[16px]">build_circle</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Damaged Mist Sprinkler #4018</h4>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-[11px] text-text-muted">Yesterday</span>
+<span class="w-1 h-1 rounded-full bg-text-muted"></span>
+<span class="text-[9px] font-bold text-primary bg-primary/10 px-1.5 py-0.2 rounded">Inspected</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[14px] text-primary font-extrabold font-metric tracking-tight">+25 pts</span>
+</div>
+</div>
+<!-- Unshaded Bench row -->
+<div class="activity-item bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between" data-category="earned">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-nude/50 flex items-center justify-center text-text-muted shrink-0">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">Unshaded Bench #3990</h4>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-[11px] text-text-muted">2 days ago</span>
+<span class="w-1 h-1 rounded-full bg-text-muted"></span>
+<span class="text-[9px] font-bold text-text-muted bg-surface-nude/60 px-1.5 py-0.2 rounded">Pending</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[14px] text-text-muted font-bold font-metric">--</span>
+</div>
+</div>
+<!-- Claimed voucher row -->
+<div class="activity-item bg-surface-card p-3 rounded-2xl aesthetic-card-shadow border border-surface-nude/70 flex items-center justify-between" data-category="claimed">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-nude/60 flex items-center justify-center text-text-main shrink-0">
+<span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+</div>
+<div>
+<h4 class="text-[13px] text-text-main font-bold">RM 10 Lakeside Coffee Voucher</h4>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-[11px] text-text-muted">20 Oct • Lakeside Mall</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[14px] text-[#A64B2A] font-extrabold font-metric tracking-tight">-150 pts</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Interactive Redeem Confirmation Modal -->
+<div class="fixed inset-0 z-[999] bg-text-main/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200" id="reward-modal">
+<div class="bg-surface-card w-full max-w-sm rounded-3xl p-5 shadow-2xl transform transition-transform duration-200 border border-surface-nude">
+<div class="w-12 h-1 bg-surface-nude rounded-full mx-auto mb-3"></div>
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<h3 class="text-[18px] font-bold text-text-main text-center mb-1">Confirm Redemption</h3>
+<p class="text-[12px] text-text-muted text-center mb-4">Voucher pass will be credited immediately to your Resident Passkey wallet.</p>
+<div class="bg-surface-container-low p-3.5 rounded-xl mb-5 space-y-2 border border-surface-nude/70">
+<div class="flex justify-between text-[12px]">
+<span class="text-text-muted">Item:</span>
+<span class="font-bold text-text-main text-right" id="modal-item-name">RM 10 Coffee Voucher</span>
+</div>
+<div class="flex justify-between text-[12px]">
+<span class="text-text-muted">Cost:</span>
+<span class="font-bold text-primary font-metric" id="modal-item-cost">150 pts</span>
+</div>
+<div class="flex justify-between text-[12px]">
+<span class="text-text-muted">Location:</span>
+<span class="font-medium text-text-main" id="modal-item-loc">Elmina Lakeside Mall</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<button class="py-2.5 px-4 rounded-xl border border-surface-nude text-text-muted text-[12px] font-bold hover:bg-surface-container-low cursor-pointer" onclick="closeModal()">
+  Cancel
+</button>
+<button class="py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-dark text-white text-[12px] font-bold active:scale-95 transition-transform cursor-pointer" onclick="completeRedemption()">
+  Confirm
+</button>
+</div>
+</div>
+</div>
+<!-- BottomNavBar: Warm Ivory background with 5 Destinations -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#F7F5EF]/95 backdrop-blur-md border-t border-surface-nude/70 shadow-lg">
+<!-- Tab 1: Home -->
+<a class="flex flex-col items-center justify-center text-text-muted font-normal py-1 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[10px] font-medium mt-0.5">Home</span>
+</a>
+<!-- Tab 2: Touch Grass -->
+<a class="flex flex-col items-center justify-center text-text-muted font-normal py-1 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">park</span>
+<span class="text-[10px] font-medium mt-0.5">Touch Grass</span>
+</a>
+<!-- Tab 3: CoolWalk -->
+<a class="flex flex-col items-center justify-center text-text-muted font-normal py-1 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">directions_walk</span>
+<span class="text-[10px] font-medium mt-0.5">CoolWalk</span>
+</a>
+<!-- Tab 4: Report -->
+<a class="flex flex-col items-center justify-center text-text-muted font-normal py-1 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">report_problem</span>
+<span class="text-[10px] font-medium mt-0.5">Report</span>
+</a>
+<!-- Tab 5: Profile (Active State with Sage Green & Accent Lime Dot) -->
+<a class="relative flex flex-col items-center justify-center text-primary font-bold py-1 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-[10px] font-bold mt-0.5">Profile</span>
+<span class="absolute -top-0.5 right-2 w-1.5 h-1.5 bg-accent-lime rounded-full ring-1 ring-primary/40"></span>
+</a>
+</nav>
+<!-- Interactive Scripts -->
+<script>
+    function filterActivity(filter) {
+      const allBtn = document.getElementById('tab-all');
+      const earnedBtn = document.getElementById('tab-earned');
+      const claimedBtn = document.getElementById('tab-claimed');
+      const items = document.querySelectorAll('.activity-item');
+
+      // Reset tabs styling
+      [allBtn, earnedBtn, claimedBtn].forEach(btn => {
+        btn.className = "flex-1 py-1.5 text-[11px] rounded-lg font-medium text-text-muted hover:text-text-main transition-all text-center";
+      });
+
+      // Apply active tab styling
+      if (filter === 'all') {
+        allBtn.className = "flex-1 py-1.5 text-[11px] rounded-lg font-bold bg-primary text-white shadow-sm transition-all text-center";
+      } else if (filter === 'earned') {
+        earnedBtn.className = "flex-1 py-1.5 text-[11px] rounded-lg font-bold bg-primary text-white shadow-sm transition-all text-center";
+      } else if (filter === 'claimed') {
+        claimedBtn.className = "flex-1 py-1.5 text-[11px] rounded-lg font-bold bg-primary text-white shadow-sm transition-all text-center";
+      }
+
+      // Filter list elements
+      items.forEach(item => {
+        const cat = item.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    const modal = document.getElementById('reward-modal');
+    function openModal(name, cost, loc) {
+      document.getElementById('modal-item-name').innerText = name;
+      document.getElementById('modal-item-cost').innerText = cost;
+      document.getElementById('modal-item-loc').innerText = loc;
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 10);
+    }
+
+    function closeModal() {
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    function completeRedemption() {
+      alert("Redemption successful! Your QR passkey is saved to your Sime Darby Resident Profile.");
+      closeModal();
+    }
+  </script>
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

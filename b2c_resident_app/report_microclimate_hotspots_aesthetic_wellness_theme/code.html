@@ -1,0 +1,549 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Report Heat Hotspot &amp; Microclimate Issues - City of Elmina</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#aa2f00",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary": "#5c5f62",
+            "surface-container": "#eceef0",
+            "on-tertiary-fixed-variant": "#005236",
+            "secondary-fixed-dim": "#c5c6ca",
+            "on-secondary-fixed-variant": "#44474a",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#ffb59f",
+            "surface-tint": "#af3100",
+            "primary-container": "#d14311",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "outline": "#8e7068",
+            "on-tertiary-container": "#f5fff6",
+            "on-secondary-fixed": "#191c1f",
+            "secondary-container": "#dee0e3",
+            "tertiary-container": "#00855b",
+            "on-background": "#191c1e",
+            "tertiary": "#006947",
+            "error": "#ba1a1a",
+            "surface": "#f7f9fb",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#3a0a00",
+            "on-primary-container": "#fffbff",
+            "secondary-fixed": "#e1e2e6",
+            "on-tertiary-fixed": "#002113",
+            "on-surface-variant": "#5a413a",
+            "tertiary-fixed": "#6ffbbe",
+            "primary-fixed": "#ffdbd1",
+            "surface-variant": "#e0e3e5",
+            "surface-container-low": "#f2f4f6",
+            "surface-dim": "#d8dadc",
+            "inverse-surface": "#2d3133",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#eff1f3",
+            "on-surface": "#191c1e",
+            "outline-variant": "#e2bfb5",
+            "background": "#f7f9fb",
+            "on-primary-fixed-variant": "#852300",
+            "surface-bright": "#f7f9fb",
+            "on-secondary-container": "#606366",
+            "surface-container-high": "#e6e8ea",
+            "inverse-primary": "#ffb59f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "label-md": ["11px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md flex justify-center min-h-screen" style="background-color: #F7F5EF;">
+<!-- Mobile Viewport Container -->
+<div class="relative w-full max-w-[420px] bg-background min-h-screen pb-24 shadow-2xl flex flex-col" style="background-color: #F7F5EF;">
+<!-- TopAppBar (from Shared Components JSON) -->
+<header class="fixed top-0 left-0 w-full max-w-[420px] z-50 flex justify-between items-center px-4 h-16 border-b border-[#E7D9C9]/60 shadow-xs backdrop-blur-md" style="left: 50%; transform: translateX(-50%); background-color: rgba(247, 245, 239, 0.94);">
+<div class="flex items-center gap-2.5">
+<button aria-label="Go back" class="p-1.5 rounded-full text-[#252C27] hover:bg-[#667C68]/10 active:scale-95 transition-transform duration-150 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div>
+<h1 class="text-[15px] font-bold text-[#252C27] tracking-tight leading-tight">Report Microclimate Hotspot</h1>
+<p class="text-[10px] text-[#667C68] font-medium leading-none mt-0.5">Township Care • City of Elmina</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Notifications" class="relative p-2 rounded-full text-[#252C27] hover:bg-[#667C68]/10 active:scale-95 transition-transform duration-150 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#B6FF4A] ring-2 ring-[#F7F5EF]"></span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-14 px-margin pt-space-md space-y-space-xl"><!-- Streamlined Hero Section -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase text-[#4E6350] bg-[#667C68]/15 border border-[#667C68]/20">SDP Field Ops</span>
+<span class="text-[11px] text-[#667C68]/80 font-medium">City of Elmina</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#B6FF4A]/25 border border-[#B6FF4A]/50 text-[#314F00] text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="">+25 pts</span>
+</div>
+</div>
+<h2 class="text-2xl font-extrabold tracking-tight text-[#252C27]">Report Hotspot</h2>
+<p class="text-xs text-[#54634D]">Flag microclimate stress zones directly to Sime Darby town engineering.</p>
+</section><!-- Prototype Simulation Toggle & Contextual Alert Banner -->
+<section class="space-y-2" id="sim-banner-section">
+<div class="flex items-center justify-between p-2 rounded-xl bg-white/80 border border-[#E7D9C9] text-xs">
+<span class="text-[11px] font-bold text-[#54634D] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-[#4E6350]">tune</span> Sim Condition:
+</span>
+<div class="flex items-center gap-1" id="weather-sim-toggle">
+<button id="sim-normal-btn" type="button" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-[#667C68] text-white shadow-xs transition-all">
+☀️ Normal
+</button>
+<button id="sim-storm-btn" type="button" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-transparent text-[#54634D] hover:bg-[#667C68]/10 transition-all">
+⛈️ Flood / Storm
+</button>
+</div>
+</div>
+<div id="storm-advisory-banner" class="hidden p-2.5 rounded-xl bg-[#BA1A1A]/10 border border-[#BA1A1A]/30 text-left transition-all">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#BA1A1A] shrink-0 mt-0.5">warning</span>
+<div>
+<p class="text-xs font-bold text-[#BA1A1A] leading-tight">⚠️ Flash Flood Advisory Active</p>
+<p class="text-[10px] text-[#54634D] mt-0.5 font-medium leading-normal">Drainage reports prioritized for Elmina bioswales &amp; retention ponds.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Step 1: Category Selection (Athletic Minimalist Bento Cards) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold uppercase tracking-wider text-[#667C68]">01 / Category</span>
+<span class="text-[11px] text-[#667C68]/80 font-medium">Select issue</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5" id="category-grid"><!-- Card 1 (Active by default) -->
+<div class="category-card relative p-3.5 rounded-2xl bg-white border-[#667C68] shadow-sm cursor-pointer transition-all duration-150 flex flex-col justify-between h-28 border border-surface-container-highest" data-category="heat">
+<div class="flex justify-between items-start bg-surface-container-low text-secondary">
+<div class="w-8 h-8 rounded-xl bg-[#667C68]/15 text-[#4E6350] flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+</div>
+<div class="category-radio w-4 h-4 rounded-full border-2 border-[#667C68] flex items-center justify-center border-secondary">
+<div class="w-2 h-2 rounded-full bg-[#667C68] bg-transparent"></div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#252C27]">Heat Trap</h4>
+<p class="text-[11px] text-[#667C68] font-medium mt-0.5 truncate">Exposed path &amp; sun</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="category-card relative p-3.5 rounded-2xl bg-white/80 border border-[#E7D9C9] shadow-xs cursor-pointer transition-all duration-150 flex flex-col justify-between h-28 hover:border-[#667C68]/40 border-surface-container-highest" data-category="tree">
+<div class="flex justify-between items-start bg-surface-container-low text-secondary">
+<div class="w-8 h-8 rounded-xl bg-[#F4FBF3] text-[#4E6350] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">park</span>
+</div>
+<div class="category-radio w-4 h-4 rounded-full border-2 border-[#E7D9C9] flex items-center justify-center border-secondary">
+<div class="w-2 h-2 rounded-full bg-transparent"></div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#252C27]">Damaged Tree</h4>
+<p class="text-[11px] text-[#667C68]/70 font-medium mt-0.5 truncate">Canopy loss &amp; debris</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="category-card relative p-3.5 rounded-2xl bg-white/80 border border-[#E7D9C9] shadow-xs cursor-pointer transition-all duration-150 flex flex-col justify-between h-28 hover:border-[#667C68]/40 border-surface-container-highest" data-category="water">
+<div class="flex justify-between items-start bg-surface-container-low text-secondary">
+<div class="w-8 h-8 rounded-xl bg-[#F4FBF3] text-[#4E6350] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<div class="category-radio w-4 h-4 rounded-full border-2 border-[#E7D9C9] flex items-center justify-center border-secondary">
+<div class="w-2 h-2 rounded-full bg-transparent"></div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#252C27]">Water Station</h4>
+<p class="text-[11px] text-[#667C68]/70 font-medium mt-0.5 truncate">Dry fountain or mist</p>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="category-card relative p-3.5 rounded-2xl bg-white/80 border border-[#E7D9C9] shadow-xs cursor-pointer transition-all duration-150 flex flex-col justify-between h-28 hover:border-[#667C68]/40 border-surface-container-highest" data-category="pavilion">
+<div class="flex justify-between items-start bg-surface-container-low text-secondary">
+<div class="w-8 h-8 rounded-xl bg-[#F4FBF3] text-[#4E6350] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">roofing</span>
+</div>
+<div class="category-radio w-4 h-4 rounded-full border-2 border-[#E7D9C9] flex items-center justify-center border-secondary">
+<div class="w-2 h-2 rounded-full bg-transparent"></div>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#252C27]">Broken Shade</h4>
+<p class="text-[11px] text-[#667C68]/70 font-medium mt-0.5 truncate">Torn sail or shelter</p>
+</div>
+</div>
+<!-- Card 5 (Blocked Drainage - 5th Category spanning both columns) -->
+<div class="category-card col-span-2 relative p-3.5 rounded-2xl bg-white/80 border-[#E7D9C9] shadow-xs cursor-pointer transition-all duration-150 flex flex-col justify-between hover:border-[#667C68]/40 border-2 border-primary" data-category="drainage" id="drainage-card">
+<div class="flex justify-between items-start bg-primary-fixed text-primary">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-[#F4FBF3] text-[#4E6350] flex items-center justify-center" id="drainage-icon-wrap">
+<span class="material-symbols-outlined text-[20px]">waves</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h4 class="text-sm font-bold text-[#252C27]">Blocked Drainage</h4>
+<span id="drainage-priority-badge" class="hidden text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-[#BA1A1A] text-white tracking-wide">High Priority</span>
+</div>
+<p class="text-[11px] text-[#667C68]/70 font-medium mt-0.5 truncate">Blocked drain or bioswale clog</p>
+</div>
+</div>
+<div class="category-radio w-4 h-4 rounded-full border-2 border-[#E7D9C9] flex items-center justify-center shrink-0 mt-0.5 border-primary">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+</div>
+</div></div>
+</section>
+<!-- Step 2: Township Location (High-Contrast Athletic GPS Card) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold uppercase tracking-wider text-[#667C68]">02 / Location</span>
+<div class="flex items-center gap-1.5 text-[11px] font-bold text-[#4E6350] bg-[#667C68]/10 px-2.5 py-0.5 rounded-full border border-[#667C68]/20">
+<span class="w-2 h-2 rounded-full bg-[#B6FF4A] animate-pulse ring-2 ring-[#4E6350]/30"></span>
+<span class="">GPS LOCKED</span>
+</div>
+</div>
+<div class="bg-white rounded-2xl p-3 border border-[#E7D9C9] shadow-sm space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-[#667C68]/15 text-[#4E6350] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">pin_drop</span>
+</div>
+<div class="min-w-0">
+<p class="text-xs font-bold text-[#252C27] truncate">Elmina Central Park • North Pavilion</p>
+<p class="text-[10px] text-[#667C68] font-medium">Sector 4B • Tree Canopy Deficit: 62%</p>
+</div>
+</div>
+<button class="text-[11px] font-bold text-[#4E6350] hover:text-[#252C27] active:scale-95 px-2.5 py-1 rounded-md bg-[#667C68]/10 border border-[#667C68]/20 transition-all shrink-0" type="button">
+        Edit
+      </button>
+</div>
+<!-- Map Graphic Card -->
+<div class="relative w-full h-32 rounded-xl overflow-hidden border border-[#E7D9C9]/60" data-location="City of Elmina, Shah Alam, Malaysia">
+<img class="w-full h-full object-cover" data-alt="A clean top-down architectural aerial visualization of modern Malaysian residential park walkways in City of Elmina, showing wide tropical tree canopies, covered pedestrian links, and calm shaded paths in a high-key warm morning light with soft natural shadows and lush greenery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPHw8ux5p_U3keXJv8EqXUBD-eAVGehVNQIxPSQf0SlnwK1kFHRVY_F5khjoUUTYbWXHQwYPlzbeowsELCFMICRk4gF4o5i5gO4ItmBousgTS9y4QijOOp7ybYNWHtF70MwuhfZwshg8bjszcNLrMYAkGm3yC4unZEbD_udyQIHjbnZR6677bi9prhVclv_In-SwcjiW5NX-ZTBZzgm0wM5zzT5tpLwA7X1s52wjyrHShsoFIN1ZC7">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent flex items-center justify-center pointer-events-none">
+<div class="flex flex-col items-center animate-bounce">
+<div class="px-3 py-1 rounded-full bg-[#BA1A1A] text-white text-[10px] font-extrabold shadow-md flex items-center gap-1.5 tracking-wide border border-white/30 backdrop-blur-xs">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+            35.4°C Hotspot
+          </div>
+<span class="material-symbols-outlined text-[#BA1A1A] text-[28px] drop-shadow" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-[#252C27]/85 text-white text-[10px] font-mono backdrop-blur-xs border border-white/20">
+        3°10'44"N 101°30'18"E
+      </div>
+</div>
+</div>
+</section>
+<!-- Step 3: Evidence & Thermal Impact (Segmented athletic toggle) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold uppercase tracking-wider text-[#667C68]">03 / Evidence</span>
+<span class="text-[11px] text-[#667C68]/80 font-medium">Impact &amp; media</span>
+</div>
+<div class="bg-white rounded-2xl p-3.5 border border-[#E7D9C9] shadow-sm space-y-3.5">
+<!-- Segmented Impact Pills -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-bold text-[#252C27]">Thermal Impact</label>
+<span class="text-[10px] font-bold text-[#BA1A1A] uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#BA1A1A]/10 border border-[#BA1A1A]/20">High Stress</span>
+</div>
+<div class="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-[#F7F5EF] border border-[#E7D9C9]" id="severity-selector">
+<button class="severity-pill py-2 px-1 rounded-lg border border-surface-container-highest text-secondary text-label-md font-label-md text-center hover:bg-surface-container-low transition-all" data-severity="low" type="button">
+          Mild
+        </button>
+<button class="severity-pill py-2 px-1 rounded-lg border-2 border-amber-500 bg-amber-50 text-amber-800 text-label-md font-label-md font-bold text-center transition-all shadow-sm" data-severity="moderate" type="button">
+          Moderate
+        </button>
+<button class="severity-pill py-2 px-1 rounded-lg border border-surface-container-highest text-secondary text-label-md font-label-md text-center hover:bg-surface-container-low transition-all" data-severity="severe" type="button">
+          Severe
+        </button>
+</div>
+</div>
+<!-- Minimal Photo Attachment Box with soft nude border -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-bold text-[#252C27]">Photo Evidence</label>
+<span class="text-[10px] text-[#667C68]/80 font-medium">Optional</span>
+</div>
+<div class="border-2 border-dashed border-[#E7D9C9] hover:border-[#667C68] rounded-xl p-3 bg-[#F7F5EF]/60 flex items-center justify-between cursor-pointer transition-all" id="photo-tile">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-white border border-[#E7D9C9] flex items-center justify-center text-[#4E6350] shadow-xs">
+<span class="material-symbols-outlined text-[18px]">add_a_photo</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#252C27]">Corridor or Canopy Photo</p>
+<p class="text-[10px] text-[#667C68] font-medium">Sun angle &amp; surface</p>
+</div>
+</div>
+<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#4E6350] border border-[#E7D9C9] shadow-xs hover:border-[#667C68]">
+          + Add
+        </span>
+</div>
+</div>
+<!-- Notes Input Textarea -->
+<div>
+<label class="block text-xs font-bold text-[#252C27] mb-1.5" for="notes">Notes</label>
+<textarea class="w-full rounded-xl border border-[#E7D9C9] bg-[#F7F5EF]/50 p-2.5 text-xs text-[#252C27] placeholder:text-[#667C68]/50 focus:bg-white focus:border-[#4E6350] focus:ring-1 focus:ring-[#4E6350] outline-none transition-all resize-none" id="notes" placeholder="e.g., Unshaded walkway between Block C and park; ground radiates excessive heat at midday..." rows="2"></textarea>
+</div>
+</div>
+</section>
+<!-- Sleek Athletic Primary Action Button -->
+<section class="space-y-2 pt-1 pb-2"><button class="w-full h-12 rounded-2xl bg-[#667C68] text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 shadow-md hover:bg-[#4E6350] active:scale-[0.98] transition-all" id="submit-btn" type="button"><span class="material-symbols-outlined text-[18px]">send</span> Submit Report <span class="ml-1 text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-[#B6FF4A] text-[#111F00]">+25 pts</span></button>
+<p class="text-[10px] text-center text-[#667C68] font-medium">
+    Simulated live test: instant ticket #SDP-ECO-8821
+</p>
+<p class="text-[9px] text-center text-[#54634D]/70 font-medium leading-tight">
+    *Simulated alert &amp; reporting prototype for demonstration. Does not dispatch live emergency services.
+</p></section><!-- Prototype Simulation Toggle & Contextual Alert Banner -->
+</main>
+<!-- BottomNavBar (from Shared Components JSON - Active on 'Report') -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[420px] z-50 flex justify-around items-center px-4 py-2 border-t border-[#E7D9C9]/70 shadow-lg backdrop-blur-md" style="left: 50%; transform: translateX(-50%); background-color: rgba(247, 245, 239, 0.94);">
+<!-- 1. Home -->
+<a class="flex flex-col items-center justify-center text-[#54634D]/70 font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#home">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<!-- 2. Touch Grass -->
+<a class="flex flex-col items-center justify-center text-[#54634D]/70 font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#touch-grass">
+<span class="material-symbols-outlined text-[22px]">park</span>
+<span class="text-[10px] font-medium">Touch Grass</span>
+</a>
+<!-- 3. CoolWalk -->
+<a class="flex flex-col items-center justify-center text-[#54634D]/70 font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#coolwalk">
+<span class="material-symbols-outlined text-[22px]">directions_walk</span>
+<span class="text-[10px] font-medium">CoolWalk</span>
+</a>
+<!-- 4. Report (ACTIVE ITEM) -->
+<a class="relative flex flex-col items-center justify-center text-[#667C68] font-bold py-1 active:scale-95 transition-transform duration-150" href="#report"><span class="material-symbols-outlined text-[22px] text-[#667C68]" style="font-variation-settings: 'FILL' 1;">report_problem</span><span class="text-[10px] font-bold text-[#667C68]">Report</span><span class="absolute -top-0.5 right-2 w-1.5 h-1.5 rounded-full bg-[#B6FF4A]"></span></a>
+<!-- 5. Profile -->
+<a class="flex flex-col items-center justify-center text-[#54634D]/70 font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#profile">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+<!-- Confirmation Success Modal (Dialog) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-xs flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200" id="success-modal">
+<div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl p-space-lg shadow-2xl border border-surface-container transform scale-95 transition-transform duration-200 text-center space-y-space-md" id="modal-content"><!-- Animated Badge Icon -->
+<div class="mx-auto w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-inner">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-primary-fixed text-primary text-label-sm font-label-sm font-bold uppercase tracking-wider">
+            Report Logged
+</span>
+<h3 class="text-headline-md font-headline-md text-on-surface mt-1">Ticket #SDP-ECO-8821</h3>
+<p class="text-body-md font-body-md text-secondary mt-1" id="modal-summary-text">
+            Thank you! Your microclimate observation for <span class="font-bold text-on-surface">Elmina Central Park</span> has been routed to Township Operations.
+</p>
+</div>
+<!-- Reward Earned Highlight Card -->
+<div class="bg-surface-container-low rounded-xl p-space-sm border border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2 text-left">
+<div class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="text-label-lg font-label-lg text-tertiary leading-none">+25 EcoPoints Credited</p>
+<p class="text-[10px] text-secondary mt-0.5">Tier 2 Elmina Resident Club</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px]">verified</span>
+</div>
+<p class="text-[10px] text-[#54634D]/70">
+Simulated alert &amp; reporting prototype. Does not dispatch live emergency services.
+</p>
+<!-- Action Buttons -->
+<div class="space-y-2 pt-1">
+<button class="w-full h-11 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-primary-container active:scale-95 transition-all" id="view-status-btn" type="button">
+            Track Ticket Status
+</button>
+<button class="w-full h-10 rounded-xl bg-surface-container text-secondary font-label-md text-label-md hover:bg-surface-container-high active:scale-95 transition-all" id="close-modal-btn" type="button">
+            Dismiss &amp; Back to Township
+</button>
+</div></div>
+</div>
+</div>
+<!-- Interactive Logic for Prototype Demonstration -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Interactive Category Selection
+      const categoryCards = document.querySelectorAll('.category-card');
+      categoryCards.forEach(card => {
+        card.addEventListener('click', () => {
+          categoryCards.forEach(c => {
+            c.classList.remove('border-2', 'border-primary', 'bg-surface-container-lowest');
+            c.classList.add('border', 'border-surface-container-highest');
+            const iconWrap = c.querySelector('div:first-child div');
+            iconWrap.classList.remove('bg-primary-fixed', 'text-primary');
+            iconWrap.classList.add('bg-surface-container-low', 'text-secondary');
+            const radioInner = c.querySelector('.category-radio div');
+            radioInner.classList.remove('bg-primary');
+            radioInner.classList.add('bg-transparent');
+            const radioOuter = c.querySelector('.category-radio');
+            radioOuter.classList.remove('border-primary');
+            radioOuter.classList.add('border-secondary');
+          });
+
+          card.classList.remove('border', 'border-surface-container-highest');
+          card.classList.add('border-2', 'border-primary');
+          const activeIconWrap = card.querySelector('div:first-child div');
+          activeIconWrap.classList.remove('bg-surface-container-low', 'text-secondary');
+          activeIconWrap.classList.add('bg-primary-fixed', 'text-primary');
+          const activeRadioInner = card.querySelector('.category-radio div');
+          activeRadioInner.classList.remove('bg-transparent');
+          activeRadioInner.classList.add('bg-primary');
+          const activeRadioOuter = card.querySelector('.category-radio');
+          activeRadioOuter.classList.remove('border-secondary');
+          activeRadioOuter.classList.add('border-primary');
+        });
+      });
+
+      // 2. Interactive Severity Pills
+      const severityPills = document.querySelectorAll('.severity-pill');
+      severityPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          severityPills.forEach(p => {
+            p.className = 'severity-pill py-2 px-1 rounded-lg border border-surface-container-highest text-secondary text-label-md font-label-md text-center hover:bg-surface-container-low transition-all';
+          });
+          
+          const type = pill.getAttribute('data-severity');
+          if (type === 'low') {
+            pill.className = 'severity-pill py-2 px-1 rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-800 text-label-md font-label-md font-bold text-center transition-all shadow-sm';
+          } else if (type === 'moderate') {
+            pill.className = 'severity-pill py-2 px-1 rounded-lg border-2 border-amber-500 bg-amber-50 text-amber-800 text-label-md font-label-md font-bold text-center transition-all shadow-sm';
+          } else {
+            pill.className = 'severity-pill py-2 px-1 rounded-lg border-2 border-primary bg-primary-fixed text-primary text-label-md font-label-md font-bold text-center transition-all shadow-sm';
+          }
+        });
+      });
+
+      // 3. Photo Upload Simulator
+      const photoTile = document.getElementById('photo-tile');
+      photoTile.addEventListener('click', () => {
+        photoTile.innerHTML = `
+          <div class="flex items-center gap-2 text-tertiary">
+            <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <div class="text-left">
+              <p class="text-label-lg font-label-lg">photo_elmina_canopy_01.jpg</p>
+              <p class="text-body-sm font-body-sm text-secondary">Ready for upload • 2.4 MB</p>
+            </div>
+          </div>
+        `;
+        photoTile.classList.remove('border-dashed');
+        photoTile.classList.add('border-solid', 'border-tertiary', 'bg-tertiary-container/10');
+      });
+
+      // 4. Modal Submission Interactions
+      const submitBtn = document.getElementById('submit-btn');
+      const modal = document.getElementById('success-modal');
+      const modalContent = document.getElementById('modal-content');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const viewStatusBtn = document.getElementById('view-status-btn');
+
+      const openModal = () => {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+      };
+
+      const closeModal = () => {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modalContent.classList.add('scale-95');
+        modalContent.classList.remove('scale-100');
+      };
+
+      submitBtn.addEventListener('click', openModal);
+      closeModalBtn.addEventListener('click', closeModal);
+      viewStatusBtn.addEventListener('click', closeModal);
+    });
+  </script>
+
+
+
+
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

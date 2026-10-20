@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Microclimate Reporting - City of Elmina</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#F7F5EF",
+            "on-background": "#252C27",
+            "surface": "#F7F5EF",
+            "surface-card": "#FFFFFF",
+            "surface-nude": "#E7D9C9",
+            "surface-container-low": "#F4F1EA",
+            "surface-container": "#ECE8DF",
+            "surface-container-high": "#E7D9C9",
+            "primary": "#667C68",
+            "primary-dark": "#4E6350",
+            "secondary": "#A9B9A0",
+            "charcoal": "#252C27",
+            "on-surface": "#252C27",
+            "text-main": "#252C27",
+            "text-muted": "#556056",
+            "accent-lime": "#B6FF4A",
+            "electric-lime": "#B6FF4A",
+            "outline-soft": "rgba(37, 44, 39, 0.08)",
+            "error": "#EF4444",
+            "warning": "#EAB308"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.25rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "metric": ["Space Grotesk", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    body {
+      min-height: max(884px, 100dvh);
+      background-color: #F7F5EF;
+      color: #252C27;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .aesthetic-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(37, 44, 39, 0.05), 0 1px 3px 0 rgba(37, 44, 39, 0.03);
+    }
+  </style>
+</head>
+<body class="bg-[#F7F5EF] text-[#252C27] antialiased min-h-screen flex flex-col font-body-md text-[13px] selection:bg-[#667C68]/20 selection:text-[#252C27]">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-14 bg-[#252C27] shadow-sm select-none border-b border-[#252C27]/10">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go Back" class="text-[#F7F5EF] p-1.5 rounded-full hover:bg-white/10 active:scale-95 transition-transform duration-150 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="text-[16px] font-bold text-[#F7F5EF] tracking-tight">Report Microclimate Hotspot</span>
+<span class="text-[10px] text-[#A9B9A0] font-medium -mt-0.5">City of Elmina Township</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[#F7F5EF] text-[10px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#B6FF4A] animate-pulse"></span> Live
+    </span>
+<button aria-label="Notifications" class="relative text-[#F7F5EF] p-2 rounded-full hover:bg-white/10 active:scale-95 transition-transform duration-150 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#B6FF4A] ring-2 ring-[#252C27]"></span>
+</button>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="flex-1 w-full max-w-md mx-auto pt-16 pb-28 px-margin">
+<!-- 1. TOWNSHIP HERO BANNER: SAGE GREEN & FOREST IDENTITY -->
+<section class="mt-space-sm mb-space-lg rounded-2xl overflow-hidden shadow-sm bg-gradient-to-br from-[#4E6350] via-[#5F7561] to-[#39493B] text-white p-space-md relative">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-[#B6FF4A]/15 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2 relative z-10">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/25 backdrop-blur-md border border-white/10 text-[10px] font-semibold tracking-wide">
+<span class="material-symbols-outlined text-[13px] text-[#B6FF4A]" data-icon="shield_with_heart" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span>SDP Care Response Live</span>
+</div>
+<div class="flex items-center gap-1.5 bg-black/30 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[10px] font-bold border border-white/10">
+<span class="w-1.5 h-1.5 rounded-full bg-[#B6FF4A] animate-pulse"></span>
+<span>31°C Heat Index</span>
+</div>
+</div>
+<div class="relative z-10 flex items-baseline justify-between mt-1">
+<h1 class="text-[20px] font-bold text-white tracking-tight">Microclimate Care</h1>
+<span class="text-[11px] text-white/80 font-medium">Avg response &lt;24h</span>
+</div>
+<p class="text-[12px] text-white/90 mt-1 relative z-10 leading-relaxed">
+      Report shade deficits, dry corridors, or damaged misting infrastructure to keep Elmina cooling networks resilient.
+    </p>
+</section>
+<!-- 2. STATUS TRACKING TICKER / EXISTING CASE MONITOR -->
+<section class="mb-space-lg bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80">
+<div class="flex items-center justify-between pb-space-sm border-b border-[#ECE8DF] mb-space-sm">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-[#667C68]/15 flex items-center justify-center text-[#4E6350]">
+<span class="material-symbols-outlined text-[18px]" data-icon="pace">pace</span>
+</div>
+<div>
+<span class="text-[12px] font-bold text-[#252C27] block">Active Incident Tracker</span>
+<span class="text-[10px] text-[#556056] font-medium block">Ref #SDP-ENV-4029</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-full bg-[#F4F1EA] text-[10px] font-bold text-[#4E6350] hover:bg-[#E7D9C9] transition-colors border border-[#ECE8DF]" type="button">
+        View (3)
+      </button>
+</div>
+<div class="relative pt-2">
+<div class="grid grid-cols-4 gap-1 text-center relative z-10">
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-[#4E6350] text-[#B6FF4A] flex items-center justify-center text-xs shadow-xs mb-1 font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check">check</span>
+</div>
+<span class="text-[11px] text-[#252C27] font-bold">Submitted</span>
+<span class="text-[9px] text-[#556056]">22 Oct</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-[#667C68] text-white flex items-center justify-center text-xs ring-4 ring-[#667C68]/25 mb-1 animate-pulse">
+<span class="material-symbols-outlined text-[13px]" data-icon="search">search</span>
+</div>
+<span class="text-[11px] text-[#4E6350] font-bold">In Review</span>
+<span class="text-[9px] text-[#4E6350] font-semibold">Assigned</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-[#F4F1EA] text-[#556056] border border-[#ECE8DF] flex items-center justify-center text-xs mb-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="build">build</span>
+</div>
+<span class="text-[11px] text-[#556056] font-medium">In Action</span>
+<span class="text-[9px] text-[#556056]">Est 25 Oct</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-[#F4F1EA] text-[#556056] border border-[#ECE8DF] flex items-center justify-center text-xs mb-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="verified">verified</span>
+</div>
+<span class="text-[11px] text-[#556056] font-medium">Resolved</span>
+<span class="text-[9px] text-[#4E6350] font-bold">+25 pts</span>
+</div>
+</div>
+<div class="absolute top-5 left-8 right-8 h-0.5 bg-[#ECE8DF] -z-0">
+<div class="h-full bg-[#667C68] w-1/3 rounded-full"></div>
+</div>
+</div>
+</section>
+<form class="space-y-space-lg" id="microclimateReportForm" onsubmit="handleFormSubmit(event)">
+<!-- 3. ISSUE CATEGORY SELECTION CARDS -->
+<section>
+<div class="flex justify-between items-baseline mb-space-sm">
+<label class="text-[13px] font-bold text-[#252C27] flex items-center gap-1.5">
+<span>Select Issue Category</span>
+<span class="text-[#EF4444]">*</span>
+</label>
+<span class="text-[11px] text-[#556056]">Tap to choose</span>
+</div>
+<div aria-label="Microclimate issue categories" class="grid grid-cols-1 gap-2.5" role="radiogroup">
+<!-- Unshaded Walkway (Default Selected) -->
+<label class="relative flex items-center p-3 bg-white rounded-2xl border-2 border-[#667C68] ring-1 ring-[#667C68]/30 cursor-pointer transition-all aesthetic-card-shadow">
+<input checked="" class="sr-only" name="issue_category" type="radio" value="unshaded_walkway"/>
+<div class="w-10 h-10 rounded-xl bg-[#667C68]/15 flex items-center justify-center text-[#4E6350] mr-3 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="wb_sunny">wb_sunny</span>
+</div>
+<div class="flex-1 min-w-0 pr-2">
+<span class="text-[13px] text-[#252C27] block truncate font-bold">Unshaded Walkway</span>
+<span class="text-[11px] text-[#556056] block">High solar exposure corridor / canopy deficit</span>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-[#667C68] bg-[#667C68] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[13px]" data-icon="check">check</span>
+</div>
+</label>
+<!-- Damaged Misting Sprinkler -->
+<label class="relative flex items-center p-3 bg-white rounded-2xl border border-[#E7D9C9]/80 hover:border-[#667C68]/50 cursor-pointer transition-all aesthetic-card-shadow">
+<input class="sr-only" name="issue_category" type="radio" value="damaged_sprinkler"/>
+<div class="w-10 h-10 rounded-xl bg-[#F4F1EA] flex items-center justify-center text-[#4E6350] mr-3 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="water_drop">water_drop</span>
+</div>
+<div class="flex-1 min-w-0 pr-2">
+<div class="flex items-center gap-1.5">
+<span class="text-[13px] text-[#252C27] block font-bold">Damaged Misting Sprinkler</span>
+<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#B6FF4A]/40 text-[#1A2500]">Cooling Asset</span>
+</div>
+<span class="text-[11px] text-[#556056] block">Pergola mister leak or non-functioning nozzle</span>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-[#ECE8DF] bg-white"></div>
+</label>
+<!-- Tree Canopy Deficit / Fallen Bough -->
+<label class="relative flex items-center p-3 bg-white rounded-2xl border border-[#E7D9C9]/80 hover:border-[#667C68]/50 cursor-pointer transition-all aesthetic-card-shadow">
+<input class="sr-only" name="issue_category" type="radio" value="tree_canopy_deficit"/>
+<div class="w-10 h-10 rounded-xl bg-[#F4F1EA] flex items-center justify-center text-[#4E6350] mr-3 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="park">park</span>
+</div>
+<div class="flex-1 min-w-0 pr-2">
+<span class="text-[13px] text-[#252C27] block truncate font-bold">Tree Canopy Deficit</span>
+<span class="text-[11px] text-[#556056] block">Damaged sapling, withered foliage, or bough tear</span>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-[#ECE8DF] bg-white"></div>
+</label>
+<!-- Stagnant Heat Pocket -->
+<label class="relative flex items-center p-3 bg-white rounded-2xl border border-[#E7D9C9]/80 hover:border-[#667C68]/50 cursor-pointer transition-all aesthetic-card-shadow">
+<input class="sr-only" name="issue_category" type="radio" value="stagnant_heat_pocket"/>
+<div class="w-10 h-10 rounded-xl bg-[#F4F1EA] flex items-center justify-center text-[#4E6350] mr-3 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="air">air</span>
+</div>
+<div class="flex-1 min-w-0 pr-2">
+<span class="text-[13px] text-[#252C27] block truncate font-bold">Stagnant Heat Pocket</span>
+<span class="text-[11px] text-[#556056] block">Unshaded asphalt parking or poor ventilation zone</span>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-[#ECE8DF] bg-white"></div>
+</label>
+<!-- Water Fountain / Bioswale Defect -->
+<label class="relative flex items-center p-3 bg-white rounded-2xl border border-[#E7D9C9]/80 hover:border-[#667C68]/50 cursor-pointer transition-all aesthetic-card-shadow">
+<input class="sr-only" name="issue_category" type="radio" value="water_fountain_issue"/>
+<div class="w-10 h-10 rounded-xl bg-[#F4F1EA] flex items-center justify-center text-[#4E6350] mr-3 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="faucet">faucet</span>
+</div>
+<div class="flex-1 min-w-0 pr-2">
+<span class="text-[13px] text-[#252C27] block truncate font-bold">Water Fountain Issue</span>
+<span class="text-[11px] text-[#556056] block">Blocked bioswale or public hydration refill station</span>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-[#ECE8DF] bg-white"></div>
+</label>
+</div>
+</section>
+<!-- SEVERITY LEVEL SELECTOR -->
+<section class="bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80">
+<div class="flex items-center justify-between mb-2.5">
+<label class="text-[13px] font-bold text-[#252C27] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-[#667C68]">thermostat</span>
+<span>Heat Severity Level</span>
+</label>
+<span class="text-[11px] text-[#556056]">Impact estimate</span>
+</div>
+<div class="grid grid-cols-3 gap-2" id="severityPills">
+<button class="severity-btn py-2 px-3 rounded-xl border border-[#ECE8DF] bg-[#F4F1EA] text-[#556056] font-bold text-[11px] text-center transition-all" onclick="selectSeverity(this, 'Low')" type="button">
+          Low Heat
+        </button>
+<button class="severity-btn py-2 px-3 rounded-xl border-2 border-[#667C68] bg-[#667C68] text-white font-bold text-[11px] text-center shadow-xs transition-all" onclick="selectSeverity(this, 'Moderate')" type="button">
+          Moderate
+        </button>
+<button class="severity-btn py-2 px-3 rounded-xl border border-[#FECACA] bg-[#FEF2F2] text-[#EF4444] font-bold text-[11px] text-center transition-all flex items-center justify-center gap-1" onclick="selectSeverity(this, 'High')" type="button">
+<span class="material-symbols-outlined text-[13px]">warning</span> High Heat
+        </button>
+</div>
+</section>
+<!-- 4. LOCATION PICKER & MAP SNIPPET -->
+<section class="bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80">
+<label class="text-[13px] font-bold text-[#252C27] flex items-center justify-between mb-space-sm">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#667C68] text-[18px]" data-icon="pin_drop">pin_drop</span>
+          Location
+        </span>
+<span class="text-[10px] text-[#1A2500] font-bold flex items-center gap-1 bg-[#B6FF4A]/40 border border-[#B6FF4A]/70 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[12px]" data-icon="my_location">my_location</span> GPS Locked
+        </span>
+</label>
+<div class="relative w-full h-36 rounded-xl overflow-hidden border border-[#ECE8DF] mb-3 group">
+<img class="w-full h-full object-cover" data-alt="Aerial view style map graphic of a lush tropical masterplanned residential township park named City of Elmina, featuring winding green pedestrian walkways, shaded bicycle lanes, vibrant tree canopies, and water retention reservoirs in crisp daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnYUAT3Pgqh2YhJuGyDH27aCKsFQ7AyLCJT-PHO9k5sAriezEvSfdACQcCSMjAcygjA1P13oKw1Syz7v9gn1gYSVWCa_rrlF1h5O5BBKFyMKSg9UpInaX5USowNRcxbEsvzfVlTNBnGKuEcBlv2_7PAW_FM0tpuqLCj6n8RZwqjMcAfqmUTCF9_Rvo2n5Ug7zp3jy8KdpDBhI9KzcHLbtgfroIApWoC7_RR1qPc8h4Sb-ri_EyyrTn"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#252C27]/70 via-transparent to-transparent"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative flex flex-col items-center">
+<span class="bg-[#4E6350] text-[#B6FF4A] text-[10px] font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap mb-1 animate-bounce border border-white/20">
+              Sector 4B Walkway
+            </span>
+<div class="w-8 h-8 rounded-full bg-[#667C68]/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#B6FF4A] text-2xl drop-shadow" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-lg bg-[#252C27]/80 backdrop-blur-sm flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-[13px] text-[#B6FF4A]" data-icon="park">park</span>
+          Ilham Residence • Elmina Central Park
+        </div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 bg-[#F4F1EA] px-3 py-2 rounded-xl border border-[#ECE8DF] flex items-center gap-2">
+<span class="material-symbols-outlined text-[#556056] text-sm" data-icon="location_city">location_city</span>
+<input class="w-full bg-transparent border-none p-0 text-[13px] text-[#252C27] focus:ring-0 cursor-default font-semibold" readonly="" type="text" value="Ilham Residence, Elmina Central Park"/>
+</div>
+<button class="px-3.5 py-2 bg-[#252C27] hover:bg-[#4E6350] text-white rounded-xl text-[12px] font-bold transition-colors whitespace-nowrap active:scale-95 duration-150" type="button">
+          Change
+        </button>
+</div>
+</section>
+<!-- 5. DATE & TIME AUTO-STAMP FIELD -->
+<section class="bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-[#667C68]/15 flex items-center justify-center text-[#4E6350]">
+<span class="material-symbols-outlined text-[20px]" data-icon="schedule">schedule</span>
+</div>
+<div>
+<span class="text-[10px] text-[#556056] font-medium block">Timestamp Recorded</span>
+<span class="text-[13px] font-bold text-[#252C27]">Today, 24 Oct • 10:45 AM</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[10px] font-bold border border-[#ECE8DF]">
+<span class="material-symbols-outlined text-[12px] text-[#667C68]" data-icon="check_circle">check_circle</span>
+        Auto
+      </span>
+</section>
+<!-- 6. PHOTO EVIDENCE UPLOAD COMPONENT -->
+<section class="bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80">
+<div class="flex justify-between items-center mb-space-sm">
+<label class="text-[13px] font-bold text-[#252C27] flex items-center gap-1.5">
+<span>Visual Evidence</span>
+<span class="text-[11px] text-[#556056] font-normal">(Max 3)</span>
+</label>
+<span class="text-[10px] text-[#4E6350] font-bold bg-[#667C68]/15 px-2.5 py-0.5 rounded-full border border-[#667C68]/20">1/3 attached</span>
+</div>
+<div class="grid grid-cols-3 gap-2.5">
+<div class="relative aspect-square rounded-xl overflow-hidden border border-[#ECE8DF] group shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Close up photography of damaged shade sails over a pedestrian tropical township walkway with frayed terracotta orange fabric and broken support bracket under bright Malaysian morning sun." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwnOOT8LBOrZg1BHj59XEjjqVabAtxDfLx1BSETJq1C5elLfcYNcv__8r23yAhTt0xwr2bWdhME9qbBPSJ-N1MkC8DlIsd3DXZFON6JSER1MvFCevqzoWs-jGvH7QATPH7VQ69v4MO39LlijT-I62gYKYghXchxr5PWC40GKyAc0F5Pisaz_tsEXLXv8f5xU3Uxdw23hMIJx_YtKOtpfw1QcrC4fzHhBMXqqDIFptpasDhrJtWoLzy"/>
+<button aria-label="Remove photo" class="absolute top-1 right-1 w-5 h-5 rounded-full bg-[#252C27]/80 text-white flex items-center justify-center hover:bg-[#EF4444] transition-colors" type="button">
+<span class="material-symbols-outlined text-[12px]" data-icon="close">close</span>
+</button>
+<div class="absolute bottom-0 inset-x-0 bg-[#252C27]/70 text-white text-[9px] text-center py-0.5 truncate px-1">
+            IMG_0921.jpg
+          </div>
+</div>
+<div class="col-span-2 aspect-2/1 rounded-xl border-2 border-dashed border-[#667C68]/40 hover:border-[#667C68] bg-[#F4F1EA]/60 flex flex-col items-center justify-center p-2 text-center cursor-pointer transition-colors active:scale-95 duration-150">
+<div class="w-9 h-9 rounded-full bg-white text-[#4E6350] flex items-center justify-center shadow-xs mb-1 border border-[#ECE8DF]">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_a_photo">add_a_photo</span>
+</div>
+<span class="text-[12px] font-bold text-[#252C27]">+ Add Photos</span>
+<span class="text-[10px] text-[#556056]">Camera or gallery</span>
+</div>
+</div>
+</section>
+<!-- 7. OPTIONAL DESCRIPTION FIELD -->
+<section class="bg-white rounded-2xl p-space-md aesthetic-card-shadow border border-[#E7D9C9]/80">
+<label class="text-[13px] font-bold text-[#252C27] block mb-1.5" for="reportDescription">
+        Detailed Description <span class="text-[#556056] font-normal text-[11px]">(Optional)</span>
+</label>
+<textarea class="w-full rounded-xl bg-[#F4F1EA] border border-[#ECE8DF] text-[13px] text-[#252C27] focus:border-[#667C68] focus:ring-1 focus:ring-[#667C68] placeholder:text-[#556056]/60 p-3 outline-none" id="reportDescription" placeholder="Provide landmark details or microclimate heat impact..." rows="3"></textarea>
+</section>
+<!-- 8. VERIFICATION & POINTS INCENTIVE NOTICE -->
+<section class="bg-[#F4F1EA] border border-[#667C68]/30 rounded-2xl p-space-md flex items-start gap-3 aesthetic-card-shadow relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-20 h-20 rounded-full bg-[#B6FF4A]/20 blur-xl pointer-events-none"></div>
+<div class="w-9 h-9 rounded-full bg-[#667C68] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div class="flex-1 relative z-10">
+<div class="flex items-center justify-between">
+<span class="text-[16px] font-bold text-[#252C27] font-metric">+25 EcoPoints</span>
+<span class="px-2.5 py-0.5 rounded-full bg-[#B6FF4A] text-[#1A2500] text-[10px] font-extrabold border border-[#B6FF4A]">
+            On Verification
+          </span>
+</div>
+<p class="text-[11px] text-[#556056] mt-0.5">
+          Credited directly to your resident wallet upon township team inspection.
+        </p>
+</div>
+</section>
+<!-- 9. PRIMARY SUBMISSION ACTION BUTTON -->
+<section class="pt-2">
+<button class="w-full h-12 bg-[#667C68] hover:bg-[#4E6350] text-white font-bold text-[15px] rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-98 transition-all duration-150 tracking-wide" type="submit">
+<span>Submit Report</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<p class="text-[10px] text-center text-[#556056] mt-2.5">
+        Sime Darby Property Landscape Operations • Confidential Assessment
+      </p>
+</section>
+</form>
+</main>
+<!-- 10. SUCCESS CONFIRMATION MODAL -->
+<div class="fixed inset-0 z-50 bg-[#252C27]/70 backdrop-blur-sm hidden items-center justify-center p-4" id="successModal">
+<div class="bg-white max-w-sm w-full rounded-3xl p-6 shadow-2xl text-center transform transition-all duration-200 border border-[#E7D9C9]">
+<!-- Animated Check Circle -->
+<div class="w-16 h-16 rounded-full bg-[#B6FF4A]/30 text-[#4E6350] flex items-center justify-center mx-auto mb-4 ring-8 ring-[#B6FF4A]/20">
+<span class="material-symbols-outlined text-3xl" data-icon="task_alt" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+<span class="inline-block px-3 py-1 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[11px] font-bold mb-2 border border-[#ECE8DF]">
+      Ticket #SDP-ENV-4029
+    </span>
+<h2 class="text-[18px] font-bold text-[#252C27] mb-1.5">Report Submitted Successfully!</h2>
+<p class="text-[12px] text-[#556056] mb-5 leading-relaxed">
+      Thank you for keeping Elmina cool and resilient. Our landscape operations team will inspect within 24-48 hrs.
+    </p>
+<div class="p-3 bg-[#F4F1EA] rounded-xl mb-5 text-left border border-[#ECE8DF]">
+<div class="flex justify-between items-center text-[11px] mb-1.5">
+<span class="text-[#556056] font-medium">Initial Status:</span>
+<span class="text-[#4E6350] font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#B6FF4A]"></span> Under Assessment
+        </span>
+</div>
+<div class="flex justify-between items-center text-[11px]">
+<span class="text-[#556056] font-medium">Estimated Reward:</span>
+<span class="text-[#4E6350] font-bold font-metric">+25 EcoPoints</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="w-full h-11 bg-[#667C68] hover:bg-[#4E6350] text-white rounded-xl text-[13px] font-bold active:scale-95 transition-transform" onclick="closeModalAndTrack()" type="button">
+        Track Status
+      </button>
+<button class="w-full h-11 bg-white text-[#556056] border border-[#ECE8DF] rounded-xl text-[13px] font-bold hover:bg-[#F4F1EA] transition-colors" onclick="closeModal()" type="button">
+        Done
+      </button>
+</div>
+</div>
+</div>
+<!-- BOTTOM NAVIGATION BAR (Destination Shell: 5 items, 'Report' is Active in Sage/Lime) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#F7F5EF]/95 backdrop-blur-md border-t border-[#E7D9C9]/70 shadow-lg select-none">
+<!-- 1. Home -->
+<a class="flex flex-col items-center justify-center text-[#556056] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#home">
+<span class="material-symbols-outlined text-[22px]" data-icon="home">home</span>
+<span class="text-[10px] font-medium mt-0.5">Home</span>
+</a>
+<!-- 2. Touch Grass -->
+<a class="flex flex-col items-center justify-center text-[#556056] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#touch-grass">
+<span class="material-symbols-outlined text-[22px]" data-icon="park">park</span>
+<span class="text-[10px] font-medium mt-0.5">Touch Grass</span>
+</a>
+<!-- 3. CoolWalk -->
+<a class="flex flex-col items-center justify-center text-[#556056] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#coolwalk">
+<span class="material-symbols-outlined text-[22px]" data-icon="directions_walk">directions_walk</span>
+<span class="text-[10px] font-medium mt-0.5">CoolWalk</span>
+</a>
+<!-- 4. Report (ACTIVE ITEM: Sage Green with Accent Lime Dot) -->
+<a aria-current="page" class="relative flex flex-col items-center justify-center text-[#4E6350] font-bold py-1 active:scale-95 transition-transform duration-150" href="#report">
+<span class="material-symbols-outlined text-[22px]" data-icon="report_problem" style="font-variation-settings: 'FILL' 1;">report_problem</span>
+<span class="text-[10px] font-bold mt-0.5">Report</span>
+<span class="absolute -top-0.5 right-2 w-1.5 h-1.5 bg-[#B6FF4A] rounded-full ring-1 ring-[#4E6350]/40"></span>
+</a>
+<!-- 5. Profile -->
+<a class="flex flex-col items-center justify-center text-[#556056] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#profile">
+<span class="material-symbols-outlined text-[22px]" data-icon="person">person</span>
+<span class="text-[10px] font-medium mt-0.5">Profile</span>
+</a>
+</nav>
+<!-- INTERACTIVE HANDLERS -->
+<script>
+  // Radio selection visual card synchronization
+  const categoryLabels = document.querySelectorAll('div[role="radiogroup"] label');
+  categoryLabels.forEach(label => {
+    label.addEventListener('click', () => {
+      categoryLabels.forEach(l => {
+        l.classList.remove('border-2', 'border-[#667C68]', 'ring-1', 'ring-[#667C68]/30');
+        l.classList.add('border', 'border-[#E7D9C9]/80');
+        const iconBox = l.querySelector('div:first-of-type');
+        if (iconBox) {
+          iconBox.className = 'w-10 h-10 rounded-xl bg-[#F4F1EA] flex items-center justify-center text-[#4E6350] mr-3 shrink-0';
+        }
+        const indicator = l.querySelector('div:last-child');
+        if (indicator) {
+          indicator.className = 'w-5 h-5 rounded-full border-2 border-[#ECE8DF] bg-white';
+          indicator.innerHTML = '';
+        }
+      });
+      label.classList.add('border-2', 'border-[#667C68]', 'ring-1', 'ring-[#667C68]/30');
+      label.classList.remove('border-[#E7D9C9]/80');
+      const activeIconBox = label.querySelector('div:first-of-type');
+      if (activeIconBox) {
+        activeIconBox.className = 'w-10 h-10 rounded-xl bg-[#667C68]/15 flex items-center justify-center text-[#4E6350] mr-3 shrink-0';
+      }
+      const activeIndicator = label.querySelector('div:last-child');
+      if (activeIndicator) {
+        activeIndicator.className = 'w-5 h-5 rounded-full border-2 border-[#667C68] bg-[#667C68] flex items-center justify-center text-white';
+        activeIndicator.innerHTML = '<span class="material-symbols-outlined text-[13px]">check</span>';
+      }
+    });
+  });
+
+  // Severity Level Selector Logic
+  function selectSeverity(btn, level) {
+    const buttons = document.querySelectorAll('.severity-btn');
+    buttons.forEach(b => {
+      b.className = 'severity-btn py-2 px-3 rounded-xl border border-[#ECE8DF] bg-[#F4F1EA] text-[#556056] font-bold text-[11px] text-center transition-all';
+    });
+    if (level === 'High') {
+      btn.className = 'severity-btn py-2 px-3 rounded-xl border-2 border-[#EF4444] bg-[#FEF2F2] text-[#EF4444] font-bold text-[11px] text-center shadow-xs transition-all flex items-center justify-center gap-1';
+    } else {
+      btn.className = 'severity-btn py-2 px-3 rounded-xl border-2 border-[#667C68] bg-[#667C68] text-white font-bold text-[11px] text-center shadow-xs transition-all';
+    }
+  }
+
+  // Form Submission & Confirmation Modal
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const modal = document.getElementById('successModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function closeModalAndTrack() {
+    closeModal();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

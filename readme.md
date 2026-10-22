@@ -48,8 +48,6 @@ Its main reference site is **City of Elmina**, with additional township referenc
 > **Prototype scope**  
 > The application includes sample reports, illustrative climate scenarios, and demonstration outputs. Live connections and validated results must be distinguished from these examples.
 
-The repository retains its original name, `ecocool`. The dashboard product is branded **AeroThermal**.
-
 ---
 
 ## 🔐 Panel Access

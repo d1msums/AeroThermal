@@ -66,3 +66,25 @@ class ClimateAlertTests(TestCase):
         FieldReport.objects.bulk_create([FieldReport(project=self.project,reporter=self.user,kind='flood',description='Report') for _ in range(501)])
         data=build_alerts(self.project);self.assertEqual(data['active_count'],501)
         self.assertEqual(data['cards'][0]['reports'],501);self.assertEqual(len(data['visual_data']['reports']),500)
+    def test_rag_chat_security_and_retrieval(self):
+        import json
+        chat_url = self.url + 'chat/'
+        self.client.logout()
+        self.assertEqual(self.client.post(chat_url, {'query': 'hello'}).status_code, 302)
+        outsider = User.objects.create_user('outsider_chat', password='pw')
+        self.client.force_login(outsider)
+        self.assertEqual(self.client.post(chat_url, {'query': 'hello'}).status_code, 404)
+        self.client.force_login(self.user)
+        resp = self.client.post(chat_url, json.dumps({'query': 'Does our Community Hall meet official NADMA certification standards as an evacuation shelter?'}), content_type='application/json')
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data['status'], 'success')
+        self.assertTrue(len(data['retrieved_sources']) >= 1)
+        self.assertIn('NADMA Directive No. 20', data['retrieved_sources'][0]['source'])
+        self.assertIn('150 kVA', data['retrieved_sources'][0]['text'])
+
+    def test_dynamic_models_discovery_fallback(self):
+        from .climate_alerts import discover_available_gemini_models
+        discovered = discover_available_gemini_models('dummy_invalid_api_key')
+        self.assertIsInstance(discovered, list)
+        self.assertEqual(discovered, [])

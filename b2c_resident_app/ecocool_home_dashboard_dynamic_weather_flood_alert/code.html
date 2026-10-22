@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoCool Home Dashboard - City of Elmina</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Font & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#667C68",
+            "primary-dark": "#4E6350",
+            "primary-container": "#667C68",
+            "on-primary": "#ffffff",
+            "secondary": "#A9B9A0",
+            "charcoal": "#252C27",
+            "on-surface": "#252C27",
+            "on-surface-variant": "#4E5550",
+            "surface": "#F7F5EF",
+            "background": "#F7F5EF",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#F4F1EA",
+            "surface-container": "#ECE8DF",
+            "surface-container-high": "#E7D9C9",
+            "surface-nude": "#E7D9C9",
+            "electric-lime": "#B6FF4A",
+            "on-electric-lime": "#1A2500",
+            "forest-dark": "#1A241D",
+            "inverse-surface": "#252C27",
+            "inverse-on-surface": "#F7F5EF",
+            "error": "#EF4444",
+            "warning": "#EAB308",
+            "outline": "#737872",
+            "outline-soft": "rgba(37, 44, 39, 0.08)"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter", "sans-serif"],
+            "display-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "label-lg": ["Inter", "sans-serif"],
+            "data": ["Inter", "monospace"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "label-md": ["11px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+  body, button, input, select, textarea, p, span:not(.material-symbols-outlined), h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"] {
+      font-variation-settings: 'FILL' 1;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#F7F5EF] text-charcoal antialiased font-body-md text-body-md select-none flex justify-center min-h-screen">
+<!-- Mobile Viewport Frame (iOS 390x844 / 420 Max Canvas) -->
+<div class="w-full max-w-[420px] bg-[#F7F5EF] relative min-h-screen shadow-2xl flex flex-col pb-24 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full max-w-[420px] left-1/2 -translate-x-1/2 z-50 flex justify-between items-center px-margin h-14 bg-[#252C27] shadow-sm text-[#F7F5EF]">
+<div class="flex items-center space-x-2">
+<button aria-label="Back" class="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition-transform duration-150 text-[#F7F5EF]">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-[#F7F5EF] tracking-tight" id="headerTownshipLabel">City of Elmina</span>
+<span class="material-symbols-outlined text-[#B6FF4A] text-[18px]" data-weight="fill">eco</span>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<button aria-label="Notifications" class="relative w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition-transform duration-150 text-[#F7F5EF]">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-[#B6FF4A] text-[#1A2500] font-label-sm text-[10px] font-extrabold rounded-full flex items-center justify-center leading-none">1</span>
+</button>
+<div class="w-8 h-8 rounded-full ring-2 ring-[#667C68]/60 overflow-hidden bg-[#E7D9C9] flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Close-up lifestyle portrait of a smiling young Malaysian modern woman wearing clean casual outdoor resort attire with soft warm tropical sunlight reflecting off her hair, ultra-clean commercial look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2llNvha0bxbAfGpU71MXjbUR-GEJfvyTt6_h4AtxhBzTOTPIANz4NX3GXqFPwbyfUvSr0O9Bq6Cee2H57zQTX6yUvw_X6I3cFlSI9anwe36tZnnyegMGw1tP9tcRBTZDln6EQaRntD-qPqVxR93yPuXcSNCNrWxIa0b-K2jvVormLp8kOBeW9bZycZI8S1IQC3Q0pu_MYAOXqP4zphIrE-mzQf5wPdDjDSfkwpN3rrKWbxCPP53O5"/>
+</div>
+</div>
+</header>
+<!-- Content Spacer for Fixed TopAppBar -->
+<div class="h-14 w-full"></div>
+<!-- Nature-Inspired Header Canopy: Sage Green (#667C68) with Deep Forest Charcoal accents -->
+<section class="relative bg-gradient-to-br from-[#4E6350] via-[#5F7561] to-[#39493B] text-white px-margin pt-4 pb-14 rounded-b-[28px] shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1.5 bg-black/25 backdrop-blur-md px-2.5 py-1 rounded-full w-fit mb-2 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-[#B6FF4A] animate-pulse"></span>
+<span class="font-label-md text-label-md text-white/95 uppercase tracking-wider font-semibold">EcoCool Active Live HUD</span>
+</div>
+<h1 class="font-display-lg text-headline-lg font-extrabold tracking-tight text-white leading-tight">Good morning,<br/>Ain!</h1>
+</div>
+<!-- Interactive Township Selector Dropdown Pill -->
+<div class="relative">
+<button class="flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 text-white px-3 py-1.5 rounded-full font-label-md text-label-md active:scale-95 transition-transform duration-150 shadow-sm" id="townshipToggleBtn">
+<span class="material-symbols-outlined text-[16px] text-[#B6FF4A]">location_on</span>
+<span class="font-semibold" id="selectedTownshipText">City of Elmina</span>
+<span class="material-symbols-outlined text-[16px] transition-transform duration-200" id="chevronIcon">expand_more</span>
+</button>
+<!-- Dropdown Options -->
+<div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-1 text-charcoal z-30 border border-[#252C27]/10" id="townshipDropdown">
+<button class="w-full text-left px-3.5 py-2 font-label-md text-label-md hover:bg-[#F7F5EF] flex items-center justify-between text-[#4E6350] font-bold" onclick="selectTownship('City of Elmina', 'Selangor')">
+<span>City of Elmina</span>
+<span class="material-symbols-outlined text-[16px] text-[#4E6350]">check</span>
+</button>
+<button class="w-full text-left px-3.5 py-2 font-label-md text-label-md hover:bg-[#F7F5EF] flex items-center justify-between text-[#737872]" onclick="selectTownship('Bandar Bukit Raja', 'Klang')">
+<span>Bandar Bukit Raja</span>
+<span class="material-symbols-outlined text-[16px] opacity-0">check</span>
+</button>
+<div class="border-t border-[#252C27]/10 px-3.5 py-1.5 font-label-sm text-label-sm text-[#737872] bg-[#F7F5EF]">
+  Sime Darby Property Microclimate
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Micro-Meteo Summary Ticker -->
+<div class="inline-flex items-center gap-1.5 bg-black/25 backdrop-blur-md px-3 py-1 rounded-full text-white mt-2.5 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-[#B6FF4A] animate-pulse"></span>
+<span class="font-label-md text-label-md font-bold tracking-tight text-white">84% Shaded Canopy Now</span>
+<span class="text-white/60 text-label-sm">• Elmina Central Park</span>
+</div>
+</section>
+<!-- Main Stack Floating Over Canopy -->
+<main class="px-margin -mt-9 space-y-4 z-10">
+<!-- Card 1: Current Weather & Environmental Telemetry Widget -->
+<section class="bg-white rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(37,44,39,0.06)] border border-[#252C27]/10">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-[#B6FF4A] ring-2 ring-[#667C68]/30 animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-[#4E5550] font-bold" id="currentZoneLabel">Elmina West Microstation</span>
+</div>
+<span class="bg-[#E7D9C9]/50 text-charcoal font-label-sm text-[10px] font-semibold px-2 py-0.5 rounded-full border border-[#252C27]/5">Live Sensor</span>
+</div>
+<div class="flex items-center justify-between pb-3 border-b border-[#252C27]/10">
+<div class="flex items-baseline gap-2">
+<span class="font-data text-[48px] font-bold text-charcoal leading-none tracking-tight">28°</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold text-charcoal leading-tight">Partly Cloudy</span>
+<span class="font-label-sm text-label-sm font-medium text-[#737872]">Feels like 30°C</span>
+</div>
+</div>
+<div class="w-14 h-14 rounded-2xl bg-[#E7D9C9]/60 flex items-center justify-center text-[#4E6350]">
+<span class="material-symbols-outlined text-[36px]" data-weight="fill">partly_cloudy_day</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 pt-3">
+<div class="bg-[#F7F5EF] rounded-xl p-2.5 border border-[#252C27]/5 flex flex-col justify-between">
+<div class="flex items-center gap-1 text-[#4E5550] mb-1">
+<span class="material-symbols-outlined text-[16px] text-[#667C68]">wb_sunny</span>
+<span class="font-label-sm text-label-sm font-semibold">UV INDEX</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-data text-[20px] text-charcoal font-bold">3</span>
+<span class="font-label-sm text-label-sm font-bold text-[#4E6350]">Mod</span>
+</div>
+</div>
+<div class="bg-[#F7F5EF] rounded-xl p-2.5 border border-[#252C27]/5 flex flex-col justify-between">
+<div class="flex items-center gap-1 text-[#4E5550] mb-1">
+<span class="material-symbols-outlined text-[16px] text-[#667C68]">air</span>
+<span class="font-label-sm text-label-sm font-semibold">WIND</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-data text-[20px] text-charcoal font-bold">11</span>
+<span class="font-label-sm text-label-sm text-[#737872] font-semibold">km/h</span>
+</div>
+</div>
+<div class="bg-[#F7F5EF] rounded-xl p-2.5 border border-[#252C27]/5 flex flex-col justify-between">
+<div class="flex items-center gap-1 text-[#4E5550] mb-1">
+<span class="material-symbols-outlined text-[16px] text-[#667C68]">humidity_mid</span>
+<span class="font-label-sm text-label-sm font-semibold">HUMIDITY</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-data text-[20px] text-charcoal font-bold">72</span>
+<span class="font-label-sm text-label-sm text-[#737872] font-semibold">%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Simulation Control Toggle Bar -->
+<div class="bg-[#ECE8DF]/90 backdrop-blur-sm rounded-xl p-1.5 flex items-center justify-between border border-[#252C27]/10 shadow-xs">
+<div class="flex items-center gap-1 pl-1">
+<span class="material-symbols-outlined text-[15px] text-[#4E5550]">tune</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider font-bold text-[#4E5550]">Simulate Condition</span>
+</div>
+<div class="flex bg-white/70 rounded-lg p-0.5 border border-[#252C27]/5">
+<button class="px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-[#667C68] text-white shadow-xs transition-all flex items-center gap-1" id="simNormalBtn" onclick="switchBannerMode('normal')">
+<span>☀️</span>
+<span>Normal</span>
+</button>
+<button class="px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-[#252C27] transition-all flex items-center gap-1" id="simStormBtn" onclick="switchBannerMode('storm')">
+<span>⛈️</span>
+<span>Storm Alert</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Dynamic Weather Banner (State 1: Normal Mode / State 2: Flood & Storm Alert Mode) -->
+<div id="dynamicWeatherBannerContainer">
+<!-- State 1: Normal 'Your Outdoor Comfort' Hero Action Card -->
+<section class="bg-white rounded-2xl p-4 shadow-[0_8px_24px_-6px_rgba(102,124,104,0.18)] border border-[#A9B9A0]/40 relative overflow-hidden transition-all duration-200" id="bannerNormalMode">
+<div class="absolute -right-10 -top-10 w-28 h-28 bg-[#B6FF4A]/25 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<div class="inline-flex items-center gap-1.5 bg-[#B6FF4A]/25 text-[#1A2500] px-2.5 py-1 rounded-full font-label-sm text-label-sm font-bold border border-[#B6FF4A]/60">
+<span class="material-symbols-outlined text-[15px] text-[#374C3A]" data-weight="fill">check_circle</span>
+<span>Prime Window Active</span>
+</div>
+<span class="material-symbols-outlined text-[#667C68] text-[22px]">wb_twilight</span>
+</div>
+<div class="mt-2 mb-3">
+<div class="flex items-center gap-2 text-charcoal">
+<span class="material-symbols-outlined text-[#667C68] text-[22px]">schedule</span>
+<span class="font-data text-[22px] font-bold tracking-tight text-charcoal">6:30 AM – 9:00 AM</span>
+</div>
+<div class="flex items-center gap-2 mt-2 flex-wrap">
+<span class="bg-[#F7F5EF] px-2 py-0.5 rounded-md font-label-sm text-label-sm font-semibold text-charcoal border border-[#252C27]/10">27.5°C in Shade</span>
+<span class="bg-[#E7D9C9]/50 px-2 py-0.5 rounded-md font-label-sm text-label-sm font-semibold text-[#374C3A] border border-[#252C27]/10">80% Tree Canopy</span>
+<span class="bg-[#FEF3C7] text-[#92400E] px-2 py-0.5 rounded-md font-label-sm text-label-sm font-bold border border-[#FDE68A]">UV Safe &lt; 9:30 AM</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full bg-[#667C68] hover:bg-[#4E6350] text-white font-headline-sm text-headline-sm h-12 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all duration-150 font-bold">
+<span class="material-symbols-outlined text-[20px]">directions_walk</span>
+<span>Find a CoolWalk</span>
+</button>
+<button class="w-full bg-[#F7F5EF] hover:bg-[#ECE8DF] text-[#4E6350] border border-[#252C27]/10 font-headline-sm text-headline-sm h-10 rounded-xl flex items-center justify-center gap-1.5 active:scale-95 transition-transform duration-150 font-bold" onclick="scrollToForecast()">
+<span>View Comfort Forecast</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</section>
+<!-- State 2: Flood & Storm Alert Mode Banner (Initially Hidden) -->
+<section class="hidden bg-[#FEF2F2] rounded-2xl p-4 shadow-[0_8px_24px_-6px_rgba(239,68,68,0.22)] border-2 border-[#EF4444] relative overflow-hidden transition-all duration-200" id="bannerStormMode">
+<div class="absolute -right-8 -top-8 w-28 h-28 bg-[#EF4444]/15 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Alert Header Pill & Sim Badge -->
+<div class="flex items-center justify-between mb-2.5">
+<div class="inline-flex items-center gap-1.5 bg-[#EF4444] text-white px-2.5 py-1 rounded-full font-label-sm text-[10px] font-extrabold tracking-wider uppercase shadow-xs">
+<span class="material-symbols-outlined text-[14px] animate-pulse" data-weight="fill">warning</span>
+<span>FLASH FLOOD &amp; STORM WARNING</span>
+</div>
+<span class="bg-white/80 text-[#EF4444] font-label-sm text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#EF4444]/30 shadow-xs">Simulated Alert</span>
+</div>
+<!-- Alert Primary Headline & Text -->
+<div class="mt-1 mb-3">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[#EF4444] text-[24px] mt-0.5 shrink-0" data-weight="fill">flood</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-[#991B1B] leading-tight">Lakeside low-lying jogging paths temporarily closed.</h3>
+<p class="font-body-md text-body-md text-[#7F1D1D] mt-1 font-medium leading-snug">Please use elevated walking routes.</p>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-[#991B1B]/90 mt-2 bg-white/70 p-2.5 rounded-xl border border-[#EF4444]/20 leading-relaxed">
+        Rising runoff detected at Elmina Central Park wetland retention basin. High-ground ridge corridors active.
+      </p>
+<!-- Micro-telemetry chips -->
+<div class="flex items-center gap-2 mt-2.5 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-md font-label-sm text-label-sm font-bold text-[#B91C1C] border border-[#EF4444]/30 shadow-xs">
+<span class="material-symbols-outlined text-[15px] text-[#EF4444]">rainy</span>
+          Rainfall: 42 mm/hr (Heavy)
+        </span>
+<span class="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-md font-label-sm text-label-sm font-bold text-[#B91C1C] border border-[#EF4444]/30 shadow-xs">
+<span class="material-symbols-outlined text-[15px] text-[#EF4444]">water_drop</span>
+          Drainage: Monitored
+        </span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-2 pt-1">
+<button class="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-headline-sm text-headline-sm h-12 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all duration-150 font-bold" onclick="scrollToElevatedTrails()">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span>View Safe Routes</span>
+</button>
+<button class="w-full bg-white hover:bg-[#FEE2E2] text-[#991B1B] border border-[#EF4444]/30 font-headline-sm text-headline-sm h-10 rounded-xl flex items-center justify-center gap-1.5 active:scale-95 transition-transform duration-150 font-bold" onclick="openStormAdvisoryModal()">
+<span class="material-symbols-outlined text-[18px]">shield</span>
+<span>Safety Precautions &amp; Advisories</span>
+</button>
+</div>
+<!-- Prototype Notice footer -->
+<div class="mt-2 text-center">
+<span class="font-label-sm text-[10px] text-[#991B1B]/80 font-medium tracking-tight">⚠️ Simulated alert for demonstration purposes.</span>
+</div>
+</section>
+</div>
+<!-- Card 3: Quick Access Bento Grid Pods -->
+<section>
+<div class="flex items-center justify-between mb-2 px-0.5">
+<h2 class="font-headline-sm text-headline-sm font-bold text-charcoal">Township Eco-Services</h2>
+<span class="font-label-md text-label-md text-[#667C68] font-bold hover:underline cursor-pointer">Explore All</span>
+</div>
+<div class="grid grid-cols-4 gap-2.5">
+<!-- CoolWalk -->
+<div class="bg-white border border-[#252C27]/10 rounded-2xl p-2.5 flex flex-col items-center justify-between shadow-xs active:scale-95 transition-all duration-150 text-center hover:border-[#667C68]" role="button" tabindex="0">
+<div class="w-11 h-11 rounded-full bg-[#F4F1EA] text-[#4E6350] flex items-center justify-center mb-1.5 shadow-xs">
+<span class="material-symbols-outlined text-[22px]">route</span>
+</div>
+<span class="font-label-md text-label-md text-charcoal leading-tight font-bold">CoolWalk</span>
+</div>
+<!-- Touch Grass -->
+<div class="bg-white border border-[#252C27]/10 rounded-2xl p-2.5 flex flex-col items-center justify-between shadow-xs active:scale-95 transition-all duration-150 text-center hover:border-[#667C68]" role="button" tabindex="0">
+<div class="w-11 h-11 rounded-full bg-[#E7D9C9]/60 text-[#374C3A] flex items-center justify-center mb-1.5 shadow-xs">
+<span class="material-symbols-outlined text-[22px]">park</span>
+</div>
+<span class="font-label-md text-label-md text-charcoal leading-tight font-bold">Touch Grass</span>
+</div>
+<!-- Report -->
+<div class="bg-white border border-[#252C27]/10 rounded-2xl p-2.5 flex flex-col items-center justify-between shadow-xs active:scale-95 transition-all duration-150 text-center hover:border-[#EF4444]" role="button" tabindex="0">
+<div class="w-11 h-11 rounded-full bg-[#FEF2F2] text-[#EF4444] flex items-center justify-center mb-1.5 shadow-xs">
+<span class="material-symbols-outlined text-[22px]">report_problem</span>
+</div>
+<span class="font-label-md text-label-md text-charcoal leading-tight font-bold">Report</span>
+</div>
+<!-- EcoPoints -->
+<div class="bg-white border border-[#A9B9A0]/50 rounded-2xl p-2.5 flex flex-col items-center justify-between shadow-xs active:scale-95 transition-all duration-150 text-center relative hover:border-[#667C68]" onclick="openEcoPointsModal()" role="button" tabindex="0">
+<div class="w-11 h-11 rounded-full bg-gradient-to-tr from-[#4E6350] to-[#667C68] text-[#B6FF4A] flex items-center justify-center mb-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill">loyalty</span>
+</div>
+<span class="font-label-md text-label-md text-charcoal leading-tight font-extrabold">340 pts</span>
+<span class="font-label-sm text-[9px] text-[#667C68] font-bold tracking-tight">EcoPoints</span>
+</div>
+</div>
+</section>
+<!-- Section: Hourly / 7-Day Comfort Forecast Preview -->
+<section class="bg-white rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(37,44,39,0.06)] border border-[#252C27]/10" id="comfortForecastSection">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#667C68] text-[20px]">thermostat</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-charcoal">Outdoor Comfort Timeline</h2>
+</div>
+<!-- Mode Tabs -->
+<div class="flex bg-[#F4F1EA] rounded-lg p-0.5 border border-[#252C27]/5">
+<button class="px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-white text-[#4E6350] shadow-xs" id="tabHourly" onclick="switchForecastTab('hourly')">Today</button>
+<button class="px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-charcoal" id="tabWeekly" onclick="switchForecastTab('weekly')">7-Day</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#F7F5EF] border border-[#252C27]/5 mb-3" id="forecastSummaryBadge">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#4E6350] text-[20px]">nature_people</span>
+<span class="font-label-md text-label-md text-charcoal font-semibold" id="forecastDynamicTip">Peak shade protection recommended between 11 AM - 4 PM</span>
+</div>
+</div>
+<!-- Hourly Horizontal Scroller (Active View) -->
+<div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 pt-0.5" id="hourlyForecastContainer">
+<!-- 6 AM: Good -->
+<div class="flex-shrink-0 w-[72px] bg-[#F7F5EF] border border-[#A9B9A0]/40 rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">6 AM</span>
+<span class="material-symbols-outlined text-[20px] text-[#4E6350] my-1">wb_twilight</span>
+<span class="font-data text-[18px] font-bold text-charcoal">25°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#B6FF4A] text-[#1A2500] rounded font-label-sm text-[9px] font-extrabold">Good</span>
+</div>
+<!-- 8 AM: Good (Active selection) -->
+<div class="flex-shrink-0 w-[72px] bg-[#F4F1EA] border-2 border-[#667C68] rounded-xl p-2.5 flex flex-col items-center text-center shadow-xs">
+<span class="font-label-sm text-label-sm text-[#4E6350] font-extrabold">8 AM</span>
+<span class="material-symbols-outlined text-[20px] text-[#4E6350] my-1" data-weight="fill">wb_sunny</span>
+<span class="font-data text-[18px] font-bold text-charcoal">27°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#B6FF4A] text-[#1A2500] rounded font-label-sm text-[9px] font-extrabold">Good</span>
+</div>
+<!-- 10 AM: Moderate -->
+<div class="flex-shrink-0 w-[72px] bg-[#FEF3C7]/40 border border-[#FDE68A] rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">10 AM</span>
+<span class="material-symbols-outlined text-[20px] text-[#D97706] my-1">sunny</span>
+<span class="font-data text-[18px] font-bold text-charcoal">31°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#EAB308] text-white rounded font-label-sm text-[9px] font-bold">Moderate</span>
+</div>
+<!-- 12 PM: Heat -->
+<div class="flex-shrink-0 w-[72px] bg-[#FEF2F2] border border-[#FECACA] rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">12 PM</span>
+<span class="material-symbols-outlined text-[20px] text-[#EF4444] my-1">solar_power</span>
+<span class="font-data text-[18px] font-bold text-charcoal">34°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#EF4444] text-white rounded font-label-sm text-[9px] font-bold">Heat</span>
+</div>
+<!-- 3 PM: Extreme -->
+<div class="flex-shrink-0 w-[72px] bg-[#FEF2F2] border border-[#EF4444] rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">3 PM</span>
+<span class="material-symbols-outlined text-[20px] text-[#EF4444] my-1">warning</span>
+<span class="font-data text-[18px] font-bold text-charcoal">35°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#EF4444] text-white rounded font-label-sm text-[9px] font-bold">Extreme</span>
+</div>
+<!-- 5:30 PM: Moderate -->
+<div class="flex-shrink-0 w-[72px] bg-[#FEF3C7]/40 border border-[#FDE68A] rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">5:30 PM</span>
+<span class="material-symbols-outlined text-[20px] text-[#D97706] my-1">sunny</span>
+<span class="font-data text-[18px] font-bold text-charcoal">30°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#EAB308] text-white rounded font-label-sm text-[9px] font-bold">Moderate</span>
+</div>
+<!-- 6:30 PM: Pleasant -->
+<div class="flex-shrink-0 w-[72px] bg-[#F7F5EF] border border-[#A9B9A0]/40 rounded-xl p-2.5 flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-[#737872] font-bold">6:30 PM</span>
+<span class="material-symbols-outlined text-[20px] text-[#4E6350] my-1">bedtime</span>
+<span class="font-data text-[18px] font-bold text-charcoal">28°</span>
+<span class="mt-1 px-1.5 py-0.5 bg-[#B6FF4A] text-[#1A2500] rounded font-label-sm text-[9px] font-extrabold">Pleasant</span>
+</div>
+</div>
+<!-- 7-Day Container (Hidden by default) -->
+<div class="hidden space-y-2 pt-1" id="weeklyForecastContainer">
+<div class="flex items-center justify-between p-2 rounded-xl bg-[#F7F5EF] font-body-md text-body-md border border-[#252C27]/5">
+<span class="font-bold w-16 text-charcoal">Today</span>
+<div class="flex items-center gap-1.5 text-[#4E6350]">
+<span class="material-symbols-outlined text-[18px]">wb_sunny</span>
+<span class="font-label-md text-label-md font-semibold">Morning Cool</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-charcoal font-data">33°</span>
+<span class="text-[#737872] text-body-sm font-data"> / 24°</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-[#F7F5EF] font-body-md text-body-md border border-[#252C27]/5">
+<span class="font-bold w-16 text-charcoal">Tomorrow</span>
+<div class="flex items-center gap-1.5 text-[#4E6350]">
+<span class="material-symbols-outlined text-[18px]">partly_cloudy_day</span>
+<span class="font-label-md text-label-md font-semibold">High Cloud Canopy</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-charcoal font-data">31°</span>
+<span class="text-[#737872] text-body-sm font-data"> / 24°</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-[#F7F5EF] font-body-md text-body-md border border-[#252C27]/5">
+<span class="font-bold w-16 text-charcoal">Wed</span>
+<div class="flex items-center gap-1.5 text-[#D97706]">
+<span class="material-symbols-outlined text-[18px]">sunny</span>
+<span class="font-label-md text-label-md font-semibold">High Solar Radiation</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-charcoal font-data">35°</span>
+<span class="text-[#737872] text-body-sm font-data"> / 25°</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Shaded Corridors Township Showcase Card -->
+<section class="bg-white rounded-2xl overflow-hidden border border-[#252C27]/10 shadow-sm mb-4" id="elevatedTrailsShowcase">
+<div class="relative h-36 w-full">
+<img class="w-full h-full object-cover" data-alt="Expansive panoramic view of Elmina Central Park in Selangor with lush mature green forest canopy, architecturally modern walking pavilions, tropical shade trees, peaceful community jogging trail with gentle morning lighting and clean modern Malaysian lifestyle atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD94gUBrrf-tinJCJE0CGuhFgaF0009R32PgD9s-3xMpFKS9M8C11t5ioFmF5WAKk9ObylG0u_1FlEOJVHU7-mre50a7ttjp_BbI9rYXCUZb6fUE6GUnIqoODgY7FJN7OHaM09cmwg9jAsiieFCrehcxAOJp_YUhK_7IzxfsyABLAxSbyzP3109q7rv0YnKFzQYyp-p281MLtjpn7E0Uq-9p0WRuJVasMziKwwcKm5boml6DnYMXig"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-3.5">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-[#B6FF4A] text-[#1A2500] px-2 py-0.5 rounded font-label-sm text-label-sm font-extrabold">Biophilic Trail</span>
+<span class="text-white/90 font-label-sm text-label-sm">84% Canopy Coverage</span>
+</div>
+<h3 class="text-white font-headline-sm text-headline-sm font-bold">Elmina Central Park Valley Loop</h3>
+</div>
+</div>
+</div>
+<div class="p-3 flex items-center justify-between bg-white">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 bg-[#F7F5EF] px-2 py-1 rounded-md font-label-sm text-label-sm font-bold text-charcoal border border-[#252C27]/10">
+<span class="material-symbols-outlined text-[15px] text-[#667C68]">distance</span> 2.4 km
+      </span>
+<span class="inline-flex items-center gap-1 bg-[#B6FF4A]/25 px-2 py-1 rounded-md font-label-sm text-label-sm font-bold text-[#1A2500] border border-[#B6FF4A]/60">
+<span class="material-symbols-outlined text-[15px] text-[#4E6350]">thermostat</span> -2.8°C Cool
+      </span>
+</div>
+<button class="text-[#4E6350] font-headline-sm text-headline-sm flex items-center gap-0.5 font-bold hover:underline active:scale-95 transition-transform">
+<span>Preview</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[420px] left-1/2 -translate-x-1/2 z-50 flex justify-around items-center px-margin py-2 bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(37,44,39,0.08)] border-t border-[#252C27]/5">
+<!-- 1. Home (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-[#4E6350] font-bold py-1 active:scale-95 transition-transform duration-150 relative" href="#">
+<span class="material-symbols-outlined text-[24px]" data-weight="fill">home</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-bold">Home</span>
+<span class="w-1 h-1 rounded-full bg-[#B6FF4A] absolute -bottom-0.5"></span>
+</a>
+<!-- 2. Touch Grass -->
+<a class="flex flex-col items-center justify-center text-[#737872] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]">park</span>
+<span class="font-label-sm text-label-sm mt-0.5">Touch Grass</span>
+</a>
+<!-- 3. CoolWalk -->
+<a class="flex flex-col items-center justify-center text-[#737872] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]">directions_walk</span>
+<span class="font-label-sm text-label-sm mt-0.5">CoolWalk</span>
+</a>
+<!-- 4. Report -->
+<a class="flex flex-col items-center justify-center text-[#737872] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]">report_problem</span>
+<span class="font-label-sm text-label-sm mt-0.5">Report</span>
+</a>
+<!-- 5. Profile -->
+<a class="flex flex-col items-center justify-center text-[#737872] font-normal py-1 hover:text-[#4E6350] active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+</a>
+</nav>
+<!-- Modal: Safety Precautions & Advisories -->
+<div class="hidden fixed inset-0 z-50 bg-[#252C27]/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-4" id="stormAdvisoryModal">
+<div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl border border-[#252C27]/10 transition-all">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-[#FEF2F2] flex items-center justify-center text-[#EF4444] border border-[#EF4444]/30">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill">shield</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-charcoal">Flood &amp; Storm Advisory</h3>
+<p class="font-label-sm text-label-sm text-[#EF4444] font-bold">Elmina Central Park Basin Alert</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F4F1EA] flex items-center justify-center text-charcoal hover:bg-[#E7D9C9]" onclick="closeStormAdvisoryModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="bg-[#FEF2F2] p-3 rounded-xl mb-3 border border-[#EF4444]/20">
+<p class="font-body-sm text-body-sm text-[#991B1B] font-medium leading-relaxed">
+Heavy localized cloudburst has elevated reservoir water gates. Avoid boardwalks adjacent to Elmina Lake and underpass culverts until sensor clearance.
+</p>
+</div>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2 p-2 rounded-lg bg-[#F7F5EF] border border-[#252C27]/5 text-body-sm text-charcoal">
+<span class="material-symbols-outlined text-[#4E6350] text-[18px] shrink-0">check_circle</span>
+<span>Stick to marked Ridge Trails &amp; elevated shaded spine links.</span>
+</div>
+<div class="flex items-start gap-2 p-2 rounded-lg bg-[#F7F5EF] border border-[#252C27]/5 text-body-sm text-charcoal">
+<span class="material-symbols-outlined text-[#4E6350] text-[18px] shrink-0">check_circle</span>
+<span>Township emergency response station active at Elmina Pavilion.</span>
+</div>
+<div class="flex items-start gap-2 p-2 rounded-lg bg-[#F7F5EF] border border-[#252C27]/5 text-body-sm text-charcoal">
+<span class="material-symbols-outlined text-[#4E6350] text-[18px] shrink-0">check_circle</span>
+<span>Report flash water pooling via community Report tab anytime.</span>
+</div>
+</div>
+<button class="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-headline-sm text-headline-sm h-11 rounded-xl font-bold transition-colors" onclick="closeStormAdvisoryModal()">
+      Understood
+</button>
+</div>
+</div>
+<!-- Interactive EcoPoints Modal Detail -->
+<div class="hidden fixed inset-0 z-50 bg-[#252C27]/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-4" id="ecoPointsModal">
+<div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl border border-[#252C27]/10 transition-all">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#4E6350] to-[#667C68] flex items-center justify-center text-[#B6FF4A]">
+<span class="material-symbols-outlined text-[22px]" data-weight="fill">loyalty</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-charcoal">Sime Darby EcoPoints</h3>
+<p class="font-label-sm text-label-sm text-[#737872]">Resident Green Tier: Gold</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F4F1EA] flex items-center justify-center text-charcoal hover:bg-[#E7D9C9]" onclick="closeEcoPointsModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="bg-[#F7F5EF] p-3.5 rounded-2xl mb-4 text-center border border-[#252C27]/5">
+<span class="font-label-md text-label-md text-[#737872] uppercase font-semibold">Total Climate Points Balance</span>
+<div class="font-data text-[36px] font-bold text-[#4E6350] leading-tight mt-1">340 <span class="font-label-md text-label-md text-charcoal font-bold">PTS</span></div>
+<p class="font-body-sm text-body-sm text-[#737872] mt-1">Earned by choosing low-heat walking paths &amp; verified biophilic outdoor hours in Elmina.</p>
+</div>
+<div class="space-y-2 mb-4">
+<div class="flex justify-between items-center text-body-sm p-2 rounded-lg bg-[#F4F1EA] border border-[#252C27]/5">
+<span class="font-medium text-charcoal">Shaded Morning Walk (2.4km)</span>
+<span class="font-bold text-[#4E6350] font-data">+40 pts</span>
+</div>
+<div class="flex justify-between items-center text-body-sm p-2 rounded-lg bg-[#F4F1EA] border border-[#252C27]/5">
+<span class="font-medium text-charcoal">Canopy Check-in at Rainbow Bridge</span>
+<span class="font-bold text-[#4E6350] font-data">+25 pts</span>
+</div>
+</div>
+<button class="w-full bg-[#667C68] hover:bg-[#4E6350] text-white font-headline-sm text-headline-sm h-11 rounded-xl font-bold transition-colors" onclick="closeEcoPointsModal()">
+      Redeem Rewards
+    </button>
+</div>
+</div>
+<!-- Client-side Logic Script for Realistic Interactivity -->
+<script>
+    // Township Dropdown Logic
+    const townshipBtn = document.getElementById('townshipToggleBtn');
+    const townshipDropdown = document.getElementById('townshipDropdown');
+    const chevronIcon = document.getElementById('chevronIcon');
+    const selectedTownshipText = document.getElementById('selectedTownshipText');
+    const headerTownshipLabel = document.getElementById('headerTownshipLabel');
+    const currentZoneLabel = document.getElementById('currentZoneLabel');
+
+    townshipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = townshipDropdown.classList.contains('hidden');
+      if (isHidden) {
+        townshipDropdown.classList.remove('hidden');
+        chevronIcon.classList.add('rotate-180');
+      } else {
+        townshipDropdown.classList.add('hidden');
+        chevronIcon.classList.remove('rotate-180');
+      }
+    });
+
+    document.addEventListener('click', () => {
+      if (!townshipDropdown.classList.contains('hidden')) {
+        townshipDropdown.classList.add('hidden');
+        chevronIcon.classList.remove('rotate-180');
+      }
+    });
+
+    function selectTownship(name, region) {
+      selectedTownshipText.innerText = name;
+      headerTownshipLabel.innerText = name;
+      if (name === 'City of Elmina') {
+        currentZoneLabel.innerText = 'Elmina West Microstation';
+      } else {
+        currentZoneLabel.innerText = 'Bukit Raja Urban Forest Zone';
+      }
+      townshipDropdown.classList.add('hidden');
+      chevronIcon.classList.remove('rotate-180');
+    }
+
+    // Modal Logic for EcoPoints
+    const ecoPointsModal = document.getElementById('ecoPointsModal');
+    function openEcoPointsModal() {
+      ecoPointsModal.classList.remove('hidden');
+    }
+    function closeEcoPointsModal() {
+      ecoPointsModal.classList.add('hidden');
+    }
+
+    // Modal Logic for Storm Advisory
+    const stormModal = document.getElementById('stormAdvisoryModal');
+    function openStormAdvisoryModal() {
+      stormModal.classList.remove('hidden');
+    }
+    function closeStormAdvisoryModal() {
+      stormModal.classList.add('hidden');
+    }
+
+    // Dynamic Weather Banner Toggle Logic
+    const bannerNormal = document.getElementById('bannerNormalMode');
+    const bannerStorm = document.getElementById('bannerStormMode');
+    const simNormalBtn = document.getElementById('simNormalBtn');
+    const simStormBtn = document.getElementById('simStormBtn');
+
+    function switchBannerMode(mode) {
+      if (mode === 'normal') {
+        bannerNormal.classList.remove('hidden');
+        bannerStorm.classList.add('hidden');
+        simNormalBtn.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-[#667C68] text-white shadow-xs transition-all flex items-center gap-1';
+        simStormBtn.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-[#252C27] transition-all flex items-center gap-1';
+      } else {
+        bannerNormal.classList.add('hidden');
+        bannerStorm.classList.remove('hidden');
+        simStormBtn.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-[#EF4444] text-white shadow-xs transition-all flex items-center gap-1';
+        simNormalBtn.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-[#252C27] transition-all flex items-center gap-1';
+      }
+    }
+
+    function scrollToElevatedTrails() {
+      const trailSection = document.getElementById('elevatedTrailsShowcase');
+      if (trailSection) {
+        trailSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Forecast Tabs Logic (Today vs 7-Day)
+    const tabHourly = document.getElementById('tabHourly');
+    const tabWeekly = document.getElementById('tabWeekly');
+    const hourlyContainer = document.getElementById('hourlyForecastContainer');
+    const weeklyContainer = document.getElementById('weeklyForecastContainer');
+    const dynamicTip = document.getElementById('forecastDynamicTip');
+
+    function switchForecastTab(mode) {
+      if (mode === 'hourly') {
+        tabHourly.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-white text-[#4E6350] shadow-xs';
+        tabWeekly.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-charcoal';
+        hourlyContainer.classList.remove('hidden');
+        weeklyContainer.classList.add('hidden');
+        dynamicTip.innerText = 'Peak shade protection recommended between 11 AM - 4 PM';
+      } else {
+        tabWeekly.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-bold bg-white text-[#4E6350] shadow-xs';
+        tabHourly.className = 'px-2.5 py-1 rounded-[6px] font-label-sm text-label-sm font-semibold text-[#737872] hover:text-charcoal';
+        weeklyContainer.classList.remove('hidden');
+        hourlyContainer.classList.add('hidden');
+        dynamicTip.innerText = 'Extended dry conditions expected this midweek across Selangor';
+      }
+    }
+
+    function scrollToForecast() {
+      const section = document.getElementById('comfortForecastSection');
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</div><script src="/ecocool-shared-bridge.js"></script>
+</body></html>

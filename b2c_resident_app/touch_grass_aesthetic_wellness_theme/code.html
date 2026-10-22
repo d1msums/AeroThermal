@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Touch Grass – Dynamic Outdoor Scheduler</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#F7F5EF",
+            "on-background": "#252C27",
+            "surface": "#F7F5EF",
+            "charcoal": "#252C27",
+            "on-surface": "#252C27",
+            "on-surface-variant": "#4E5550",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#F4F1EA",
+            "surface-container": "#ECE8DF",
+            "surface-container-high": "#E7D9C9",
+            "surface-nude": "#E7D9C9",
+            "primary": "#667C68",
+            "primary-dark": "#425544",
+            "primary-container": "#667C68",
+            "on-primary": "#ffffff",
+            "secondary": "#737872",
+            "secondary-muted": "#A9B9A0",
+            "accent-lime": "#B6FF4A",
+            "on-accent-lime": "#1A2500",
+            "tertiary": "#4E6350",
+            "outline": "#737872",
+            "outline-soft": "rgba(37, 44, 39, 0.08)",
+            "error": "#EF4444",
+            "error-container": "#FEF2F2",
+            "warning": "#EAB308",
+            "inverse-surface": "#252C27",
+            "inverse-on-surface": "#F7F5EF"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1.25rem",
+            "3xl": "1.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter", "sans-serif"],
+            "display-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "label-lg": ["Inter", "sans-serif"],
+            "metric": ["Inter", "monospace"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "label-md": ["11px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+  body, button, input, select, textarea, p, span:not(.material-symbols-outlined), h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-ring {
+      stroke-dasharray: 440;
+      stroke-dashoffset: 80;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 0.8s ease-in-out, stroke 0.4s ease;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .aesthetic-shadow {
+      box-shadow: 0 4px 20px -2px rgba(37, 44, 39, 0.05), 0 1px 3px 0 rgba(37, 44, 39, 0.03);
+    }
+    body {
+      min-height: max(884px, 100dvh);
+      background-color: #F7F5EF;
+      color: #252C27;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background text-charcoal min-h-screen font-body-md antialiased pb-24 selection:bg-secondary-muted/30 selection:text-charcoal block w-full overflow-x-hidden">
+<div class="w-full max-w-full min-w-0 bg-background relative min-h-screen flex flex-col pb-24 overflow-x-hidden">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full max-w-[440px] left-1/2 -translate-x-1/2 z-50 flex justify-between items-center px-4 h-14 bg-[#252C27] shadow-sm select-none border-b border-white/10 text-[#F7F5EF]">
+<div class="flex items-center gap-2.5">
+<button aria-label="Go back" class="p-1.5 rounded-full text-[#F7F5EF] hover:bg-white/10 active:scale-95 transition-all" onclick="window.history.back()" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex flex-col text-left">
+<span class="text-[16px] font-extrabold text-[#F7F5EF] leading-tight tracking-tight">Touch Grass</span>
+<div class="flex items-center gap-1">
+<span class="text-[11px] font-bold text-white/70 uppercase tracking-wider leading-none">City of Elmina</span>
+<span class="material-symbols-outlined text-[#B6FF4A] text-[13px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="relative">
+<button aria-label="Notifications" class="p-1.5 rounded-full text-[#F7F5EF] hover:bg-white/10 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#B6FF4A] ring-2 ring-[#252C27]"></span>
+</div>
+<button aria-label="Settings" class="p-1.5 rounded-full text-[#F7F5EF] hover:bg-white/10 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</header>
+<!-- AMBIENT SAGE & FOREST GREEN HERO HEADER -->
+<div class="pt-14">
+<div class="relative px-5 pt-5 pb-12 bg-gradient-to-br from-[#4E6350] via-[#5F7561] to-[#39493B] text-white rounded-b-[2rem] shadow-sm overflow-hidden">
+<!-- Ambient Organic Glow Blobs -->
+<div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-accent-lime/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none select-none text-white">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">park</span>
+</div>
+<div class="relative z-10 flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/25 backdrop-blur-md border border-white/15">
+<span class="w-2 h-2 rounded-full bg-[#B6FF4A] animate-pulse"></span>
+<span class="text-[11px] font-extrabold text-white tracking-wider uppercase">Park Telemetry • Live</span>
+</div>
+<span class="text-[11px] font-semibold text-white/85 uppercase tracking-widest">300-Acre Parklands</span>
+</div>
+<div class="relative z-10 mt-3.5">
+<h1 class="text-[24px] font-extrabold text-white tracking-tight leading-tight">Outdoor Scheduler</h1>
+<p class="text-[13px] font-medium text-white/90 mt-0.5">Dynamic microclimate &amp; comfort windows across Elmina.</p>
+</div>
+</div>
+</div>
+<!-- FLOATING MAIN CONTENT CONTAINER -->
+<main class="w-full max-w-full mx-auto px-3.5 -mt-7 space-y-4 relative z-20 overflow-hidden">
+<!-- COMFORT SCORE GAUGE CARD -->
+<section class="w-full bg-surface-container-lowest rounded-2xl p-3.5 aesthetic-shadow border border-surface-nude/70 transition-all overflow-hidden">
+<div class="flex items-center justify-between gap-2 pb-2.5 border-b border-surface-container">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-[#667C68] text-[18px] shrink-0" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-[11px] font-extrabold uppercase tracking-wider text-charcoal truncate">Outdoor Comfort Index</span>
+</div>
+<div class="inline-flex items-center gap-1 text-[10px] font-bold text-secondary shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#B6FF4A]"></span> Live • Elmina Central
+    </div>
+</div>
+<div class="flex items-center justify-between py-3.5 gap-3">
+<div class="relative w-24 h-24 flex-shrink-0 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 160 160">
+<circle class="text-surface-container" cx="80" cy="80" fill="transparent" r="68" stroke="currentColor" stroke-width="12"></circle>
+<circle class="custom-ring" cx="80" cy="80" fill="transparent" id="score-ring" r="68" stroke="#667C68" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="text-[32px] font-extrabold text-charcoal leading-none tracking-tight font-metric" id="score-text">82</span>
+<span class="text-[10px] font-extrabold text-secondary uppercase tracking-widest mt-0.5">/ 100</span>
+</div>
+</div>
+<div class="flex flex-col justify-center flex-1 min-w-0 space-y-1.5">
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#B6FF4A]/25 text-[#1A2500] border border-[#B6FF4A]/60 w-fit max-w-full" id="status-pill">
+<span class="material-symbols-outlined text-[14px] text-[#4E6350] shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-[10px] font-extrabold tracking-tight uppercase truncate" id="status-label">Optimal Condition</span>
+</div>
+<h2 class="text-[16px] font-extrabold text-charcoal leading-tight" id="condition-headline">Prime Activity Window</h2>
+<p class="text-[11.5px] text-secondary font-medium leading-snug" id="condition-sub">Dense rain tree canopy shade &amp; low solar radiation on trails.</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-3 border-t border-surface-container">
+<div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface-container-low border border-surface-nude/60">
+<div class="w-8 h-8 rounded-lg bg-[#E7D9C9]/60 flex items-center justify-center text-[#4E6350] flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">thermostat</span>
+</div>
+<div>
+<div class="text-[10px] font-bold text-secondary uppercase tracking-wider">TEMP</div>
+<div class="text-[16px] font-extrabold text-charcoal leading-none pt-0.5 font-metric">28°C <span class="text-[11px] text-secondary font-semibold font-sans">(Feels 29°)</span></div>
+</div>
+</div>
+<div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface-container-low border border-surface-nude/60">
+<div class="w-8 h-8 rounded-lg bg-[#FEF3C7] flex items-center justify-center text-amber-700 flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">light_mode</span>
+</div>
+<div>
+<div class="text-[10px] font-bold text-secondary uppercase tracking-wider">UV INDEX</div>
+<div class="text-[16px] font-extrabold text-charcoal leading-none pt-0.5 font-metric">3 <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-[#FEF3C7] text-amber-800 uppercase font-sans">Mod</span></div>
+</div>
+</div>
+<div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface-container-low border border-surface-nude/60">
+<div class="w-8 h-8 rounded-lg bg-[#E7D9C9]/60 flex items-center justify-center text-[#4E6350] flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">air</span>
+</div>
+<div>
+<div class="text-[10px] font-bold text-secondary uppercase tracking-wider">WIND</div>
+<div class="text-[16px] font-extrabold text-charcoal leading-none pt-0.5 font-metric">11 <span class="text-[11px] font-bold text-[#4E6350] uppercase font-sans">km/h</span></div>
+</div>
+</div>
+<div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface-container-low border border-surface-nude/60">
+<div class="w-8 h-8 rounded-lg bg-[#B6FF4A]/25 flex items-center justify-center text-[#4E6350] flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">ecg_heart</span>
+</div>
+<div>
+<div class="text-[10px] font-bold text-secondary uppercase tracking-wider">HEAT STRESS</div>
+<div class="text-[16px] font-extrabold text-[#4E6350] leading-none pt-0.5 font-metric">Low <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-[#B6FF4A]/30 text-[#1A2500] uppercase font-sans">Safe</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- HOURLY COMFORT TIMELINE & BARS -->
+<section class="w-full min-w-0 overflow-hidden bg-surface-container-lowest rounded-2xl p-4 aesthetic-shadow border border-surface-nude/70">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#667C68] text-[20px]">schedule</span>
+<h2 class="text-[13px] font-extrabold uppercase tracking-wider text-charcoal">Hourly Comfort Forecast</h2>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#B6FF4A]/20 border border-[#B6FF4A]/60">
+<span class="w-1.5 h-1.5 rounded-full bg-[#4E6350] animate-pulse"></span>
+<span class="text-[10px] font-bold text-[#1A2500] uppercase tracking-wider">Live Radar</span>
+</div>
+</div>
+<div class="flex gap-2.5 overflow-x-auto py-1 scrollbar-none snap-x" id="time-slot-list">
+<button class="time-block-btn flex-shrink-0 snap-start flex flex-col items-center p-2.5 rounded-xl border-2 border-[#667C68] bg-[#F4F1EA] w-[108px] text-center transition-all cursor-pointer shadow-sm" data-index="0" type="button">
+<span class="text-[12px] font-extrabold text-[#4E6350] tracking-tight">6:00 - 9:00 AM</span>
+<div class="w-full bg-[#B6FF4A] h-1.5 rounded-full my-2"></div>
+<span class="text-[12px] font-extrabold text-[#4E6350]">82 Optimal</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-wider mt-0.5">Prime Time</span>
+</button>
+<button class="time-block-btn flex-shrink-0 snap-start flex flex-col items-center p-2.5 rounded-xl border border-surface-container bg-surface-container-low w-[108px] text-center hover:bg-surface-container transition-all cursor-pointer" data-index="1" type="button">
+<span class="text-[12px] font-bold text-charcoal tracking-tight">9:00 - 11:30 AM</span>
+<div class="w-full bg-amber-400 h-1.5 rounded-full my-2"></div>
+<span class="text-[12px] font-extrabold text-amber-700">64 Caution</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-wider mt-0.5">Rising UV</span>
+</button>
+<button class="time-block-btn flex-shrink-0 snap-start flex flex-col items-center p-2.5 rounded-xl border border-surface-container bg-surface-container-low w-[108px] text-center hover:bg-surface-container transition-all cursor-pointer" data-index="2" type="button">
+<span class="text-[12px] font-bold text-charcoal tracking-tight">11:30 - 4:00 PM</span>
+<div class="w-full bg-rose-500 h-1.5 rounded-full my-2"></div>
+<span class="text-[12px] font-extrabold text-[#EF4444]">38 Alert</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-wider mt-0.5">Peak Heat</span>
+</button>
+<button class="time-block-btn flex-shrink-0 snap-start flex flex-col items-center p-2.5 rounded-xl border border-surface-container bg-surface-container-low w-[108px] text-center hover:bg-surface-container transition-all cursor-pointer" data-index="3" type="button">
+<span class="text-[12px] font-bold text-charcoal tracking-tight">4:00 - 5:30 PM</span>
+<div class="w-full bg-amber-400 h-1.5 rounded-full my-2"></div>
+<span class="text-[12px] font-extrabold text-amber-700">68 Mod</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-wider mt-0.5">Sunset Warm</span>
+</button>
+<button class="time-block-btn flex-shrink-0 snap-start flex flex-col items-center p-2.5 rounded-xl border border-surface-container bg-surface-container-low w-[108px] text-center hover:bg-surface-container transition-all cursor-pointer" data-index="4" type="button">
+<span class="text-[12px] font-bold text-charcoal tracking-tight">5:30 - 8:00 PM</span>
+<div class="w-full bg-[#B6FF4A] h-1.5 rounded-full my-2"></div>
+<span class="text-[12px] font-extrabold text-[#4E6350]">79 Pleasant</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-wider mt-0.5">Cool Breeze</span>
+</button>
+</div>
+<div class="pt-3">
+<div class="flex justify-between text-[10px] font-extrabold text-secondary uppercase tracking-wider mb-1.5">
+<span>6 AM</span><span>9 AM</span><span>12 PM</span><span>3 PM</span><span>6 PM</span><span>8 PM</span>
+</div>
+<div class="h-2.5 w-full rounded-full overflow-hidden flex bg-surface-container">
+<div class="h-full bg-[#B6FF4A] w-[20%]" title="6AM - 9AM: Cool"></div>
+<div class="h-full bg-amber-400 w-[18%]" title="9AM - 11:30AM: Caution"></div>
+<div class="h-full bg-[#EF4444] w-[32%]" title="11:30AM - 4PM: High Heat Alert"></div>
+<div class="h-full bg-amber-400 w-[12%]" title="4PM - 5:30PM: Moderate"></div>
+<div class="h-full bg-[#B6FF4A] w-[18%]" title="5:30PM - 8PM: Pleasant"></div>
+</div>
+</div>
+</section>
+<!-- DYNAMIC RECOMMENDED ACTIVITY WINDOW CARD -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 aesthetic-shadow border border-surface-nude/70 transition-all" id="recommendation-card">
+<div class="flex items-start justify-between pb-2.5 border-b border-surface-container/80">
+<div>
+<div class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#4E6350]">
+<span class="w-2 h-2 rounded-full bg-[#B6FF4A]"></span> OPTIMAL WINDOW
+      </div>
+<h2 class="text-[22px] font-extrabold text-charcoal leading-tight mt-0.5 font-metric" id="window-title">6:30 AM – 9:00 AM</h2>
+</div>
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#B6FF4A]/25 text-[#1A2500] border border-[#B6FF4A]/60 text-[11px] font-extrabold">
+<span class="material-symbols-outlined text-[16px]">verified</span> Safe Window
+    </div>
+</div>
+<div class="flex flex-wrap gap-1.5 py-2.5">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F7F5EF] text-[#4E6350] border border-surface-nude/80 text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">wb_sunny</span> Mild Solar Load
+    </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F7F5EF] text-[#4E6350] border border-surface-nude/80 text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">favorite</span> Safe for Cardio
+    </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#E7D9C9]/50 text-[#374C3A] border border-surface-nude text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">nature</span> High Canopy Shade
+    </span>
+</div>
+<p class="text-[12px] text-secondary font-medium leading-snug" id="window-desc">Mild ambient solar load with minimal UV penetration. Optimal period for intensive aerobic routines and senior fitness walks.</p>
+<div class="mt-3 pt-2.5 border-t border-surface-container">
+<span class="text-[11px] font-extrabold uppercase tracking-wider text-secondary block mb-2">Recommended Disciplines:</span>
+<div class="flex flex-wrap gap-1.5" id="activity-chips">
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[12px] font-bold border border-[#667C68]/20 hover:border-[#667C68] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">directions_walk</span> Walking
+      </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[12px] font-bold border border-[#667C68]/20 hover:border-[#667C68] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">directions_run</span> Jogging
+      </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[12px] font-bold border border-[#667C68]/20 hover:border-[#667C68] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">sports_tennis</span> Kids Playground
+      </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[12px] font-bold border border-[#667C68]/20 hover:border-[#667C68] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">pedal_bike</span> Cycling
+      </span>
+</div>
+</div>
+<div class="mt-3 pt-2.5 border-t border-surface-container flex items-center justify-between cursor-pointer hover:bg-surface-container-low p-1.5 -mx-1.5 rounded-xl transition-colors">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-[#E7D9C9]/60 flex items-center justify-center text-[#4E6350] flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">forest</span>
+</div>
+<div class="text-[12px] text-charcoal">
+<span class="font-extrabold uppercase tracking-wider text-secondary mr-1">Top Zone:</span>
+<span class="font-bold" id="window-location">Elmina Central Park canopy shaded trails</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[18px]">chevron_right</span>
+</div>
+</section>
+<!-- HEAT & UV SAFETY GUIDANCE ALERT CARD -->
+<section class="bg-[#FEF9EE] rounded-2xl p-4 border border-[#FDE68A] text-charcoal aesthetic-shadow">
+<div class="flex items-start gap-3">
+<div class="p-2 rounded-xl bg-[#FEF3C7] text-amber-800 flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="text-[11px] font-bold uppercase tracking-wider text-amber-900">Heat &amp; UV Precaution</h3>
+<span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FDE68A] text-amber-950">Peak Solar Alert</span>
+</div>
+<div class="mt-1 text-[16px] font-extrabold text-amber-950 font-metric">11:30 AM – 4:00 PM</div>
+<p class="text-[11px] text-amber-900/90 mt-1 leading-snug">Peak solar radiation hazard. Plan intensive outdoor sessions outside this window or utilize covered pavilion walkways.</p>
+<div class="mt-2.5 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FEF3C7] text-amber-900 text-[11px] font-bold">
+<span class="material-symbols-outlined text-[13px]">water_drop</span> Hydrate hourly
+        </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FEF3C7] text-amber-900 text-[11px] font-bold">
+<span class="material-symbols-outlined text-[13px]">roofing</span> Covered paths
+        </span>
+</div>
+</div>
+</div>
+</section>
+<!-- NOTIFICATION SCHEDULER SETTING CARD -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 aesthetic-shadow border border-surface-nude/70">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-[#E7D9C9]/60 text-[#4E6350] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+</div>
+<div>
+<h3 class="text-[13px] font-bold text-charcoal">Outdoor Comfort Push Alerts</h3>
+<p class="text-[11px] text-secondary">Notify me when conditions are comfortable</p>
+</div>
+</div>
+<!-- Interactive Toggle Switch -->
+<button aria-checked="true" class="w-12 h-6 flex items-center bg-[#667C68] rounded-full p-1 cursor-pointer transition-colors duration-200 focus:outline-none" id="alert-toggle" role="switch" type="button">
+<div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-6 transition-transform duration-200" id="alert-toggle-circle"></div>
+</button>
+</div>
+<!-- Preview Push Card -->
+<div class="mt-3 p-3 rounded-xl bg-surface-container-low border border-surface-nude/60">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-[#4E6350]">smartphone</span>
+<span class="text-[10px] font-bold text-secondary uppercase">Preview Push Notification</span>
+</div>
+<p class="text-[12px] text-charcoal font-medium italic">
+      "It’s a good time to go outdoors! Elmina Central Park has favourable outdoor conditions until 9:00 AM."
+    </p>
+</div>
+</section>
+</main>
+<!-- INTERACTIVE TOAST ALERT -->
+<div class="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-[#252C27] text-[#F7F5EF] px-4 py-2.5 rounded-full text-[12px] font-bold shadow-lg flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-4" id="toast">
+<span class="material-symbols-outlined text-[#B6FF4A] text-[18px]">check_circle</span>
+<span id="toast-text">Preferences updated successfully.</span>
+</div>
+<!-- PERSISTENT BOTTOM NAVIGATION (Frosted Warm Ivory with Sage Green Active indicator + Lime Dot) -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[440px] left-1/2 -translate-x-1/2 z-50 flex justify-around items-center px-4 py-2 bg-[#F7F5EF]/95 backdrop-blur-md border-t border-surface-nude/70 shadow-lg select-none">
+<!-- 1. Home -->
+<a class="flex flex-col items-center justify-center text-secondary font-medium py-1 hover:text-[#4E6350] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[10px] font-medium tracking-tight mt-0.5">Home</span>
+</a>
+<!-- 2. Touch Grass (ACTIVE) -->
+<a class="relative flex flex-col items-center justify-center text-[#4E6350] font-bold py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">park</span>
+<span class="text-[10px] font-extrabold tracking-tight mt-0.5">Touch Grass</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#B6FF4A] ring-1 ring-[#4E6350]/30 absolute -top-0.5 right-2"></span>
+</a>
+<!-- 3. CoolWalk -->
+<a class="flex flex-col items-center justify-center text-secondary font-medium py-1 hover:text-[#4E6350] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]">directions_walk</span>
+<span class="text-[10px] font-medium tracking-tight mt-0.5">CoolWalk</span>
+</a>
+<!-- 4. Report -->
+<a class="flex flex-col items-center justify-center text-secondary font-medium py-1 hover:text-[#4E6350] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]">report_problem</span>
+<span class="text-[10px] font-medium tracking-tight mt-0.5">Report</span>
+</a>
+<!-- 5. Profile -->
+<a class="flex flex-col items-center justify-center text-secondary font-medium py-1 hover:text-[#4E6350] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-[10px] font-medium tracking-tight mt-0.5">Profile</span>
+</a>
+</nav>
+</div>
+<!-- JAVASCRIPT: DYNAMIC INTERACTIONS -->
+<script>
+    // Data schedule configuration for 5 time slots
+    const scheduleData = [
+      {
+        timeSlot: "6:00 - 9:00 AM",
+        windowTitle: "6:30 AM – 9:00 AM",
+        score: "82",
+        ringOffset: 80,
+        ringColor: "#667C68",
+        statusText: "Good time to go outside",
+        statusBg: "bg-[#B6FF4A]/25 text-[#1A2500] border-[#B6FF4A]/60",
+        conditionHeadline: "Optimal Outdoor Conditions",
+        conditionSub: "High tree canopy shade with mild tropical morning humidity.",
+        windowDesc: "Mildest ambient solar load with minimal UV penetration. Optimal period for intensive aerobic routines and senior fitness walks.",
+        location: "Elmina Central Park canopy shaded trails",
+        chips: [
+          { icon: "directions_walk", text: "Walking" },
+          { icon: "directions_run", text: "Jogging" },
+          { icon: "sports_tennis", text: "Kids Playground" },
+          { icon: "pedal_bike", text: "Cycling" }
+        ]
+      },
+      {
+        timeSlot: "9:00 - 11:30 AM",
+        windowTitle: "9:00 AM – 11:30 AM",
+        score: "64",
+        ringOffset: 160,
+        ringColor: "#D97706",
+        statusText: "Moderate outdoor condition",
+        statusBg: "bg-[#FEF3C7] text-amber-800 border-amber-300",
+        conditionHeadline: "Elevated Solar Radiation",
+        conditionSub: "Solar heat building rapidly. Sunscreen SPF50+ and sunglasses strongly recommended.",
+        windowDesc: "Temperature rising to 32°C. Limit high-strain cardio and choose path networks under dense rain tree canopies.",
+        location: "Elmina Urban Park covered pedestrian boulevard",
+        chips: [
+          { icon: "directions_walk", text: "Casual Stroll" },
+          { icon: "pets", text: "Pet Walking (Shaded)" },
+          { icon: "coffee", text: "Lake Pavilion Rest" }
+        ]
+      },
+      {
+        timeSlot: "11:30 - 4:00 PM",
+        windowTitle: "11:30 AM – 4:00 PM",
+        score: "38",
+        ringOffset: 275,
+        ringColor: "#EF4444",
+        statusText: "Caution: High Heat Index",
+        statusBg: "bg-[#FEF2F2] text-[#EF4444] border-red-200",
+        conditionHeadline: "Unfavourable Outdoor Heat",
+        conditionSub: "Direct sunlight hazard. UV index peaking above 9. Seek indoors or covered facilities.",
+        windowDesc: "Heat stress risk is elevated. Avoid open turf and tarmac circuits. Stay properly hydrated and make use of indoor recreation halls.",
+        location: "Elmina Community Clubhouse & Covered Sports Arena",
+        chips: [
+          { icon: "roofing", text: "Covered Walkway Only" },
+          { icon: "sports_tennis", text: "Indoor Sports" },
+          { icon: "water_drop", text: "Hydration Stations" }
+        ]
+      },
+      {
+        timeSlot: "4:00 - 5:30 PM",
+        windowTitle: "4:00 PM – 5:30 PM",
+        score: "68",
+        ringOffset: 140,
+        ringColor: "#D97706",
+        statusText: "Cooling down gradually",
+        statusBg: "bg-[#FEF3C7] text-amber-800 border-amber-300",
+        conditionHeadline: "Late Afternoon Transition",
+        conditionSub: "Sun angle lowering with ambient warmth radiating from pavements.",
+        windowDesc: "Moderate heat. Comfortable along the lakeside perimeter breeze corridor. Good for light recreation and brisk walking.",
+        location: "Elmina Lakeside Promenade (Western Boardwalk)",
+        chips: [
+          { icon: "directions_walk", text: "Walking" },
+          { icon: "skateboarding", text: "Pump Track" },
+          { icon: "pedal_bike", text: "Leisure Ride" }
+        ]
+      },
+      {
+        timeSlot: "5:30 - 8:00 PM",
+        windowTitle: "5:30 PM – 8:00 PM",
+        score: "79",
+        ringOffset: 92,
+        ringColor: "#667C68",
+        statusText: "Pleasant evening air",
+        statusBg: "bg-[#B6FF4A]/25 text-[#1A2500] border-[#B6FF4A]/60",
+        conditionHeadline: "Evening Sunset Golden Hour",
+        conditionSub: "Gentle tropical breeze and zero UV index. Prime community activity time.",
+        windowDesc: "Cool ambient air with minimal solar load. Excellent for family outdoor gatherings, football, cycling, and park jogs.",
+        location: "Elmina Iconic Bridge & 90km Township Cycling Track",
+        chips: [
+          { icon: "directions_run", text: "Evening Running" },
+          { icon: "pedal_bike", text: "Night Cycling" },
+          { icon: "groups", text: "Family Gathering" },
+          { icon: "sports_soccer", text: "Field Games" }
+        ]
+      }
+    ];
+
+    // Dom Elements
+    const timeButtons = document.querySelectorAll(".time-block-btn");
+    const scoreRing = document.getElementById("score-ring");
+    const scoreText = document.getElementById("score-text");
+    const statusPill = document.getElementById("status-pill");
+    const statusLabel = document.getElementById("status-label");
+    const conditionHeadline = document.getElementById("condition-headline");
+    const conditionSub = document.getElementById("condition-sub");
+    const windowTitle = document.getElementById("window-title");
+    const windowDesc = document.getElementById("window-desc");
+    const windowLocation = document.getElementById("window-location");
+    const activityChipsContainer = document.getElementById("activity-chips");
+
+    // Click handler for hourly schedule selector
+    timeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const index = parseInt(btn.getAttribute("data-index"), 10);
+        const data = scheduleData[index];
+
+        // Reset all buttons style
+        timeButtons.forEach(b => {
+          b.classList.remove("border-2", "border-[#667C68]", "bg-[#F4F1EA]");
+          b.classList.add("border", "border-surface-container", "bg-surface-container-low");
+          const title = b.querySelector("span:first-child");
+          if(title) {
+            title.classList.remove("text-[#4E6350]", "font-extrabold");
+            title.classList.add("text-charcoal", "font-bold");
+          }
+        });
+
+        // Set active button style
+        btn.classList.add("border-2", "border-[#667C68]", "bg-[#F4F1EA]");
+        btn.classList.remove("border-surface-container", "bg-surface-container-low");
+        const activeTitle = btn.querySelector("span:first-child");
+        if(activeTitle) {
+          activeTitle.classList.remove("text-charcoal");
+          activeTitle.classList.add("text-[#4E6350]", "font-extrabold");
+        }
+
+        // Animate circular progress gauge
+        scoreRing.style.strokeDashoffset = data.ringOffset;
+        scoreRing.style.stroke = data.ringColor;
+        scoreText.textContent = data.score;
+
+        // Update Gauge status
+        statusPill.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${data.statusBg}`;
+        statusLabel.textContent = data.statusText;
+        conditionHeadline.textContent = data.conditionHeadline;
+        conditionSub.textContent = data.conditionSub;
+
+        // Update Window Card Details
+        windowTitle.textContent = data.windowTitle;
+        windowDesc.textContent = data.windowDesc;
+        windowLocation.textContent = data.location;
+
+        // Update Chips
+        activityChipsContainer.innerHTML = data.chips.map(c => `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F4F1EA] text-[#4E6350] text-[12px] font-bold border border-[#667C68]/20 hover:border-[#667C68] cursor-pointer transition-colors">
+            <span class="material-symbols-outlined text-[16px]">${c.icon}</span> ${c.text}
+          </span>
+        `).join("");
+      });
+    });
+
+    // Notification switch interaction & Toast
+    const alertToggle = document.getElementById("alert-toggle");
+    const alertCircle = document.getElementById("alert-toggle-circle");
+    const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toast-text");
+    let isAlertEnabled = true;
+    let toastTimeout = null;
+
+    function showToast(message) {
+      if(toastTimeout) clearTimeout(toastTimeout);
+      toastText.textContent = message;
+      toast.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+      toast.classList.add("opacity-100", "translate-y-0");
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+        toast.classList.remove("opacity-100", "translate-y-0");
+      }, 2500);
+    }
+
+    alertToggle.addEventListener("click", () => {
+      isAlertEnabled = !isAlertEnabled;
+      if (isAlertEnabled) {
+        alertToggle.classList.remove("bg-[#737872]");
+        alertToggle.classList.add("bg-[#667C68]");
+        alertCircle.classList.remove("translate-x-0");
+        alertCircle.classList.add("translate-x-6");
+        alertToggle.setAttribute("aria-checked", "true");
+        showToast("Push notification alerts enabled for Elmina.");
+      } else {
+        alertToggle.classList.remove("bg-[#667C68]");
+        alertToggle.classList.add("bg-[#737872]");
+        alertCircle.classList.remove("translate-x-6");
+        alertCircle.classList.add("translate-x-0");
+        alertToggle.setAttribute("aria-checked", "false");
+        showToast("Outdoor schedule push notifications paused.");
+      }
+    });
+  </script>
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

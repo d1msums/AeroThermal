@@ -1,102 +1,378 @@
 {% load static %}
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{ project.name }} | AeroThermal</title>
-
+<title>{{ project.name }} | AeroThermal Map &amp; Tree Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}">
-<link rel="stylesheet" href="{% static 'planner/dashboard.css' %}?v=neon1">
-<link
-  rel="stylesheet"
-  href="{% static 'planner/climate-widgets.css' %}?v=1">
-  <link
-  rel="stylesheet"
-  href="{% static 'planner/aerothermal-theme.css' %}?v=1">
-  
-<style>.stakeholder-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.stakeholder-tabs a{padding:9px 12px;border:1px solid #587b50;border-radius:8px;background:#153b2a;color:#d8f0cb;text-decoration:none;font-size:12px}</style>
-<link rel="stylesheet" href="{% static 'resilience/designer-visual.css' %}?v=2">
-
-<meta name="description" content="AeroThermal township planning workspace: lake storage, shade scenarios and resident reports.">
+<link rel="stylesheet" href="{% static 'resilience/visual.css' %}?v=19">
+<link rel="stylesheet" href="{% static 'planner/dashboard.css' %}?v=neon9">
+<link rel="stylesheet" href="{% static 'planner/climate-widgets.css' %}?v=9">
+<link rel="stylesheet" href="{% static 'planner/aerothermal-theme.css' %}?v=9">
+<link rel="stylesheet" href="{% static 'resilience/designer-visual.css' %}?v=14">
+<meta name="description" content="AeroThermal Map &amp; Tree Simulator: plant insured shade trees, cool down hot walkways, and check lake flood levels.">
 <link rel="icon" type="image/svg+xml" href="{% static 'resilience/favicon.svg' %}">
-
 <!-- AEROTHERMAL_HALLMARK_V1 -->
-<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=2">
-</head><body class="aerothermal-theme">
-<header class="topbar">
+<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=19">
+</head><body class="aerothermal-theme hallmark-workspace">
+<svg class="icon-library" aria-hidden="true" style="display:none;"><defs>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zM9 3v16M15 5v16"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C8 1 2 7 5 15c4 7 16 4 15-12ZM4 21 16 8"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+</defs></svg>
 
-  <a class="brand" href="{% url 'home' %}">
-    <span class="sdp-logo-wrap">
-      <img
-        class="sdp-logo"
-        src="{% static 'planner/images/sdp-logo.png' %}"
-        alt="Sime Darby Property"
-        width="108"
-        height="36">
-    </span>
-
-    <span class="product-brand">
-      <strong>AeroThermal</strong>
-      <small>Climate resilience dashboard</small>
-    </span>
-  </a>
-
-  <div class="account">
-    <span class="role-pill">
-      {% if can_edit %}Planner{% else %}Viewer{% endif %}
-    </span>
-
-    <span>{{ request.user.username }}</span>
-
-    <form method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button class="quiet" type="submit">Log out</button>
-    </form>
-  </div>
-
-</header>
+{% include 'resilience/hallmark_header.html' %}
 
 <main id="app" data-project-id="{{ project.id }}" data-site-version="{{ project.site_version }}" data-can-edit="{{ can_edit|yesno:'true,false' }}" data-action-url="{% url 'project_action' project.id %}">
-<div class="page-heading"><div><a class="back" href="{% url 'home' %}">Projects / Landscape scenarios</a><h1>{{ project.name }}</h1><p>Explore tree placement. Compare shade. Plan a more comfortable park.</p></div><span class="concept-badge">ILLUSTRATIVE SITE</span></div>
+<form style="display:none;">{% csrf_token %}</form>
 
+<!-- 1. SIMPLE TOP HEADER -->
+<div class="page-heading">
+  <div>
+    <h1>Map &amp; Tree Simulator</h1>
+    <p>Place insured shade trees on the map to cool down hot walkways, and check retention lake levels before heavy rain.</p>
+  </div>
+  <div class="heading-actions-stack">
+    <label class="sdp-land-picker" for="sdp-township-select" title="Select Sime Darby Property Township Land">
+      <span class="site-dot"></span>
+      <span class="sdp-picker-prefix">Township:</span>
+      <select id="sdp-township-select" aria-label="Select Sime Darby Property Township Land">
+        <option value="elmina" selected>City of Elmina (Shah Alam)</option>
+        <option value="bukit_raja">Bandar Bukit Raja (Klang)</option>
+        <option value="serenia">Serenia City (Sepang)</option>
+        <option value="sjcc">SJCC &amp; Putra Heights (Subang Jaya)</option>
+        <option value="nilai">Nilai Impian (Negeri Sembilan)</option>
+        <option value="pagoh">Bandar Universiti Pagoh (Johor)</option>
+      </select>
+    </label>
+    <div class="heading-actions-wrap">
+      <button class="text-button" id="open-notes" type="button"><svg width="16" height="16"><use href="#i-info"/></svg>How this page works</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. INTERACTIVE MAP (LEFT) + SIMPLE 3-STEP CONTROLS (RIGHT) -->
 <div class="workspace">
-<aside id="design-controls">
-<div class="section-label">01 / DESIGN SCENARIO</div><h2>Shape the landscape</h2>
-<label for="timestamp">Date &amp; time <span>Malaysia · UTC+08</span></label><input id="timestamp" type="datetime-local">
-<div class="time-presets"><button type="button" data-hour="09">9 AM</button><button type="button" data-hour="12">12 PM</button><button type="button" data-hour="15">3 PM</button><button type="button" data-hour="17">5 PM</button></div>
-<div class="divider"></div><div class="section-label">CANOPY ASSUMPTIONS</div>
-<div class="input-pair"><div><label for="radius">Radius <span>m</span></label><input id="radius" type="number" min="0.5" max="15" step="0.5" value="5"></div><div><label for="height">Model height <span>m</span></label><input id="height" type="number" min="1" max="30" step="0.5" value="7"></div></div>
-<p class="hint">Assumed canopy dimensions. Select a proposed tree to edit; drag it to reposition.</p>
-{% if can_edit %}<button id="add-mode" class="primary" type="button">+ Place a tree</button><button id="example" class="secondary" type="button">Try an example layout</button>{% endif %}
-<div class="list-heading"><h3>Proposed trees</h3><span id="tree-count">0</span></div><div id="tree-list"></div>
-{% if can_edit %}<div class="mini-actions"><button id="apply" type="button">Apply dimensions</button><button id="remove" type="button">Delete selected</button><button id="reset" type="button">Reset layout</button></div>{% endif %}
-<div class="divider"></div><div class="section-label">02 / EVALUATE</div>
-{% if can_edit %}<button id="run" class="primary dark" type="button">Run shade comparison →</button><label for="scenario-name">Save this scenario</label><input id="scenario-name" maxlength="120" placeholder="e.g. Afternoon lakeside shade"><button id="save" class="secondary" type="button">Save scenario</button>{% endif %}
-<label for="saved-select">Saved layouts</label><div class="load-row"><select id="saved-select"><option value="">Choose layout</option>{% for scenario in scenarios %}<option value="{{ scenario.id }}">{{ scenario.name }}</option>{% endfor %}</select><button id="load" class="secondary" type="button">Load</button></div>
-</aside>
-<section class="main-panel">
-    
-<div class="map-toolbar"><div><span class="live-dot"></span><b>Landscape plan</b><span class="map-meta"> / 2D concept view</span></div><div class="map-tools"><label class="compact" for="shadow-mode">Shadows</label><select id="shadow-mode"><option value="baseline">Existing</option><option value="proposed" selected>With proposal</option></select><button id="fit" class="quiet" type="button">Fit site</button></div></div>
-<div class="map-wrap"><div id="map"></div><div class="north">N<span>↑</span></div><div class="map-note">ILLUSTRATIVE GEOMETRY · {{ project.site_version }}</div></div>
-<div class="legend"><span><i class="swatch existing"></i>Existing canopy</span><span><i class="swatch proposed"></i>Proposed canopy</span><span><i class="swatch route"></i>Evaluated route</span><span><i class="swatch shadow"></i>Calculated shade</span></div>
-{% include "planner/partials/climate_widgets.html" %}<div id="message" role="status" aria-live="polite">Choose a layout and time, then run a comparison.</div>
-<div class="results-title" id="shade-results"><div><div class="section-label">03 / COMPARE</div><h2>What changes with your design?</h2></div><span id="result-badge" class="status-badge">Awaiting run</span></div>
-<div class="cards"><article><span>Existing path shade</span><strong id="baseline-value">—</strong><div class="meter"><div id="baseline-bar"></div></div><small>Selected route centreline</small></article><article><span>With proposed trees</span><strong id="proposed-value">—</strong><div class="meter"><div id="proposed-bar"></div></div><small>Same route, same time</small></article><article class="gain"><span>Shade improvement</span><strong id="delta-value">—</strong><small id="seat-value">Shaded seats: —</small></article></div>
-<p class="method">Model scope: projected canopy shade. Decorative canopy highlights do not represent calculated shade. No air-temperature or lake-cooling prediction.</p>
-<details class="history" id="scenario-history"><summary>Saved scenarios &amp; activity history</summary><div class="history-grid"><div><h3>Recent scenarios</h3><ul>{% for scenario in scenarios %}<li>{{ scenario.name }} · {{ scenario.result_data.mode }}<small>{{ scenario.created_by.username }} · {{ scenario.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No scenarios saved yet.</li>{% endfor %}</ul></div><div><h3>Activity</h3><ul>{% for event in events %}<li>{{ event.actor.username }} saved “{{ event.details.scenario_name }}”<small>{{ event.created_at|date:"d M H:i" }}</small></li>{% empty %}<li>No activity yet.</li>{% endfor %}</ul></div></div></details>
-</section></div><footer>{{ site.source_note }}</footer>
+  <section class="main-panel">
+    <div class="map-toolbar">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="live-dot"></span>
+        <b>Township Map</b>
+      </div>
+      <div class="map-tools" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label class="sim-layer-toggle" title="Show 38°C+ hot spots on map">
+          <input type="checkbox" id="sim-toggle-heat" checked> 🔥 Hot spots (38°C+)
+        </label>
+        <label class="sim-layer-toggle" title="Show resident reports on map">
+          <input type="checkbox" id="sim-toggle-reports" checked> 📍 Resident reports
+        </label>
+        <label class="compact" for="shadow-mode">Shadows:</label>
+        <select id="shadow-mode">
+          <option value="baseline">Before new trees</option>
+          <option value="proposed" selected>With new trees</option>
+        </select>
+        <button id="fit" class="quiet" type="button">Reset view</button>
+        <button type="button" class="card-info-btn" data-info-title="Interactive Township Map" data-info-text="Shows the yellow walking path, glowing red 38°C hot spots, resident report pins (click any pin to see the photo!), and the trees you plant.">i</button>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="north">N<span>↑</span></div>
+      <div class="map-note">CITY OF ELMINA · {{ project.site_version }}</div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch existing"></i>Existing trees</span>
+      <span><i class="swatch proposed"></i>New insured trees</span>
+      <span><i class="swatch route" style="background:#ffdc63;"></i>Walking path</span>
+      <span><i class="swatch shadow" style="background:#b97cf0;"></i>Tree shadow</span>
+      <span><i class="swatch" style="background:#ef4444;border-radius:50%;"></i>Hot spot / Resident pin</span>
+    </div>
+  </section>
+
+  <!-- RIGHT SIDEBAR: SUPER SIMPLE 3 STEPS -->
+  <aside id="design-controls">
+    <div class="section-label">STEP 1 · PICK TIME OF DAY</div>
+    <h2>When to test shade?</h2>
+    <input id="timestamp" type="datetime-local" aria-label="Date and time">
+    <div class="time-presets">
+      <button type="button" data-hour="09">9 AM</button>
+      <button type="button" data-hour="12">12 PM</button>
+      <button type="button" data-hour="15">3 PM</button>
+      <button type="button" data-hour="17">5 PM</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">STEP 2 · PLANT INSURED TREES</div>
+    <h2>Add trees to map</h2>
+    <label for="tree-species">Choose tree type</label>
+    <select id="tree-species">
+      <option value="Rain Tree · Insured RM 30k" data-r="8" data-h="12" data-species-idx="0" selected>Rain Tree (RM 30k Insured)</option>
+      <option value="Merawan · Insured RM 25k" data-r="6" data-h="9" data-species-idx="1">Merawan (RM 25k Insured)</option>
+      <option value="Meranti · Insured RM 28k" data-r="6.5" data-h="10" data-species-idx="2">Meranti (RM 28k Insured)</option>
+      <option value="Keruing · Insured RM 35k" data-r="7" data-h="11" data-species-idx="3">Keruing (RM 35k Insured)</option>
+    </select>
+
+    <div class="input-pair">
+      <div><label for="radius">Width <span>m</span></label><input id="radius" type="number" min="0.5" max="15" step="0.5" value="8"></div>
+      <div><label for="height">Height <span>m</span></label><input id="height" type="number" min="1" max="30" step="0.5" value="12"></div>
+    </div>
+
+    {% if can_edit %}
+      <button id="add-mode" class="primary" type="button">+ Add tree on map</button>
+      <button id="example" class="secondary" type="button">Reset 5 sample trees</button>
+    {% endif %}
+
+    <div class="divider"></div>
+    <div class="section-label" style="margin-bottom:10px;">STEP 3 · SAVE &amp; RUN</div>
+    {% if can_edit %}
+      <div class="sim-save-compact">
+        <input id="scenario-name" maxlength="120" placeholder="Enter layout name..." value="Elmina Shaded Walk">
+        <button id="save" class="secondary" type="button">Save</button>
+      </div>
+      <button id="run" class="sim-big-run-btn" type="button" style="margin-top:12px;">Calculate Shade &amp; Cooling</button>
+    {% endif %}
+    <div class="load-row" style="display:none;">
+      <select id="saved-select" aria-label="Load saved layout">
+        <option value="">Load saved layout...</option>
+        {% for scenario in scenarios %}<option value="{{ scenario.id }}">{{ scenario.name }}</option>{% endfor %}
+      </select>
+      <button id="load" class="secondary" type="button">Load</button>
+    </div>
+  </aside>
+</div>
+
+<!-- 3. RIGHT BELOW THE MAP: PROPOSED INSURED TREES (VISUAL PHOTO GALLERY + YOUR PLANTED TREES LIST) -->
+<section class="sim-trees-below-panel" aria-label="Proposed Insured Trees">
+  <div class="sim-trees-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <h2 style="margin:0 !important;">Proposed Insured Trees on Map</h2>
+        <button type="button" class="card-info-btn" style="margin-left:0 !important;" data-info-title="Why Are Our Trees Insured?" data-info-text="Township developers cannot plant random trees. We only plant certified Endangered, Rare &amp; Threatened (ERT) native trees. Every single tree comes with its own insurance policy (RM 25,000 to RM 35,000 per tree) covering storm damage and root safety.">i</button>
+      </div>
+      <p style="margin-top:4px;">We don't plant random trees — choose from 4 certified shade species below (each insured against storm damage):</p>
+    </div>
+    <div class="sim-total-insurance-pill" id="sim-insured-total">
+      🛡️ 5 Trees Insured · RM 138,000 Total Coverage
+    </div>
+  </div>
+
+  <div class="sim-trees-below-grid">
+    <!-- Left: 4 Visual Tree Cards with Real Photos -->
+    <div class="sim-species-photo-grid">
+      <article class="sim-species-card active" data-pick-species="Rain Tree · Insured RM 30k" data-r="8" data-h="12">
+        <div class="sim-species-img">
+          <img src="{% static 'resilience/illustrations/tree_raintree.jpg' %}?v=1" alt="Rain Tree">
+          <span class="sim-ins-tag">🛡️ Insured RM 30,000</span>
+        </div>
+        <div class="sim-species-body">
+          <strong>Rain Tree (Hujan-Hujan)</strong>
+          <span>Wide 8m umbrella crown · Best for maximum walkway shade</span>
+        </div>
+      </article>
+
+      <article class="sim-species-card" data-pick-species="Merawan · Insured RM 25k" data-r="6" data-h="9">
+        <div class="sim-species-img">
+          <img src="{% static 'resilience/illustrations/tree_merawan.jpg' %}?v=1" alt="Merawan Tree">
+          <span class="sim-ins-tag">🛡️ Insured RM 25,000</span>
+        </div>
+        <div class="sim-species-body">
+          <strong>Merawan (Hopea odorata)</strong>
+          <span>Neat 6m cone crown · Strong against heavy windstorms</span>
+        </div>
+      </article>
+
+      <article class="sim-species-card" data-pick-species="Meranti · Insured RM 28k" data-r="6.5" data-h="10">
+        <div class="sim-species-img">
+          <img src="{% static 'resilience/illustrations/tree_meranti.jpg' %}?v=1" alt="Meranti Tree">
+          <span class="sim-ins-tag">🛡️ Insured RM 28,000</span>
+        </div>
+        <div class="sim-species-body">
+          <strong>Meranti (Shorea roxburghii)</strong>
+          <span>Lush 6.5m green canopy · Absorbs heavy rainwater</span>
+        </div>
+      </article>
+
+      <article class="sim-species-card" data-pick-species="Keruing · Insured RM 35k" data-r="7" data-h="11">
+        <div class="sim-species-img">
+          <img src="{% static 'resilience/illustrations/tree_keruing.jpg' %}?v=1" alt="Keruing Tree">
+          <span class="sim-ins-tag">🛡️ Insured RM 35,000</span>
+        </div>
+        <div class="sim-species-body">
+          <strong>Keruing (Dipterocarpus)</strong>
+          <span>Rare 7m heritage tree · Deep cooling shade &amp; safe roots</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- Right: Your Planted Trees on Map List -->
+    <div class="sim-planted-list-box">
+      <div class="list-heading">
+        <h3>Your Planted Trees on Map</h3>
+        <span id="tree-count">0</span>
+      </div>
+      <div id="tree-list"></div>
+      {% if can_edit %}
+        <div class="mini-actions" style="margin-top:10px;">
+          <button id="apply" type="button">Update size</button>
+          <button id="remove" type="button">Delete selected</button>
+          <button id="reset" type="button">Clear all</button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- 4. BIG VISUAL SIMULATION OUTPUT (WALKWAY COOLING RESULT) -->
+<section class="sim-output-showcase" id="shade-results" aria-label="Simulation Results and Visual Preview">
+  <div class="sim-output-banner-top">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span class="sim-verified-pill" id="result-badge">✨ SIMULATION RESULT</span>
+      <div id="message" role="status" aria-live="polite">✅ Done! Planting 5 insured trees boosts walkway shade from 22.4% to 68.5% and cools the path by −2.8°C.</div>
+    </div>
+  </div>
+
+  <div class="sim-output-hero-grid">
+    <!-- Left: Visual Picture of the Shaded Walkway Result -->
+    <div class="sim-visual-preview-card">
+      <div class="sim-visual-img-wrap">
+        <img src="{% static 'resilience/illustrations/coolwalk_sim_result.jpg' %}?v=1" alt="Shaded Park Walkway Result">
+        <span class="sim-img-top-badge">✨ WHAT YOUR SHADED WALKWAY LOOKS LIKE</span>
+        <div class="sim-img-bottom-overlay">
+          <div class="sim-img-stat">
+            <span>Walkway Temperature</span>
+            <strong>38.6°C → 33.4°C</strong>
+          </div>
+          <div class="sim-img-stat">
+            <span>Outdoor Comfort</span>
+            <strong>Safe for All-Day Walks</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: 3 Simple Metric Cards -->
+    <div class="sim-metrics-stack">
+      <div class="results-title" style="margin:0 0 12px;">
+        <div>
+          <h2 style="margin:0;font-size:21px;">Before vs After Planting Trees</h2>
+        </div>
+      </div>
+
+      <div class="cards">
+        <article class="sky-heat">
+          <div class="card-title-with-info">
+            <span>Shade Before</span>
+            <button type="button" class="card-info-btn" data-info-title="Shade Before" data-info-text="How much of the walking path is shaded right now before adding new trees.">i</button>
+          </div>
+          <strong id="baseline-value">22.4%</strong>
+          <div class="meter"><div id="baseline-bar" style="width:22.4%;"></div></div>
+          <small>Hot exposed path before new trees</small>
+        </article>
+
+        <article class="sky-clear">
+          <div class="card-title-with-info">
+            <span>Shade After</span>
+            <button type="button" class="card-info-btn" data-info-title="Shade After" data-info-text="How much of the walking path is covered in cool tree shadow after planting your trees.">i</button>
+          </div>
+          <strong id="proposed-value">68.5%</strong>
+          <div class="meter"><div id="proposed-bar" style="width:68.5%;"></div></div>
+          <small>Shaded path with your new trees</small>
+        </article>
+
+        <article class="gain sky-wind">
+          <div class="card-title-with-info">
+            <span>Cooling Gain</span>
+            <button type="button" class="card-info-btn" data-info-title="Cooling Gain" data-info-text="Shows the extra shade added, how much cooler the air feels, and how many park benches are now shaded.">i</button>
+          </div>
+          <strong id="delta-value">+46.1% · −2.8°C</strong>
+          <small id="seat-value">Shaded park benches: 4 → 14</small>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. LAKE FLOOD BUFFER SIMULATOR -->
+{% include "planner/partials/climate_widgets.html" %}
+
+<footer class="workspace-footer">AeroThermal SDP · Masterplanner &amp; Operations Digital Twin<span>Synced with EcoCool Resident Companion (City of Elmina)</span></footer>
 </main>
-{{ site|json_script:"site-data" }}{{ saved_layouts|json_script:"saved-data" }}
+
+<!-- Plain English How This Page Works Dialog -->
+<dialog id="data-notes">
+  <div class="dialog-top">
+    <h2>How to Use This Page (3 Simple Steps)</h2>
+    <button class="icon-button" id="close-notes" type="button" aria-label="Close guide"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+  </div>
+  <ol style="margin:10px 0 16px 20px;line-height:1.7;color:#2c3e35;font-size:14.5px;">
+    <li><strong>Step 1 (Pick Time):</strong> Click <b>9 AM</b>, <b>12 PM</b>, <b>3 PM</b>, or <b>5 PM</b> on the right to test different sun hours.</li>
+    <li><strong>Step 2 (Plant Insured Trees):</strong> Pick a tree type (or click one of the 4 tree photos below the map) and click <b>+ Add tree on map</b>. Every tree is insured (RM 25k–35k).</li>
+    <li><strong>Step 3 (Calculate):</strong> Click the big green <b>Calculate Shade &amp; Cooling</b> button to see the new shade and cooling result below!</li>
+  </ol>
+  <button class="button" id="done-notes" type="button">Got it!</button>
+</dialog>
+
+<!-- Plain English Card Info Popover Dialog -->
+<dialog id="card-info-dialog" class="weather-dialog info-mini-dialog">
+  <div class="dialog-top">
+    <h2 id="card-info-title">What does this card show?</h2>
+    <button class="icon-button" id="close-card-info" type="button" aria-label="Close info"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+  </div>
+  <p id="card-info-body" style="font-size:15px;line-height:1.6;color:#17211c;margin:8px 0 18px;"></p>
+  <button class="button" id="done-card-info" type="button">Got it, thanks!</button>
+</dialog>
+
+<!-- Simple Lake Gate Action Modal -->
+<dialog id="gate-dispatch-dialog" class="weather-dialog sdp-action-modal">
+  <div class="dialog-top">
+    <div>
+      <span class="met-live-badge"><span class="met-live-dot"></span>LAKE WATER GATE ACTION</span>
+      <h2 style="margin-top:4px;">Release Lake Water Before Storm</h2>
+    </div>
+    <button class="icon-button" id="close-gate-dispatch" type="button" aria-label="Close modal"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+  </div>
+  <p style="margin:0 0 14px;color:#41564a;font-size:14px;">Open the retention lake outlet gate early or alert the maintenance team before heavy rain arrives:</p>
+  <div class="sdp-contact-grid">
+    <div class="sdp-contact-card">
+      <div class="sdp-contact-role">1. Lake Outlet Gate</div>
+      <strong>Elmina Central Lake · Gate #02</strong>
+      <span>Release <strong>12,000 m³ of water</strong> over 4 hours so the lake has extra room for heavy rain.</span>
+      <small>Downstream river level is safe</small>
+    </div>
+    <div class="sdp-contact-card">
+      <div class="sdp-contact-role">2. Park Maintenance Team</div>
+      <strong>Elmina Drainage &amp; Park Crew</strong>
+      <span>Clear fallen leaves from lakeside drain grates before the rain starts.</span>
+      <small>Hotline: +603-7849 5200</small>
+    </div>
+  </div>
+  <div id="gate-dispatch-toast" class="sdp-dispatch-toast" hidden>
+    ✅ <strong>Action Sent!</strong> Lake Gate #02 early drain schedule and maintenance alert have been activated.
+  </div>
+  <div class="dialog-actions" style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
+    <button class="small-button" id="cancel-gate-dispatch" type="button">Close</button>
+    <button class="button" id="confirm-gate-dispatch" type="button" style="background:#dc2626;border-color:#dc2626;color:#fff;">Confirm &amp; Notify Team</button>
+  </div>
+</dialog>
+
+{{ site|json_script:"site-data" }}{{ saved_layouts|json_script:"saved-data" }}{{ visual_data|json_script:"visual-data" }}
 <script src="{% static 'planner/vendor/leaflet.js' %}"></script>
-<script src="{% static 'planner/dashboard.js' %}?v=neon1"></script>
+<script src="{% static 'planner/dashboard.js' %}?v=neon8"></script>
 
 <!-- ECOCOOL_ELMINA_MAP_V1 -->
 {% if site.basemap.provider == "google" %}
 {{ ecocool_map_config|json_script:"ecocool-map-config" }}
 <script src="{% static 'planner/vendor/Leaflet.GoogleMutant.js' %}"></script>
-<script src="{% static 'planner/elmina-map.js' %}?v=elmina1"></script>
+<script src="{% static 'planner/elmina-map.js' %}?v=elmina9"></script>
 {% endif %}
-<script src="{% static 'resilience/dashboard-bridge.js' %}?v=1"></script>
-<!-- AEROTHERMAL_STAKEHOLDERS_V1 -->
-<script src="{% static 'resilience/dashboard-links.js' %}?v=2"></script>
-<!-- AEROTHERMAL_VISUAL_B2B_V2 -->
-<script src="{% static 'resilience/designer-visual.js' %}?v=2"></script>
+<script src="{% static 'resilience/dashboard-bridge.js' %}?v=15"></script>
+<script src="{% static 'resilience/designer-visual.js' %}?v=15"></script>
 </body></html>

@@ -2,17 +2,35 @@
 <header class="hm-masthead">
   <div class="hm-brand">
     <img src="{% static 'planner/images/sdp-logo.png' %}" alt="Sime Darby Property" width="62" height="40">
-    <a class="hm-wordmark" href="{% url 'resilience:hub' project.id %}">AeroThermal<small>Township workspace</small></a>
+    <a class="hm-wordmark" href="{% url 'resilience:hub' project.id %}">
+      AeroThermal
+      <small>Township Resilience &amp; Microclimate Twin</small>
+    </a>
   </div>
   <nav class="rail-nav hm-navigation" aria-label="Workspace">
-    <a class="{% if audience == 'leadership' %}active{% endif %}" href="{% url 'resilience:audience' project.id 'leadership' %}"><svg aria-hidden="true"><use href="#i-grid"/></svg>Overview</a>
-    <a class="{% if audience == 'engineer' %}active{% endif %}" href="{% url 'resilience:audience' project.id 'engineer' %}"><svg aria-hidden="true"><use href="#i-map"/></svg>Map &amp; planning</a>
-    <a class="{% if audience == 'operations' %}active{% endif %}" href="{% url 'resilience:audience' project.id 'operations' %}"><svg aria-hidden="true"><use href="#i-pin"/></svg>Resident reports</a>
-    <a class="ca-nav-link {% if audience == 'alerts' %}active{% endif %}" {% if audience == 'alerts' %}aria-current="page"{% endif %} href="{% url 'resilience:climate_alerts' project.id %}"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3ZM12 9v5m0 3v1"/></svg>Climate alerts</a>
-<a href="{% url 'dashboard' project.id %}">
-  <svg aria-hidden="true"><use href="#i-leaf"/></svg>
-  Tree simulator
-</a>
+    <a class="{% if audience == 'leadership' %}active{% endif %}" href="{% url 'resilience:audience' project.id 'leadership' %}">
+      <svg aria-hidden="true"><use href="#i-grid"/></svg>Overview
+    </a>
+    <a class="{% if request.resolver_match.url_name == 'dashboard' or audience == 'engineer' %}active{% endif %}" href="{% url 'dashboard' project.id %}">
+      <svg aria-hidden="true"><use href="#i-leaf"/></svg>Map &amp; Tree Simulator
+    </a>
+    <a class="{% if audience == 'operations' %}active{% endif %}" href="{% url 'resilience:audience' project.id 'operations' %}">
+      <svg aria-hidden="true"><use href="#i-pin"/></svg>Resident reports
+    </a>
+    <a class="ca-nav-link {% if audience == 'alerts' %}active{% endif %}" {% if audience == 'alerts' %}aria-current="page"{% endif %} href="{% url 'resilience:climate_alerts' project.id %}">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>AeroThermal AI
+    </a>
   </nav>
-  <div class="hm-account"><b aria-hidden="true">{{ request.user.username|slice:':1'|upper }}</b><span>{{ request.user.username }}<small>{{ membership.role|title }} access</small></span></div>
+  <div class="hm-right-cluster">
+    <a class="b2c-launch-pill" href="http://127.0.0.1:8080/" target="_blank" rel="noopener">
+      <span class="b2c-dot"></span>Resident App ↗
+    </a>
+    <div class="hm-account">
+      <b aria-hidden="true">{{ request.user.username|slice:':1'|upper|default:'P' }}</b>
+      <span>
+        {{ request.user.username|default:'planner' }}
+        <small>{% if membership %}{{ membership.role|title }} access{% elif can_edit %}Planner access{% else %}Workspace access{% endif %}</small>
+      </span>
+    </div>
+  </div>
 </header>

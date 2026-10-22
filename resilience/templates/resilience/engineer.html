@@ -1,9 +1,91 @@
-{% extends 'resilience/base.html' %}{% block title %}Map &amp; planning{% endblock %}{% block subtitle %}Locate issues. Review storage. Test tree placement.{% endblock %}
-{% block heading_action %}<a class="button" href="{% url 'dashboard' project.id %}"><svg><use href="#i-leaf"/></svg>Open landscape review</a>{% endblock %}
-{% block content %}{% include 'resilience/kpis.html' %}
-<div class="scenario-strip"><span class="data-tag">Shared demo scenario</span>{% if can_manage %}<form method="post" action="{% url 'resilience:scenario' project.id %}">{% csrf_token %}<label class="sr-only" for="shared-scenario">Project scenario</label><select id="shared-scenario" name="scenario"><option value="normal">Normal</option><option value="storm">Heavy rain</option><option value="heat">Heatwave</option><option value="drought">Drought</option><option value="wind">Windstorm</option></select><button class="small-button">Apply scenario</button></form>{% else %}<strong>{{ state.scenario|title }}</strong><span class="subtle">Read-only</span>{% endif %}<span class="scenario-note">Changes apply to the project snapshot.</span></div>
-{% include 'resilience/map_panel.html' %}
-<div class="engineering-grid"><section class="panel"><div class="panel-heading"><div><h2>Storm storage review</h2><p>Volume balance · demo assumptions</p></div><span class="hold-chip">On hold</span></div><div id="storage-balance"></div><div class="release-summary"><span>Candidate for review<strong id="candidate-release">—</strong></span><small>Downstream capacity and release rate need verification.</small></div><details class="technical-notes"><summary>Calculation details</summary><p>Assumed inflow: {{ state.assumed_inflow_m3 }} m³. Minimum reserve: {{ state.reserve_m3 }} m³. This does not route floodwater or control a gate.</p></details></section>
-<section class="panel"><div class="panel-heading"><div><h2>Storage trend</h2><p>Reference sequence · demo</p></div></div><div id="storage-chart" class="line-chart"></div></section></div>
-<section class="panel compact-panel"><div><h2>Official weather warnings</h2><p>National feed · location review required</p></div><button id="fetch-weather" class="small-button" data-url="{% url 'resilience:weather' project.id %}">Check feed</button><div id="weather-result" role="status"></div></section>
+{% extends 'resilience/base.html' %}
+{% block title %}Map &amp; planning{% endblock %}
+{% block subtitle %}Locate issues. Review storm storage. Test shared climate scenarios.{% endblock %}
+{% block heading_action %}<a class="button" href="{% url 'dashboard' project.id %}"><svg><use href="#i-leaf"/></svg>Open tree simulator</a>{% endblock %}
+{% block content %}
+<div class="scenario-strip">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="data-tag" style="background:#B6FF4A;color:#1A2500;font-weight:800;">LIVE SCENARIO SIMULATOR</span>
+    <strong style="font-size:13.5px;">Project Climate Condition:</strong>
+  </div>
+  {% if can_manage %}
+  <form method="post" action="{% url 'resilience:scenario' project.id %}">
+    {% csrf_token %}
+    <label class="sr-only" for="shared-scenario">Project scenario</label>
+    <select id="shared-scenario" name="scenario">
+      <option value="normal">☀️ Normal Baseline</option>
+      <option value="storm">⛈️ Heavy Rain / Cloudburst</option>
+      <option value="heat">🔥 Heatwave (38°C+)</option>
+      <option value="drought">🌵 El Niño Drought</option>
+      <option value="wind">🌬️ Monsoon Windstorm</option>
+    </select>
+    <button class="button" type="submit">Apply scenario</button>
+  </form>
+  {% else %}
+  <strong>{{ state.scenario|title }}</strong><span class="subtle">Read-only</span>
+  {% endif %}
+  <span class="scenario-note">Updates retention basin balance &amp; Climate Alerts across the workspace.</span>
+</div>
+
+<!-- Dedicated Engineering Split Workbench: Left = GIS Map (60%) | Right = Storm Storage Calculator & Weather Feed (40%) -->
+<div class="engineer-workbench-grid">
+  <section class="panel map-panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Engineering GIS &amp; Thermal Hotspot Map</h2>
+        <p>Toggle field report markers and surface-temperature zones to correlate drainage and heat stress.</p>
+      </div>
+      <button class="small-button" id="fit-map" type="button">Fit site</button>
+    </div>
+    <div class="map-toggles">
+      <label><input type="checkbox" id="toggle-reports" checked>App report markers</label>
+      <label><input type="checkbox" id="toggle-hotspots" checked>Surface thermal hotspots</label>
+      <span id="map-count"></span>
+    </div>
+    <div id="visual-map" role="region" aria-label="Township engineering map" style="height:470px;"></div>
+    <div class="map-footer">
+      <div class="map-legend">
+        <span><i class="dot flood"></i>Drainage</span>
+        <span><i class="dot wind"></i>Tree obstruction</span>
+        <span><i class="dot drought"></i>Vegetation</span>
+        <span><i class="dot heat"></i>Heat</span>
+      </div>
+      <small id="map-status">Loading map</small>
+    </div>
+  </section>
+
+  <div class="engineer-side-stack">
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Storm storage volume-balance</h2>
+          <p>Retention lake pre-discharge &amp; MSMA buffer analysis</p>
+        </div>
+        <span class="hold-chip">Engineering review</span>
+      </div>
+      <div id="storage-balance" style="padding: 4px 20px 14px;"></div>
+      <div class="release-summary" style="margin: 0 20px 16px;">
+        <span>Candidate pre-discharge volume<strong id="candidate-release">—</strong></span>
+        <small>Verify downstream JPS drain capacity &amp; permitted release rate before gate dispatch.</small>
+      </div>
+      <details class="technical-notes" style="padding: 0 20px 18px;">
+        <summary>MSMA &amp; hydraulic assumptions</summary>
+        <p style="margin-top:8px;">Assumed storm inflow: <strong>{{ state.assumed_inflow_m3 }} m³</strong> · Minimum dry-weather reserve: <strong>{{ state.reserve_m3 }} m³</strong>. Supports technical evidence for local council (MBSA/MPK) planning review.</p>
+      </details>
+    </section>
+
+    <section class="panel compact-panel">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+        <div>
+          <h2>Official METMalaysia warning feed</h2>
+          <p>National meteorological adapter · verify local township relevance</p>
+        </div>
+        <button id="fetch-weather" class="small-button" data-url="{% url 'resilience:weather' project.id %}">Check feed</button>
+      </div>
+      <div id="weather-result" role="status" style="margin-top:10px;"></div>
+    </section>
+  </div>
+</div>
+
+<dialog id="report-inspector" class="inspector"><div class="inspector-top"><span id="inspect-reference"></span><button class="icon-button" id="close-inspector" type="button" aria-label="Close report"><svg><use href="#i-x"/></svg></button></div><div class="attachment-wrap"><img id="inspect-image" alt="Report attachment"><span id="inspect-image-label"></span></div><div class="inspector-body"><div class="inspector-tags"><span id="inspect-status" class="status"></span><span id="inspect-source" class="data-tag"></span></div><h2 id="inspect-title"></h2><p id="inspect-description"></p><dl class="facts"><div><dt>Location</dt><dd id="inspect-location"></dd></div><div><dt>Reported</dt><dd id="inspect-time"></dd></div><div><dt>Assigned</dt><dd id="inspect-assigned"></dd></div></dl><div class="inspection-actions"><button id="locate-report" class="small-button" type="button">Locate on map</button><a id="inspect-open" class="button">Open work item <svg><use href="#i-arrow"/></svg></a></div></div></dialog>
 {% endblock %}

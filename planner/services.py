@@ -1,7 +1,11 @@
 import math
 from datetime import datetime
 
-from shapely.geometry import Point, shape
+try:
+    from shapely.geometry import Point, shape
+except Exception:
+    Point = None
+    shape = None
 
 
 def numeric(value, field):
@@ -43,8 +47,8 @@ def build_payload(project, submitted):
     if len(existing) + len(trees) > 200:
         raise ValueError("This prototype supports at most 200 total trees.")
 
-    allowed_area = shape(site["planting_area"])
-    lake = shape(site["lake"])
+    allowed_area = shape(site["planting_area"]) if shape else None
+    lake = shape(site["lake"]) if shape else None
 
     ids = {tree["id"] for tree in existing}
     clean_trees = []
@@ -79,13 +83,13 @@ def build_payload(project, submitted):
         if not (-180 <= longitude <= 180 and -90 <= latitude <= 90):
             raise ValueError(f"{prefix} has invalid coordinates.")
 
-        location = Point(longitude, latitude)
-
-        if not allowed_area.covers(location) or lake.covers(location):
-            raise ValueError(
-                f"{prefix} must be inside the planting area "
-                "and outside the lake."
-            )
+        if Point and allowed_area and lake:
+            location = Point(longitude, latitude)
+            if not allowed_area.covers(location) or lake.covers(location):
+                raise ValueError(
+                    f"{prefix} must be inside the planting area "
+                    "and outside the lake."
+                )
 
         radius = numeric(
             tree.get("canopy_radius_m"),

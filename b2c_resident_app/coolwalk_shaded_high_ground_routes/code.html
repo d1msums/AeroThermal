@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CoolWalk – Shaded Route Navigation</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#4e6350",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#b6ff4a",
+            "secondary": "#54634d",
+            "surface-container": "#e9f0e8",
+            "on-primary": "#ffffff",
+            "surface-container-highest": "#dde4dd",
+            "outline": "#737872",
+            "on-surface": "#161d19",
+            "background": "#f4fbf3",
+            "surface": "#f4fbf3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+  body, button, input, select, textarea, p, span:not(.material-symbols-outlined), h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+    /* Custom SVG route dash animations & pulses */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.35); }
+    }
+    .user-pulse {
+      animation: pulseGlow 2.2s infinite ease-in-out;
+      transform-origin: center;
+    }
+    .dash-flow {
+      stroke-dasharray: 6 5;
+      animation: dashMove 20s linear infinite;
+    }
+    @keyframes dashMove {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -100; }
+    }
+    /* Hide scrollbars for clean carousel interaction */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex justify-center selection:bg-primary selection:text-on-primary min-h-screen" style="background-color: #F7F5EF; color: #252C27;">
+<!-- Mobile Viewport Shell (Max ~410px width for native app experience) -->
+<div class="w-full max-w-md bg-surface flex flex-col relative min-h-screen shadow-2xl overflow-x-hidden pb-24" style="background-color: #F7F5EF;">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full max-w-md z-50 flex justify-between items-center px-margin h-14 backdrop-blur-md border-b shadow-sm select-none" style="background-color: rgba(247, 245, 239, 0.92); border-color: rgba(169, 185, 160, 0.35);"><div class="flex items-center gap-space-sm"><button aria-label="Go back" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-95 transition-transform duration-150" style="background-color: #E7D9C9; color: #252C27;" type="button"><span class="material-symbols-outlined text-[20px]" data-icon="arrow_back">arrow_back</span></button><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="text-[17px] font-bold tracking-tight leading-none" style="color: #252C27;">CoolWalk</span><span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider" style="background-color: #667C68; color: #FFFFFF;">Strava Mode</span></div><span class="text-[10px] font-semibold leading-tight mt-0.5" style="color: #667C68;">City of Elmina • Canopy Track</span></div></div><div class="flex items-center gap-2"><button aria-label="Toggle Canopy Heat Layers" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-95 transition-transform" id="toggle-layers-btn" style="background-color: #E7D9C9; color: #252C27;"><span class="material-symbols-outlined text-[18px]" data-icon="layers">layers</span></button><button aria-label="Notifications" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-95 transition-transform relative" style="background-color: #E7D9C9; color: #252C27;" type="button"><span class="material-symbols-outlined text-[18px]" data-icon="notifications">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full ring-2 ring-white" style="background-color: #B6FF4A;"></span></button></div></header>
+<!-- Turn-by-Turn GPS HUD Banner -->
+<div class="fixed top-14 left-0 w-full max-w-md z-40 px-margin pt-2 transition-all duration-300 transform -translate-y-full opacity-0 pointer-events-none" id="gps-hud-banner">
+<div class="rounded-xl p-3 shadow-lg flex items-center justify-between border-l-4" style="background-color: #252C27; border-left: 4px solid #B6FF4A; border-radius: 1rem;"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background-color: #B6FF4A; color: #252C27;"><span class="material-symbols-outlined text-lg" data-icon="navigation">navigation</span></div><div><div class="text-[11px] font-bold uppercase tracking-wider" style="color: #B6FF4A;">Eco-Navigation Active</div><div class="text-[14px] font-bold text-white leading-tight" id="hud-instruction">Head North towards Elmina Pavilion</div></div></div><button aria-label="Dismiss HUD" class="p-1 rounded-full text-white/80 hover:text-white" id="close-hud-btn"><span class="material-symbols-outlined text-base" data-icon="close">close</span></button></div>
+</div>
+<!-- MAIN SCROLLABLE CANVAS -->
+<main class="flex-1 flex flex-col pt-16">
+<!-- Township & Weather Context Ribbon -->
+<section class="px-margin py-2 flex items-center justify-between gap-2"><div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-xs border truncate" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.4);"><span class="material-symbols-outlined text-[15px] shrink-0" data-icon="near_me" style="color: #667C68;">near_me</span><span class="text-[12px] font-semibold truncate" style="color: #252C27;">Central Park &amp; West Loop</span></div><div class="flex items-center gap-1.5 px-3 py-1 rounded-full shadow-xs border shrink-0" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.4);"><span class="material-symbols-outlined text-[15px]" data-icon="wb_sunny" style="color: #667C68;">wb_sunny</span><span class="text-[12px] font-bold" style="color: #252C27;">31°C</span><span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full" style="background-color: #B6FF4A; color: #252C27;">27.8°C In Shade</span></div></section>
+<!-- INTERACTIVE SIMULATED MAP CONTAINER -->
+<section class="relative px-margin mt-1">
+<div class="relative w-full h-[320px] rounded-xl overflow-hidden shadow-md border border-surface-container-highest/60 bg-[#E8F0EA]">
+<!-- Stylized Township Vector Map -->
+<svg class="w-full h-full object-cover select-none" fill="none" viewbox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="parkGrad" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#EDF3EB"></stop><stop offset="100%" stop-color="#DDE9DA"></stop></lineargradient><lineargradient id="canopyGrad" x1="0" x2="0.8" y1="0" y2="1"><stop offset="0%" stop-color="#4E6451" stop-opacity="0.45"></stop><stop offset="100%" stop-color="#667C68" stop-opacity="0.65"></stop></lineargradient><lineargradient id="lakeGrad" x1="0.2" x2="0.8" y1="0" y2="1"><stop offset="0%" stop-color="#C8E4D5"></stop><stop offset="100%" stop-color="#A3CBB6"></stop></lineargradient></defs><rect fill="url(#parkGrad)" height="360" width="400"></rect><path d="M-10 60 L410 85" stroke="#FFFFFF" stroke-linecap="round" stroke-width="7"></path><path d="M-10 160 L410 170" stroke="#FFFFFF" stroke-linecap="round" stroke-width="8"></path><path d="M-10 260 L410 245" stroke="#FFFFFF" stroke-linecap="round" stroke-width="7"></path><path d="M80 -10 L95 380" stroke="#FFFFFF" stroke-linecap="round" stroke-width="6"></path><path d="M220 -10 L230 380" stroke="#FFFFFF" stroke-linecap="round" stroke-width="8"></path><path d="M330 -10 L310 380" stroke="#FFFFFF" stroke-linecap="round" stroke-width="6"></path><path d="M110 90 C 145 110, 150 170, 185 190 C 220 210, 260 175, 290 205 C 320 235, 295 285, 230 270 C 170 255, 140 210, 115 175 C 95 145, 90 100, 110 90 Z" fill="url(#lakeGrad)" stroke="#667C68" stroke-width="1.5"></path>
+<!-- Canopy Layer -->
+<g class="transition-opacity duration-300" id="canopy-layer"><path d="M60 80 Q 90 40 140 65 Q 170 90 145 130 Q 120 150 75 140 Q 40 120 60 80 Z" fill="url(#canopyGrad)"></path><path d="M160 120 Q 210 110 245 140 Q 275 170 250 210 Q 215 240 185 205 Q 150 170 160 120 Z" fill="url(#canopyGrad)"></path><path d="M90 220 Q 130 200 170 230 Q 190 265 160 295 Q 120 310 85 280 Q 70 250 90 220 Z" fill="url(#canopyGrad)"></path></g>
+<!-- Route: Shortest (Parklink Express) -->
+<path class="transition-all duration-300" d="M70 295 L145 280 L225 250 L235 155 L225 80" fill="none" id="route-shortest" opacity="0.35" stroke="#B87333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+<!-- Route: High Ground (Ridge Crest Trail - Elevated perimeter bypassing low retention lake) -->
+<path class="transition-all duration-300" d="M70 295 L45 230 C 40 180, 50 120, 85 80 C 120 48, 175 45, 225 80" fill="none" id="route-highground" opacity="0.35" stroke="#C26A1B" stroke-dasharray="8 5" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+<!-- Route: Most Shaded (Elmina Rainforest Loop) -->
+<path class="dash-flow shadow-lg transition-all duration-300" d="M70 295 C 95 270, 115 245, 140 230 C 175 210, 180 170, 165 140 C 150 110, 175 90, 225 80" fill="none" id="route-shaded" stroke="#252C27" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.5"></path>
+<!-- Start Pin -->
+<circle cx="70" cy="295" fill="#FFFFFF" r="9" stroke="#667C68" stroke-width="3.5"></circle><circle cx="70" cy="295" fill="#B6FF4A" r="4.5"></circle><text fill="#252C27" font-family="Inter" font-size="10" font-weight="800" x="42" y="322">Start: Central Park</text>
+<!-- End Pin -->
+<circle cx="225" cy="80" fill="#FFFFFF" r="11" stroke="#667C68" stroke-width="3.5"></circle><circle cx="225" cy="80" fill="#667C68" r="5"></circle><text fill="#252C27" font-family="Inter" font-size="10" font-weight="800" x="210" y="65">Elmina Pavilion</text>
+<!-- POI Markers -->
+<g transform="translate(148, 185)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#EDF3EB" r="9"></circle><path d="M10 5 L14 11 H12 V15 H8 V11 H6 L10 5 Z" fill="#667C68"></path></g><g transform="translate(195, 125)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#E7D9C9" r="9"></circle><path d="M10 5 C8.5 7.5 7 9.5 7 11.5 C7 13.2 8.3 14.5 10 14.5 C11.7 14.5 13 13.2 13 11.5 C13 9.5 11.5 7.5 10 5 Z" fill="#667C68"></path></g>
+<!-- High Ground Ridge Elevation Peak Point on Map -->
+<g id="ridge-peak-poi" opacity="0.4" transform="translate(48, 130)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#FDF3E7" r="9"></circle><path d="M6 13 L10 6 L14 13 Z" fill="#C26A1B"></path><text fill="#C26A1B" font-family="Inter" font-size="8" font-weight="800" x="24" y="14">+18m</text></g>
+<!-- Live Pulse -->
+<circle class="user-pulse" cx="102" cy="265" fill="#B6FF4A" fill-opacity="0.4" r="14"></circle><circle cx="102" cy="265" fill="#667C68" r="6" stroke="#FFFFFF" stroke-width="2.5"></circle></svg>
+<!-- Top-Right Map Controls Overlay -->
+<div class="absolute top-3 right-3 flex flex-col gap-2 z-20"><button aria-label="Zoom in" class="w-9 h-9 rounded-full bg-white/95 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md active:scale-90 transition-transform border border-surface-container-highest/50 font-bold" id="btn-zoom-in"><span class="material-symbols-outlined text-[18px]" data-icon="add">add</span></button><button aria-label="Zoom out" class="w-9 h-9 rounded-full bg-white/95 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md active:scale-90 transition-transform border border-surface-container-highest/50 font-bold" id="btn-zoom-out"><span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span></button><button aria-label="Recenter map" class="w-9 h-9 rounded-full bg-white/95 backdrop-blur-md text-primary flex items-center justify-center shadow-md active:scale-90 transition-transform border border-surface-container-highest/50" id="btn-recenter"><span class="material-symbols-outlined text-[18px]" data-icon="my_location">my_location</span></button></div>
+<!-- Canopy Density Overlay Toggle Pill -->
+<button class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md flex items-center gap-2 text-[11px] font-bold text-on-surface border border-surface-container-highest/60 active:scale-95 transition-transform z-20" id="btn-canopy-toggle" style="border-color: rgba(169, 185, 160, 0.5);"><span class="w-2.5 h-2.5 rounded-full inline-block shadow-sm animate-pulse" style="background-color: #B6FF4A;"></span><span id="canopy-status-text" style="color: #252C27;">Canopy Shade: Active</span></button>
+<!-- Floating Map Micro-Legend -->
+<div class="absolute bottom-2.5 left-2.5 right-2.5 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-surface-container-highest/50 z-20 flex items-center justify-around gap-2"><div class="flex items-center gap-1.5 text-[10px] font-bold" style="color: #252C27;"><span class="w-2.5 h-1.5 rounded-full inline-block" style="background-color: #B6FF4A;"></span><span>70%+ Shade</span></div><div class="flex items-center gap-1.5 text-[10px] font-bold" style="color: #252C27;"><span class="w-2.5 h-1.5 rounded-full inline-block" style="background-color: #A9B9A0;"></span><span>Semi-Shade</span></div><div class="flex items-center gap-1.5 text-[10px] font-bold" style="color: #252C27;"><span class="w-2.5 h-1.5 rounded-full inline-block" style="background-color: #C26A1B;"></span><span>Ridge Crest</span></div><div class="flex items-center gap-1 text-[10px] font-semibold" style="color: #667C68;"><span class="material-symbols-outlined text-[13px]" data-icon="park">park</span><span>Pavilion</span></div><div class="flex items-center gap-1 text-[10px] font-semibold" style="color: #667C68;"><span class="material-symbols-outlined text-[13px]" data-icon="water_drop">water_drop</span><span>Water</span></div></div>
+</div>
+</section>
+<!-- ROUTE SELECTOR CAROUSEL / TAB PILLS -->
+<section class="mt-3 px-margin"><div class="flex items-center justify-between mb-2"><span class="text-[11px] font-extrabold uppercase tracking-wider" style="color: #667C68;">ROUTES</span><span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full" style="background-color: #E7D9C9; color: #252C27;">3 options available</span></div>
+<!-- 3 Horizontal Route Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist">
+<!-- Option 1: Most Shaded -->
+<button aria-selected="true" class="route-tab px-3.5 py-2.5 rounded-2xl border flex items-center gap-2.5 shrink-0 shadow-sm transition-all text-left" id="tab-route-shaded" onclick="selectRoute('shaded')" role="tab" style="background-color: #FFFFFF; border: 2px solid #667C68;">
+<div class="w-7 h-7 rounded-xl flex items-center justify-center shrink-0" style="background-color: #EDF3EB; color: #667C68;">
+<span class="material-symbols-outlined text-[18px]" data-icon="park">park</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-[12px] font-bold" style="color: #252C27;">Most Shaded</span>
+<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full" style="background-color: #B6FF4A; color: #252C27;">78%</span>
+</div>
+<div class="text-[10px] font-medium" style="color: #667C68;">Elmina Rainforest Loop</div>
+</div>
+</button>
+<!-- Option 2: Shortest -->
+<button aria-selected="false" class="route-tab px-3.5 py-2.5 rounded-2xl border flex items-center gap-2.5 shrink-0 opacity-80 hover:opacity-100 transition-all text-left" id="tab-route-shortest" onclick="selectRoute('shortest')" role="tab" style="background-color: #F7F5EF; border: 1.5px solid rgba(169, 185, 160, 0.4);">
+<div class="w-7 h-7 rounded-xl flex items-center justify-center shrink-0" style="background-color: #E7D9C9; color: #667C68;">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt">bolt</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-[12px] font-bold" style="color: #252C27;">Shortest</span>
+<span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="background-color: #E7D9C9; color: #252C27;">32%</span>
+</div>
+<div class="text-[10px] font-medium" style="color: #667C68;">Parklink Express</div>
+</div>
+</button>
+<!-- Option 3: High Ground (Ridge Crest Trail) -->
+<button aria-selected="false" class="route-tab px-3.5 py-2.5 rounded-2xl border flex items-center gap-2.5 shrink-0 opacity-80 hover:opacity-100 transition-all text-left" id="tab-route-highground" onclick="selectRoute('highground')" role="tab" style="background-color: #F7F5EF; border: 1.5px solid rgba(169, 185, 160, 0.4);">
+<div class="w-7 h-7 rounded-xl flex items-center justify-center shrink-0" style="background-color: #FEEEDD; color: #C26A1B;">
+<span class="material-symbols-outlined text-[18px]" data-icon="terrain">terrain</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-[12px] font-bold" style="color: #252C27;">High Ground</span>
+<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full" style="background-color: #FED7AA; color: #7C2D12;">+18m</span>
+</div>
+<div class="text-[10px] font-medium" style="color: #667C68;">Ridge Crest Trail</div>
+</div>
+</button>
+</div>
+</section>
+<!-- INTERACTIVE ROUTE SUMMARY CARD -->
+<section class="mt-2 px-margin mb-6">
+<div class="rounded-2xl p-4 shadow-sm border relative" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45);">
+<!-- Title & Badge Header -->
+<div class="flex items-start justify-between gap-2 mb-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full" id="route-indicator-dot" style="background-color: #B6FF4A;"></span>
+<h2 class="text-[18px] font-bold tracking-tight" id="route-card-title" style="color: #252C27;">Elmina Rainforest Loop</h2>
+</div>
+<p class="text-[12px] font-medium mt-0.5" id="route-card-subtitle" style="color: #667C68;">Lakeside fig &amp; mahogany canopy</p>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold shrink-0 border" id="route-shade-badge" style="background-color: #B6FF4A; color: #252C27; border-color: #667C68;">78% Shade</span>
+</div>
+<!-- Weather/Warning Advisory Banner (Dynamic for High Ground / Advisories) -->
+<div class="hidden mb-3 p-3 rounded-xl border flex items-start gap-2.5 transition-all" id="route-advisory-box" style="background-color: #FFFBEB; border-color: #FDE68A;">
+<span class="text-[18px] leading-tight shrink-0 select-none">⚠️</span>
+<div class="flex-1">
+<span class="text-[11px] font-bold uppercase tracking-wider block" style="color: #92400E;">Flash Flood Advisory</span>
+<p class="text-[11px] leading-relaxed mt-0.5 font-medium" style="color: #78350F;">Avoid low-lying boardwalks &amp; retention pond trails. Ridge path provides well-drained elevated pavement.</p>
+</div>
+</div>
+<!-- Metric Cards Grid -->
+<div class="grid grid-cols-2 gap-2.5 mb-3">
+<!-- Metric 1: Distance & Time -->
+<div class="p-3 rounded-xl border flex flex-col justify-between" style="background-color: #F7F5EF; border-color: rgba(169, 185, 160, 0.35);">
+<span class="text-[10px] uppercase font-bold tracking-wider" style="color: #667C68;">Distance &amp; Time</span>
+<div class="mt-1" id="stat-dist-time">
+<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #252C27;">1.8 <span class="text-[14px] font-semibold" style="color: #667C68;">km</span></div>
+<div class="text-[12px] font-semibold mt-1" style="color: #667C68;">25 min walk</div>
+</div>
+</div>
+<!-- Metric 2: Elevation / Microclimate -->
+<div class="p-3 rounded-xl border flex flex-col justify-between" style="background-color: #F7F5EF; border-color: rgba(169, 185, 160, 0.35);">
+<span class="text-[10px] uppercase font-bold tracking-wider" id="stat-metric2-label" style="color: #667C68;">Microclimate</span>
+<div class="mt-1" id="stat-metric2-content">
+<div class="text-[24px] font-extrabold leading-none tracking-tight" id="stat-temp" style="color: #667C68;">-3.2°C</div>
+<div class="text-[12px] font-bold mt-1" id="stat-metric2-sub" style="color: #252C27;">Cooler In Shade</div>
+</div>
+</div>
+</div>
+<!-- Sub-metrics / Feature Chips -->
+<div class="flex items-center justify-between text-[11px] font-semibold py-2 border-t mb-3" id="route-chips-row" style="border-color: rgba(169, 185, 160, 0.35); color: #667C68;">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" id="chip-icon-1" style="color: #667C68;">park</span>
+<span id="chip-text-1">142 Shade Trees</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" id="chip-icon-2" style="color: #667C68;">water_drop</span>
+<span id="chip-text-2">2 Refills</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" id="chip-icon-3" style="color: #667C68;">light_mode</span>
+<span id="chip-text-3">UV 3 (Low)</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-2">
+<button class="w-full h-12 rounded-xl font-bold text-[14px] flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all duration-150 uppercase tracking-wide" id="btn-start-walk" style="background-color: #667C68; color: #FFFFFF;">
+<span class="material-symbols-outlined text-[20px]" data-icon="near_me">near_me</span>
+<span>Start CoolWalk</span>
+</button>
+<button class="w-full h-10 rounded-xl font-semibold text-[12px] flex items-center justify-center gap-1.5 active:scale-95 transition-all border" id="btn-view-elevation" style="background-color: #E7D9C9; color: #252C27; border-color: rgba(169, 185, 160, 0.35);">
+<span class="material-symbols-outlined text-[16px]" data-icon="stacked_line_chart" style="color: #667C68;">stacked_line_chart</span>
+<span>Route &amp; Elevation Profile</span>
+</button>
+</div>
+<!-- Required Prototype Disclaimer -->
+<div class="mt-3 text-center px-1">
+<p class="text-[9.5px] font-medium leading-relaxed" style="color: #737872;">
+        Simulated route &amp; elevation data for prototype. Elevation estimates are illustrative and do not guarantee safe passage during severe weather.
+      </p>
+</div>
+</div>
+</section>
+</main>
+<!-- PERSISTENT BOTTOM NAVIGATION -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-1.5 backdrop-blur-md border-t shadow-lg select-none" style="max-width: 448px; margin: 0px auto; right: 0px; background-color: rgba(247, 245, 239, 0.94); border-top: 1px solid rgba(169, 185, 160, 0.4); backdrop-filter: blur(12px);">
+<a class="flex flex-col items-center justify-center font-medium py-1 active:scale-95 transition-transform duration-150" href="#" style="color: #667C68;">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+<span class="text-[10px] mt-0.5">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center font-medium py-1 active:scale-95 transition-transform duration-150" href="#" style="color: #667C68;">
+<span class="material-symbols-outlined text-[20px]" data-icon="park">park</span>
+<span class="text-[10px] mt-0.5">Touch Grass</span>
+</a>
+<a class="flex flex-col items-center justify-center font-bold py-1 active:scale-95 transition-transform duration-150 relative" href="#" style="color: #252C27;">
+<div class="w-8 h-8 rounded-full flex items-center justify-center relative" style="background-color: #667C68; color: #FFFFFF;">
+<span class="material-symbols-outlined text-[20px]" data-icon="directions_walk" style="font-variation-settings: 'FILL' 1;">directions_walk</span>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style="background-color: #B6FF4A;"></span>
+</div>
+<span class="text-[10px] font-extrabold mt-0.5" style="color: #667C68;">CoolWalk</span>
+</a>
+<a class="flex flex-col items-center justify-center font-medium py-1 active:scale-95 transition-transform duration-150" href="#" style="color: #667C68;">
+<span class="material-symbols-outlined text-[20px]" data-icon="report_problem">report_problem</span>
+<span class="text-[10px] mt-0.5">Report</span>
+</a>
+<a class="flex flex-col items-center justify-center font-medium py-1 active:scale-95 transition-transform duration-150" href="#" style="color: #667C68;">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span class="text-[10px] mt-0.5">Profile</span>
+</a>
+</nav>
+</div>
+<!-- Interactive JavaScript Logic -->
+<script>
+  // State data for 3 specified routes
+  const routeConfigs = {
+    'shaded': {
+      title: 'Elmina Rainforest Loop',
+      subtitle: 'Lakeside fig & mahogany canopy',
+      badgeText: '78% Shade',
+      badgeStyle: 'background-color: #B6FF4A; color: #252C27; border-color: #667C68;',
+      dotColor: '#B6FF4A',
+      distTimeHtml: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #252C27;">1.8 <span class="text-[14px] font-semibold" style="color: #667C68;">km</span></div><div class="text-[12px] font-semibold mt-1" style="color: #667C68;">25 min walk</div>',
+      metric2Label: 'Microclimate',
+      metric2Html: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #667C68;">-3.2°C</div><div class="text-[12px] font-bold mt-1" style="color: #252C27;">Cooler In Shade</div>',
+      chips: [
+        { icon: 'park', text: '142 Shade Trees' },
+        { icon: 'water_drop', text: '2 Refills' },
+        { icon: 'light_mode', text: 'UV 3 (Low)' }
+      ],
+      showAdvisory: false,
+      activeLineId: 'route-shaded',
+      hudText: 'Head North towards Elmina Pavilion (Shaded Loop)'
+    },
+    'shortest': {
+      title: 'Parklink Express',
+      subtitle: 'Fast direct commute via Elmina Boulevard',
+      badgeText: '32% Shade',
+      badgeStyle: 'background-color: #E7D9C9; color: #252C27; border-color: #A9B9A0;',
+      dotColor: '#B87333',
+      distTimeHtml: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #252C27;">1.2 <span class="text-[14px] font-semibold" style="color: #667C68;">km</span></div><div class="text-[12px] font-semibold mt-1" style="color: #667C68;">15 min walk</div>',
+      metric2Label: 'Commute Pace',
+      metric2Html: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #B87333;">Fast</div><div class="text-[12px] font-bold mt-1" style="color: #252C27;">Direct Paved Sidewalk</div>',
+      chips: [
+        { icon: 'bolt', text: 'Quickest Path' },
+        { icon: 'water_drop', text: '1 Refill Station' },
+        { icon: 'light_mode', text: 'UV 6 (High Exposure)' }
+      ],
+      showAdvisory: false,
+      activeLineId: 'route-shortest',
+      hudText: 'Follow Elmina Boulevard directly to Central Pavilion'
+    },
+    'highground': {
+      title: 'Elmina Ridge & High-Ground Crest',
+      subtitle: 'Well-drained perimeter crest above retention lake',
+      badgeText: 'Elevated Route • Ridge Path',
+      badgeStyle: 'background-color: #FED7AA; color: #7C2D12; border-color: #C26A1B;',
+      dotColor: '#C26A1B',
+      distTimeHtml: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #252C27;">2.1 <span class="text-[14px] font-semibold" style="color: #667C68;">km</span></div><div class="text-[12px] font-semibold mt-1" style="color: #667C68;">28 min walk</div>',
+      metric2Label: 'Elevation / Flood Risk',
+      metric2Html: '<div class="text-[24px] font-extrabold leading-none tracking-tight" style="color: #C26A1B;">+18m Crest</div><div class="text-[12px] font-bold mt-1" style="color: #252C27;">Low Flood Risk Safe Zone</div>',
+      chips: [
+        { icon: 'altitude', text: '18m Peak Elevation' },
+        { icon: 'water_damage', text: 'Paved & Drained' },
+        { icon: 'wb_incandescent', text: 'Illuminated Ridge' }
+      ],
+      showAdvisory: true,
+      activeLineId: 'route-highground',
+      hudText: 'Ascend West Ridge Trail • Flood-safe bypass active'
+    }
+  };
+
+  let activeRouteKey = 'shaded';
+
+  function selectRoute(key) {
+    activeRouteKey = key;
+    const config = routeConfigs[key];
+
+    // 1. Update Card Header info
+    document.getElementById('route-card-title').textContent = config.title;
+    document.getElementById('route-card-subtitle').textContent = config.subtitle;
+    
+    // Badge
+    const badge = document.getElementById('route-shade-badge');
+    badge.textContent = config.badgeText;
+    badge.setAttribute('style', config.badgeStyle);
+
+    // Indicator Dot
+    const dot = document.getElementById('route-indicator-dot');
+    dot.style.backgroundColor = config.dotColor;
+
+    // 2. Weather Advisory box toggle
+    const advisory = document.getElementById('route-advisory-box');
+    if (config.showAdvisory) {
+      advisory.classList.remove('hidden');
+    } else {
+      advisory.classList.add('hidden');
+    }
+
+    // 3. Update Metrics Grid
+    document.getElementById('stat-dist-time').innerHTML = config.distTimeHtml;
+    document.getElementById('stat-metric2-label').textContent = config.metric2Label;
+    document.getElementById('stat-metric2-content').innerHTML = config.metric2Html;
+
+    // 4. Update Chips
+    document.getElementById('chip-icon-1').textContent = config.chips[0].icon;
+    document.getElementById('chip-text-1').textContent = config.chips[0].text;
+    document.getElementById('chip-icon-2').textContent = config.chips[1].icon;
+    document.getElementById('chip-text-2').textContent = config.chips[1].text;
+    document.getElementById('chip-icon-3').textContent = config.chips[2].icon;
+    document.getElementById('chip-text-3').textContent = config.chips[2].text;
+
+    // 5. Update HUD instruction if displayed
+    document.getElementById('hud-instruction').textContent = config.hudText;
+
+    // 6. Update Tabs Visual State
+    const tabKeys = ['shaded', 'shortest', 'highground'];
+    tabKeys.forEach(tKey => {
+      const tabEl = document.getElementById(`tab-route-${tKey}`);
+      if (tKey === key) {
+        tabEl.style.backgroundColor = '#FFFFFF';
+        tabEl.style.border = '2px solid #667C68';
+        tabEl.classList.remove('opacity-80');
+        tabEl.setAttribute('aria-selected', 'true');
+      } else {
+        tabEl.style.backgroundColor = '#F7F5EF';
+        tabEl.style.border = '1.5px solid rgba(169, 185, 160, 0.4)';
+        tabEl.classList.add('opacity-80');
+        tabEl.setAttribute('aria-selected', 'false');
+      }
+    });
+
+    // 7. Update Map SVG Highlight Polylines
+    const lineElements = {
+      'shaded': document.getElementById('route-shaded'),
+      'shortest': document.getElementById('route-shortest'),
+      'highground': document.getElementById('route-highground')
+    };
+
+    const ridgePoi = document.getElementById('ridge-peak-poi');
+    if (key === 'highground') {
+      ridgePoi.style.opacity = '1';
+    } else {
+      ridgePoi.style.opacity = '0.35';
+    }
+
+    Object.keys(lineElements).forEach(k => {
+      const line = lineElements[k];
+      if (k === key) {
+        line.setAttribute('stroke-width', '6.5');
+        line.setAttribute('opacity', '1');
+        line.classList.add('dash-flow');
+        if (k === 'highground') {
+          line.setAttribute('stroke', '#C26A1B');
+        } else if (k === 'shortest') {
+          line.setAttribute('stroke', '#B87333');
+        } else {
+          line.setAttribute('stroke', '#252C27');
+        }
+      } else {
+        line.setAttribute('stroke-width', '4');
+        line.setAttribute('opacity', '0.28');
+        line.classList.remove('dash-flow');
+        if (k === 'highground') {
+          line.setAttribute('stroke', '#C26A1B');
+        } else if (k === 'shortest') {
+          line.setAttribute('stroke', '#8E7068');
+        } else {
+          line.setAttribute('stroke', '#252C27');
+        }
+      }
+    });
+  }
+
+  // Toggle Canopy Layer
+  let canopyVisible = true;
+  const canopyBtn = document.getElementById('btn-canopy-toggle');
+  const canopyLayer = document.getElementById('canopy-layer');
+  const canopyText = document.getElementById('canopy-status-text');
+
+  canopyBtn.addEventListener('click', () => {
+    canopyVisible = !canopyVisible;
+    if (canopyVisible) {
+      canopyLayer.style.opacity = '1';
+      canopyText.textContent = 'Canopy Shade: Active';
+      canopyBtn.classList.remove('opacity-60');
+    } else {
+      canopyLayer.style.opacity = '0.05';
+      canopyText.textContent = 'Canopy Shade: Off';
+      canopyBtn.classList.add('opacity-60');
+    }
+  });
+
+  const toggleLayersTop = document.getElementById('toggle-layers-btn');
+  if (toggleLayersTop) {
+    toggleLayersTop.addEventListener('click', () => {
+      canopyBtn.click();
+    });
+  }
+
+  // Start CoolWalk GPS Banner trigger
+  const startBtn = document.getElementById('btn-start-walk');
+  const hud = document.getElementById('gps-hud-banner');
+  const closeHud = document.getElementById('close-hud-btn');
+
+  startBtn.addEventListener('click', () => {
+    hud.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+    hud.classList.add('translate-y-0', 'opacity-100');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  closeHud.addEventListener('click', () => {
+    hud.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+    hud.classList.remove('translate-y-0', 'opacity-100');
+  });
+
+  // Map Controls feedback
+  document.getElementById('btn-zoom-in').addEventListener('click', () => {
+    const mapSvg = document.querySelector('svg');
+    mapSvg.style.transform = 'scale(1.12)';
+    mapSvg.style.transition = 'transform 0.3s ease';
+    setTimeout(() => { mapSvg.style.transform = 'scale(1)'; }, 900);
+  });
+
+  document.getElementById('btn-zoom-out').addEventListener('click', () => {
+    const mapSvg = document.querySelector('svg');
+    mapSvg.style.transform = 'scale(0.92)';
+    mapSvg.style.transition = 'transform 0.3s ease';
+    setTimeout(() => { mapSvg.style.transform = 'scale(1)'; }, 900);
+  });
+
+  document.getElementById('btn-recenter').addEventListener('click', () => {
+    const userDot = document.querySelector('.user-pulse');
+    userDot.style.animation = 'none';
+    void userDot.offsetWidth;
+    userDot.style.animation = 'pulseGlow 1s infinite ease-in-out';
+  });
+
+  // View Elevation Alert Interaction
+  document.getElementById('btn-view-elevation').addEventListener('click', () => {
+    if (activeRouteKey === 'highground') {
+      alert("Elevation Profile (Ridge Crest Trail):\n• Peak Elevation: +18.4m above retention basin\n• Drainage: Continuous graded bioswales\n• Safe during monsoon flash flood advisories.");
+    } else if (activeRouteKey === 'shortest') {
+      alert("Elevation Profile (Parklink Express):\n• Level grade sidewalk with slight 1.5m curb incline\n• 100% barrier-free.");
+    } else {
+      alert("Elevation Profile (Rainforest Loop):\n• Gentle lakeside undulation with maximum 4.2m grade\n• 92% wheelchair and stroller accessible under canopy.");
+    }
+  });
+</script>
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

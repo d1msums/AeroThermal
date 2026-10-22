@@ -65,16 +65,21 @@ def dashboard(request, project_id):
         .order_by("-created_at")[:20]
     )
 
+    from resilience.visuals import page_data
+    can_edit = membership.role == "planner"
+
     return render(
         request,
         "planner/dashboard.html",
         {
             "project": project,
             "site": project.site_data,
-            "can_edit": membership.role == "planner",
+            "can_edit": can_edit,
+            "membership": membership,
             "scenarios": scenarios,
             "saved_layouts": saved_layouts,
             "events": events,
+            "visual_data": page_data(project, request.user, can_edit),
         },
     )
 

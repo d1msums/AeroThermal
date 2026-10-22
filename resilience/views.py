@@ -100,6 +100,27 @@ def report_detail(request,project_id,report_id):
 def triage(request,project_id,report_id):
     m,_,allowed=access(request,project_id,internal=True,write=True)
     if not allowed: return HttpResponseForbidden('Planner membership required.')
+    quick_action = request.POST.get('quick_action')
+    if quick_action:
+        with transaction.atomic():
+            report = get_object_or_404(FieldReport.objects.select_for_update(), pk=report_id, project=m.project)
+            if quick_action == 'dispatch':
+                report.status = 'in_progress'
+                report.verified = True
+                report.events.append(event(request.user, 'in_progress', 'Assigned maintenance crew dispatched to site.'))
+            elif quick_action == 'resolve':
+                report.status = 'resolved'
+                report.verified = True
+                report.demo_points = (report.demo_points or 0) + 50
+                report.events.append(event(request.user, 'resolved', 'Remediation completed & verified. +50 GreenPoints awarded.'))
+            elif quick_action == 'nudge':
+                report.events.append(event(request.user, 'escalate', 'Priority radio nudge sent to crew lead. Response expedited.'))
+            report.version += 1
+            report.save()
+        if request.headers.get('Accept') == 'application/json' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'saved': True, 'action': quick_action, 'status': report.status, 'points': report.demo_points})
+        return redirect('resilience:audience', project_id=project_id, audience='operations')
+
     form=TriageForm(request.POST)
     if not form.is_valid(): return render(request,'resilience/form_error.html',{'project':m.project,'form':form},status=400)
     with transaction.atomic():
@@ -108,9 +129,10 @@ def triage(request,project_id,report_id):
         if report.version!=d['version']: return HttpResponse('Report changed. Reload before updating.',status=409)
         report.status=d['status'];report.verified=d['verified']
         if d['assign_to_me']: report.assigned_to=request.user
-        # B2C rewards belong to the mobile-app workflow; no points are issued here.
         report.events.append(event(request.user,report.status,d['note']))
         report.version+=1;report.save()
+    if request.headers.get('Accept') == 'application/json' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'saved': True, 'status': report.status, 'verified': report.verified, 'version': report.version})
     return redirect('resilience:report',project_id=project_id,report_id=report_id)
 
 @login_required
@@ -123,7 +145,11 @@ def publish(request,project_id):
         item=form.save(commit=False);item.project=m.project;item.created_by=request.user
         item.expires_at=timezone.now()+timedelta(hours=form.cleaned_data['hours'])
         item.is_demo=True;item.save()
+        if request.headers.get('Accept') == 'application/json' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'saved': True, 'id': item.id, 'title': item.title, 'message': item.message})
         return redirect('resilience:audience',project_id=project_id,audience='operations')
+    if request.headers.get('Accept') == 'application/json' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'errors': form.errors}, status=400)
     return render(request,'resilience/form_error.html',{'project':m.project,'form':form},status=400)
 
 @login_required
@@ -133,6 +159,8 @@ def withdraw(request,project_id,advisory_id):
     if not allowed: return HttpResponseForbidden('Planner membership required.')
     item=get_object_or_404(Advisory,pk=advisory_id,project=m.project)
     item.active=False;item.save(update_fields=['active'])
+    if request.headers.get('Accept') == 'application/json' or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'withdrawn': True, 'id': advisory_id})
     return redirect('resilience:audience',project_id=project_id,audience='operations')
 
 @login_required

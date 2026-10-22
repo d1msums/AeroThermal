@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resident Profile &amp; EcoImpact - City of Elmina</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#aa2f00",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary": "#5c5f62",
+            "surface-container": "#eceef0",
+            "on-tertiary-fixed-variant": "#005236",
+            "secondary-fixed-dim": "#c5c6ca",
+            "on-secondary-fixed-variant": "#44474a",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#ffb59f",
+            "surface-tint": "#af3100",
+            "primary-container": "#d14311",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e0e3e5",
+            "outline": "#8e7068",
+            "on-tertiary-container": "#f5fff6",
+            "on-secondary-fixed": "#191c1f",
+            "secondary-container": "#dee0e3",
+            "tertiary-container": "#00855b",
+            "on-background": "#191c1e",
+            "tertiary": "#006947",
+            "error": "#ba1a1a",
+            "surface": "#f7f9fb",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#3a0a00",
+            "on-primary-container": "#fffbff",
+            "secondary-fixed": "#e1e2e6",
+            "on-tertiary-fixed": "#002113",
+            "on-surface-variant": "#5a413a",
+            "tertiary-fixed": "#6ffbbe",
+            "primary-fixed": "#ffdbd1",
+            "surface-variant": "#e0e3e5",
+            "surface-container-low": "#f2f4f6",
+            "surface-dim": "#d8dadc",
+            "inverse-surface": "#2d3133",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#eff1f3",
+            "on-surface": "#191c1e",
+            "outline-variant": "#e2bfb5",
+            "background": "#f7f9fb",
+            "on-primary-fixed-variant": "#852300",
+            "surface-bright": "#f7f9fb",
+            "on-secondary-container": "#606366",
+            "surface-container-high": "#e6e8ea",
+            "inverse-primary": "#ffb59f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "display-lg": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+            "label-md": ["11px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "label-lg": ["13px", { "lineHeight": "18px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+  body, button, input, select, textarea, p, span:not(.material-symbols-outlined), h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-gradient-hero {
+      background: linear-gradient(145deg, #EB5A28 0%, #C43516 100%);
+    }
+    .card-shadow-soft {
+      box-shadow: 0 4px 16px -2px rgba(30, 33, 36, 0.06), 0 2px 6px -1px rgba(30, 33, 36, 0.04);
+    }
+    .card-shadow-elevated {
+      box-shadow: 0 10px 25px -4px rgba(224, 78, 29, 0.12), 0 4px 10px -2px rgba(30, 33, 36, 0.05);
+    }
+    /* Safe scrollbar hiding */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-fixed selection:text-primary min-h-screen pb-24" style="background-color: #F7F5EF; color: #252C27;">
+<!-- TOP APP BAR (from Shared Components JSON: TopAppBar) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-14 bg-surface-container-lowest/80 backdrop-blur-sm border-b border-surface-container-high transition-transform duration-150" style="background-color: rgba(247, 245, 239, 0.92); border-color: rgba(169, 185, 160, 0.35);"><div class="flex items-center space-x-2"><button aria-label="Go back" class="text-on-surface hover:bg-surface-container p-1.5 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center" onclick="history.back()"><span class="material-symbols-outlined text-[22px] text-on-surface">arrow_back</span></button><h1 class="text-[17px] font-extrabold text-on-surface tracking-tight">Profile &amp; Impact</h1></div><div class="flex items-center space-x-1.5"><button aria-label="Settings" class="text-secondary hover:text-on-surface hover:bg-surface-container p-2 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">settings</span></button><button aria-label="Notifications" class="relative text-secondary hover:text-on-surface hover:bg-surface-container p-2 rounded-full active:scale-95 transition-transform duration-150 flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full ring-2 ring-surface-container-lowest" style="background-color: #B6FF4A; box-shadow: 0 0 0 2px #667C68;"></span></button></div></header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS (Max mobile width ~390px centered) -->
+<main class="max-w-[430px] mx-auto pt-16 px-margin">
+<!-- Atmospheric Warmth Top Accents -->
+<div class="w-full pt-space-md pb-space-sm flex justify-between items-center text-label-md font-label-md text-secondary">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-tertiary text-[16px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-bold text-on-surface">Sime Darby Property</span>
+<span class="">•</span>
+<span class="">EcoSystem</span>
+</div>
+<span class="bg-surface-container-high text-on-surface px-2 py-0.5 rounded-full text-label-sm font-label-sm">Active Session</span>
+</div>
+<!-- 1. RESIDENT IDENTITY CARD -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md card-shadow-soft mb-space-md border border-surface-container transition-all" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45); border-radius: 1.25rem;"><div class="flex items-center justify-between"><div class="flex items-center space-x-3.5"><div class="relative flex-shrink-0"><div class="w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest shadow-sm" style="box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #667C68;"><img class="w-full h-full object-cover" data-alt="Close-up modern professional portrait of an energetic young Southeast Asian Malay woman named Ain wearing an elegant headscarf and smart polo shirt, smiling genuinely in warm golden tropical sunlight with landscaped green township foliage blurred softly in the clean background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFzJIL7X50pgAQaX9gccNS2BYCR5Vn0UOvUG6RLa3S76mUv9YaZcDSYjn4KPcgYscphErCv4k6MBxQMBICx913jr_LWWCta-joND8qkKwk6IwSwRpxyww_O3IAyUC-kLIe8H-3DBcdMBFav3twE0J72wMGvwuywmwjFWLp8mrPA4qP3SL1rco6Isv0xbhx0CP7qY0dpHslw9VRIRMzteGOr1b8IbyD74Pp3KGYuja9TszwPyIGOOL0"/></div><div class="absolute -bottom-1 -right-1 bg-amber-500 text-surface-container-lowest text-[10px] p-0.5 rounded-full border-2 border-surface-container-lowest shadow-sm flex items-center justify-center" title="Sime Darby Gold Resident"><span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span></div></div><div class="min-w-0"><div class="flex items-center gap-1.5"><h2 class="text-headline-md font-headline-md text-on-surface font-extrabold tracking-tight truncate">Ain Binti Zulkifli</h2></div><div class="flex items-center gap-1.5 text-body-sm font-body-sm text-secondary mt-0.5"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span><span class="font-medium">City of Elmina</span><span class="">•</span><span class="truncate">Ilham Residence 2</span></div><div class="mt-2 flex items-center gap-1.5 flex-wrap"><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border" style="background-color: rgba(182, 255, 74, 0.25); color: #1A2500; border-color: rgba(182, 255, 74, 0.6);"><span class="w-1.5 h-1.5 rounded-full" style="background-color: #4E6350;"></span>EcoChampion Lvl 2</span><span class="text-[11px] font-semibold px-2 py-0.5 rounded-full border" style="background-color: #F7F5EF; color: #556056; border-color: rgba(169, 185, 160, 0.4);">Owner</span></div></div></div></div></section>
+<!-- 2. ECOPOINTS HERO CARD (Branded Warm Gradient) -->
+<section class="rounded-3xl p-space-lg text-white mb-space-xl relative overflow-hidden border shadow-sm" style="background: linear-gradient(135deg, #667C68 0%, #566D58 45%, #425544 100%); border-color: rgba(255, 255, 255, 0.15);"><div class="absolute -right-8 -top-8 w-44 h-44 rounded-full pointer-events-none blur-3xl" style="background-color: rgba(182, 255, 74, 0.15);"></div><div class="absolute left-4 -bottom-10 w-36 h-36 rounded-full pointer-events-none blur-2xl" style="background-color: rgba(0, 0, 0, 0.2);"></div><div class="absolute right-3 top-2 pointer-events-none" style="color: rgba(255, 255, 255, 0.06);"><span class="material-symbols-outlined text-[100px] leading-none" style="font-variation-settings: 'FILL' 1;">bolt</span></div><div class="relative z-10"><div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full animate-pulse" style="background-color: #B6FF4A;"></span><span class="text-[11px] font-extrabold uppercase tracking-widest text-white/90">EcoPoints Balance</span></div><span class="backdrop-blur-sm text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 border" style="background-color: rgba(0, 0, 0, 0.25); color: #B6FF4A; border-color: rgba(182, 255, 74, 0.4);"><span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified</span></div><div class="my-3 flex items-baseline gap-2"><span class="text-[46px] leading-none tracking-tight font-extrabold text-white font-mono" id="points-display">340</span><span class="text-[15px] font-extrabold uppercase tracking-wider" style="color: #B6FF4A;">PTS</span></div><div class="inline-flex items-center gap-1.5 backdrop-blur-sm px-3 py-1 rounded-full text-label-sm font-semibold mb-4 border" style="background-color: rgba(0, 0, 0, 0.25); border-color: rgba(255, 255, 255, 0.15); color: #F7F5EF;"><span class="material-symbols-outlined text-[15px]" style="color: #B6FF4A;">trending_up</span><span><strong class="font-extrabold" style="color: #B6FF4A;">+65 pts</strong> this week • Shaded routes</span></div><div class="flex items-center gap-2.5 pt-2 border-t border-white/15"><button class="flex-1 font-bold text-[13px] py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all duration-150 flex items-center justify-center gap-1.5" onclick="scrollToRedeem()" style="background-color: #FFFFFF; color: #252C27;"><span class="material-symbols-outlined text-[17px]" style="color: #4E6350; font-variation-settings: 'FILL' 1;">redeem</span>Redeem Perks</button><button class="font-bold text-[13px] py-2.5 px-4 rounded-xl border backdrop-blur-sm active:scale-95 transition-all duration-150 flex items-center justify-center gap-1 text-white" onclick="openHistoryModal()" style="background-color: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.25);"><span class="material-symbols-outlined text-[17px]">history</span>History</button></div></div></section>
+<!-- 3. WEEKLY CLIMATE RESILIENCE IMPACT METRICS -->
+<section class="mb-space-xl"><div class="flex justify-between items-center mb-space-sm px-1"><div><h3 class="text-headline-sm font-headline-sm text-on-surface font-extrabold tracking-tight">Weekly Resilience</h3></div><span class="inline-flex items-center gap-1 bg-emerald-50 text-tertiary border border-emerald-100 text-[11px] font-bold px-2 py-0.5 rounded-full" style="background-color: rgba(182, 255, 74, 0.25); color: #1A2500; border-color: rgba(182, 255, 74, 0.6);"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>Live Telemetry</span></div><div class="grid grid-cols-3 gap-2.5"><div class="p-3 rounded-2xl flex flex-col justify-between border shadow-sm" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.4);"><div class="w-8 h-8 rounded-xl flex items-center justify-center mb-2" style="background-color: #F4F1EA; color: #4E6350;"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">directions_walk</span></div><div><div class="text-[22px] leading-tight font-extrabold tracking-tight font-mono" style="color: #252C27;">14.2<span class="text-[11px] font-semibold ml-0.5" style="color: #6C756E;">km</span></div><div class="text-[11px] font-semibold mt-0.5 leading-tight" style="color: #6C756E;">Shaded Walk</div></div><div class="mt-2 pt-1.5 border-t text-[10px] font-bold flex items-center gap-0.5" style="border-color: rgba(169, 185, 160, 0.3); color: #4E6350;"><span class="material-symbols-outlined text-[12px]">north_east</span> +2.4 km</div></div><div class="p-3 rounded-2xl flex flex-col justify-between border shadow-sm" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.4);"><div class="w-8 h-8 rounded-xl flex items-center justify-center mb-2" style="background-color: #E7D9C9; color: #4E6350;"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span></div><div><div class="text-[22px] leading-tight font-extrabold tracking-tight font-mono" style="color: #252C27;">84<span class="text-[11px] font-semibold ml-0.5" style="color: #6C756E;">%</span></div><div class="text-[11px] font-semibold mt-0.5 leading-tight" style="color: #6C756E;">Heat Shield</div></div><div class="mt-2 pt-1.5 border-t text-[10px] font-bold flex items-center gap-0.5" style="border-color: rgba(169, 185, 160, 0.3); color: #667C68;"><span class="material-symbols-outlined text-[12px]" style="color: #B6FF4A;">wb_sunny</span> -3.5°C Mean</div></div><div class="p-3 rounded-2xl flex flex-col justify-between border shadow-sm" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.4);"><div class="w-8 h-8 rounded-xl flex items-center justify-center mb-2" style="background-color: #F4F1EA; color: #4E6350;"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">forest</span></div><div><div class="text-[22px] leading-tight font-extrabold tracking-tight font-mono" style="color: #252C27;">4.8<span class="text-[11px] font-semibold ml-0.5" style="color: #6C756E;">kg</span></div><div class="text-[11px] font-semibold mt-0.5 leading-tight" style="color: #6C756E;">CO₂ Offset</div></div><div class="mt-2 pt-1.5 border-t text-[10px] font-bold flex items-center gap-0.5" style="border-color: rgba(169, 185, 160, 0.3); color: #4E6350;"><span class="material-symbols-outlined text-[12px]">park</span> 0.2 Trees Eq.</div></div></div></section>
+<!-- 4. REDEEM TOWNSHIP LIFESTYLE PERKS -->
+<section class="mb-space-xl" id="redeem-section"><div class="flex justify-between items-center mb-space-sm px-1"><div><h3 class="text-headline-sm font-headline-sm text-on-surface font-extrabold tracking-tight">Township Perks</h3></div><span class="text-[11px] font-bold text-primary bg-primary-fixed px-2.5 py-0.5 rounded-full" style="background-color: #E7D9C9; color: #252C27; font-weight: 700;">3 Available</span></div><div class="space-y-2.5"><div class="rounded-2xl p-3 shadow-xs border flex items-center justify-between gap-3 transition-all" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45);"><div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container"><img class="w-full h-full object-cover" data-alt="An artisanal iced latte in a clean modern glass on a light timber table at an eco-friendly outdoor cafe terrace overlooking the tranquil Elmina Lakeside Mall waterpark during gentle morning sunrise with lush greenery in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTVktesDyytvXpGWNp2NgMwvLEfBv6uIVKWfTS7Yerfno0rBi9o1m0F8U7p6L7yAGWGSj1g-Q2sVxK_O47-GaeLV0ojUycql8NPczyum1lD8vcnAm45NL8G0LvLz1DJmeeXynZVwPBn1YLmrJT4pcx529koJp8KkrgSA1-LXA7kkaN-Cz5WpbV7tMRGwSod4qPzSGQA78ocoAgPl4qenKpep9wZ0avWQnCu0ShZlUjx_Aq6aYB2-4L"/></div><div class="flex-1 min-w-0"><h4 class="text-[13px] font-bold text-charcoal truncate" style="color: #252C27;">Coffee Voucher</h4><p class="text-[11px]" style="color: #6C756E;">RM 10 • Lakeside Mall</p><div class="mt-1 flex items-center gap-1 font-bold text-[11px]" style="color: #4E6350;"><span class="material-symbols-outlined text-[14px]" style="color: #667C68; font-variation-settings: 'FILL' 1;">stars</span><span>150 pts</span></div></div><button class="text-white font-bold text-[12px] px-4 py-2 rounded-xl active:scale-95 transition-transform duration-150 flex-shrink-0 shadow-xs" onclick="triggerRedemption('RM 10 Coffee Voucher @ Elmina Lakeside Mall', 150, 'COFFEE-ELM-9821')" style="background-color: #667C68;">Redeem</button></div><div class="rounded-2xl p-3 shadow-xs border flex items-center justify-between gap-3 transition-all" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45);"><div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container"><img class="w-full h-full object-cover" data-alt="Vibrant tropical native forest seedling in a biodegradable coconut fiber pot nurtured inside the Elmina Living Nursery with soft ambient morning greenhouse lighting and emerald rainforest leaves in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrepZt6W59B3ZZZOGIq0H3JIu3kt4ymDU2FAHUs3yMfw9vCqa60cyqHCEAYHYQobSLSlgIlS607xaJjlxd03Q2pVf29xCWvxcxJ4Iy9pgouzIjv_F4EUpAhk3-YMC6cbESsUEKfutmDBslWJKmStfNXb2Zg5B7gqBFK00p9fkiivqndsPNI4iXgszmRxLDtoooRc_IXtqworwTer5VTDFUfWfWBK7muqXJpWsmKYlWOAqAlClV5FoX"/></div><div class="flex-1 min-w-0"><h4 class="text-[13px] font-bold text-charcoal truncate" style="color: #252C27;">Native Tree Sapling</h4><p class="text-[11px]" style="color: #6C756E;">Living Collection Nursery</p><div class="mt-1 flex items-center gap-1 font-bold text-[11px]" style="color: #4E6350;"><span class="material-symbols-outlined text-[14px]" style="color: #667C68; font-variation-settings: 'FILL' 1;">stars</span><span>200 pts</span></div></div><button class="text-white font-bold text-[12px] px-4 py-2 rounded-xl active:scale-95 transition-transform duration-150 flex-shrink-0 shadow-xs" onclick="triggerRedemption('Native Tree Sapling from Elmina Living Nursery', 200, 'PLANT-SAP-4309')" style="background-color: #667C68;">Redeem</button></div><div class="rounded-2xl p-3 shadow-xs border flex items-center justify-between gap-3 transition-all" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45);"><div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container"><img class="w-full h-full object-cover" data-alt="Luxurious resort-style infinity swimming pool surrounded by tropical palm trees and shaded timber sun loungers under an architectural pavilion canopy in a modern residential township clubhouse with crystal blue water." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjlqu1bvZDo1-IqxnNSKn3t2HH0roOWAgF876Vj1q0jNjnzggkUERLb1Joqk1aBbP99WArvBWq52ooggJzSQUObyfoUNpxbYriXSnbeaMnnHd8ncTejy6GPoSZidL3OkTHhoiz1N6wl0kKbRJ801zoAmLsLPEwuIKT6-V0JUKoflGVYMU2sGrmRfPJSFoWvs0fUxKLbSWcSDi6VrBBBXk3_WL1UXttofNL7GSX1eibplbhdwUC_vM9"/></div><div class="flex-1 min-w-0"><h4 class="text-[13px] font-bold text-charcoal truncate" style="color: #252C27;">Clubhouse Pass</h4><p class="text-[11px]" style="color: #6C756E;">50% Off Weekend Entry</p><div class="mt-1 flex items-center gap-1 font-bold text-[11px]" style="color: #4E6350;"><span class="material-symbols-outlined text-[14px]" style="color: #667C68; font-variation-settings: 'FILL' 1;">stars</span><span>120 pts</span></div></div><button class="text-white font-bold text-[12px] px-4 py-2 rounded-xl active:scale-95 transition-transform duration-150 flex-shrink-0 shadow-xs" onclick="triggerRedemption('Elmina Clubhouse Pool Pass discount', 120, 'CLUB-PASS-7712')" style="background-color: #667C68;">Redeem</button></div></div></section>
+<!-- 5. NOTIFICATION & PREFERENCE SETTINGS -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md card-shadow-soft border border-surface-container mb-space-lg" style="background-color: #FFFFFF; border-color: rgba(169, 185, 160, 0.45); border-radius: 1.25rem;"><div class="flex items-center space-x-2 pb-space-sm mb-space-sm border-b border-surface-container"><span class="material-symbols-outlined text-primary text-[20px]">tune</span><h3 class="text-headline-sm font-headline-sm text-on-surface font-extrabold tracking-tight">Telemetry &amp; Alerts</h3></div><div class="space-y-3.5"><div class="flex items-center justify-between gap-3"><div class="flex-1 min-w-0"><div class="text-body-md font-bold text-on-surface">Daily Comfort Digest</div><div class="text-[11px] text-secondary">7:00 AM shaded corridor forecast</div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0"><input checked="" class="sr-only peer" onchange="toggleSetting('Morning Digest', this.checked)" type="checkbox"/><div class="w-11 h-6 bg-secondary-fixed peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary" style="background-color: #667C68;"></div></label></div><div class="flex items-center justify-between gap-3 pt-3 border-t border-surface-container-high"><div class="flex-1 min-w-0"><div class="text-body-md font-bold text-on-surface">Extreme Heat Warnings</div><div class="text-[11px] text-secondary">Alerts when heat index &gt; 36°C</div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0"><input checked="" class="sr-only peer" onchange="toggleSetting('Heat &amp; UV Alerts', this.checked)" type="checkbox"/><div class="w-11 h-6 bg-secondary-fixed peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary" style="background-color: #667C68;"></div></label></div><div class="pt-3 border-t border-surface-container-high"><label class="block text-[11px] font-bold text-secondary uppercase tracking-wider mb-1.5">Township Ecosystem</label><div class="relative"><select class="w-full bg-surface-container-low border border-surface-container-highest rounded-lg py-2 px-3 text-body-md font-medium text-on-surface appearance-none focus:outline-none focus:ring-1 focus:ring-primary" onchange="showToast('Township updated to ' + this.value)"><option selected="">City of Elmina</option><option>Bandar Bukit Raja</option><option>Serenia City</option><option>KL East</option></select><span class="material-symbols-outlined absolute right-3 top-2 pointer-events-none text-secondary text-[20px]">expand_more</span></div></div></div></section>
+<!-- PROTOTYPE NOTICE & SIMULATION BADGE -->
+<div class="text-center py-space-sm mb-4">
+<p class="text-label-sm font-label-sm text-secondary bg-surface-container-high/60 inline-block px-3 py-1 rounded-full">
+        Simulated resident prototype data • Sime Darby Property Innovation Showcase
+      </p>
+</div>
+</main>
+<!-- REDEMPTION CONFIRMATION MODAL (Hidden by default) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden flex items-center justify-center p-margin transition-opacity duration-200" id="redemption-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-sm w-full p-space-lg card-shadow-elevated border border-surface-container relative animate-in fade-in zoom-in">
+<button class="absolute top-4 right-4 text-secondary hover:text-on-surface p-1 rounded-full" onclick="closeRedemptionModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<div class="text-center pt-2">
+<div class="w-14 h-14 bg-emerald-50 text-tertiary rounded-full mx-auto flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="text-label-sm font-label-sm bg-orange-100 text-primary font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Perk Unlocked</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-bold mt-1.5 leading-snug" id="modal-reward-name">Voucher Name</h3>
+<p class="text-body-md font-body-md text-secondary mt-1">Deducted <strong class="text-primary font-bold" id="modal-cost">150</strong> EcoPoints from your balance.</p>
+<!-- Barcode / QR Graphic Simulation -->
+<div class="bg-surface-container-low rounded-xl p-4 my-4 border border-surface-container flex flex-col items-center">
+<span class="text-label-sm font-label-sm text-secondary mb-1">SCAN AT CASHIER / TOWNSHIP COUNTER</span>
+<!-- Barcode simulation visual -->
+<div class="h-12 w-48 flex justify-between items-center gap-[2px] bg-white p-2 rounded border border-gray-200">
+<div class="w-1 bg-black h-full"></div>
+<div class="w-0.5 bg-black h-full"></div>
+<div class="w-1.5 bg-black h-full"></div>
+<div class="w-0.5 bg-black h-full"></div>
+<div class="w-2 bg-black h-full"></div>
+<div class="w-1 bg-black h-full"></div>
+<div class="w-0.5 bg-black h-full"></div>
+<div class="w-1.5 bg-black h-full"></div>
+<div class="w-2 bg-black h-full"></div>
+<div class="w-0.5 bg-black h-full"></div>
+<div class="w-1 bg-black h-full"></div>
+<div class="w-1.5 bg-black h-full"></div>
+<div class="w-0.5 bg-black h-full"></div>
+<div class="w-2 bg-black h-full"></div>
+<div class="w-1 bg-black h-full"></div>
+</div>
+<span class="text-label-md font-label-md font-mono tracking-widest text-on-surface mt-2 font-bold" id="modal-code">COFFEE-ELM-9821</span>
+<span class="text-[10px] text-tertiary mt-1">Valid until 30 Dec 2025</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-full hover:bg-primary-container active:scale-95 transition-transform duration-150 shadow-sm" onclick="closeRedemptionModal()">
+          Done &amp; Return to Profile
+        </button>
+</div>
+</div>
+</div>
+<!-- POINTS HISTORY DRAWER (Hidden by default) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden flex items-end justify-center p-0 transition-opacity duration-200" id="history-modal">
+<div class="bg-surface-container-lowest rounded-t-2xl max-w-[430px] w-full p-space-lg max-h-[707px] overflow-y-auto no-scrollbar card-shadow-elevated border-t border-surface-container">
+<div class="flex justify-between items-center pb-3 border-b border-surface-container">
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">EcoPoints Ledger</h3>
+<button class="text-secondary hover:text-on-surface p-1 rounded-full" onclick="closeHistoryModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="divide-y divide-surface-container mt-2">
+<div class="py-3 flex justify-between items-center">
+<div>
+<div class="text-body-md font-body-md font-bold text-on-surface">Canopy Walk: Central Park Link</div>
+<div class="text-label-sm font-label-sm text-secondary">Yesterday, 7:45 AM • 3.2 km shaded</div>
+</div>
+<span class="text-tertiary font-bold text-headline-sm">+25 pts</span>
+</div>
+<div class="py-3 flex justify-between items-center">
+<div>
+<div class="text-body-md font-body-md font-bold text-on-surface">CoolWalk Commute to Lakeside Mall</div>
+<div class="text-label-sm font-label-sm text-secondary">2 days ago • 2.1 km shaded</div>
+</div>
+<span class="text-tertiary font-bold text-headline-sm">+20 pts</span>
+</div>
+<div class="py-3 flex justify-between items-center">
+<div>
+<div class="text-body-md font-body-md font-bold text-on-surface">Tree Planting Volunteer @ Nursery</div>
+<div class="text-label-sm font-label-sm text-secondary">Last Saturday • Community Event</div>
+</div>
+<span class="text-tertiary font-bold text-headline-sm">+100 pts</span>
+</div>
+<div class="py-3 flex justify-between items-center">
+<div>
+<div class="text-body-md font-body-md font-bold text-on-surface">Lakeside Juice Bar Voucher</div>
+<div class="text-label-sm font-label-sm text-secondary">12 Oct 2025 • Redeemed</div>
+</div>
+<span class="text-primary font-bold text-headline-sm">-100 pts</span>
+</div>
+</div>
+<button class="w-full mt-4 bg-surface-container-high text-on-surface font-label-lg text-label-lg py-2.5 rounded-full hover:bg-surface-container active:scale-95 transition-transform duration-150" onclick="closeHistoryModal()">
+        Close Ledger
+      </button>
+</div>
+</div>
+<!-- TOAST FEEDBACK NOTIFICATION -->
+<div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface text-body-md font-body-md px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2" id="toast">
+<span class="material-symbols-outlined text-tertiary-fixed text-[18px]">info</span>
+<span class="" id="toast-message">Notification</span>
+</div>
+<!-- BOTTOM NAVIGATION BAR (from Shared Components JSON: BottomNavBar)
+       Platform & Shell Border Ban: No top/bottom border line. Uses subtle shadow-lg.
+       Active State logic: Tab 5 ('Profile') is the active target matching this screen.
+  -->
+<nav class="fixed bottom-0 left-0 w-full max-w-[440px] left-1/2 -translate-x-1/2 z-50 flex justify-around items-center px-4 py-2 bg-[#F7F5EF]/95 backdrop-blur-md border-t shadow-lg select-none" style="border-color: rgba(169, 185, 160, 0.4);"><a class="flex flex-col items-center justify-center font-normal py-1 active:scale-95 transition-transform duration-150" href="#home" style="color: #6C756E;"><span class="material-symbols-outlined text-[22px]">home</span><span class="text-[10px] font-medium mt-0.5">Home</span></a><a class="flex flex-col items-center justify-center font-normal py-1 active:scale-95 transition-transform duration-150" href="#touch-grass" style="color: #6C756E;"><span class="material-symbols-outlined text-[22px]">park</span><span class="text-[10px] font-medium mt-0.5">Touch Grass</span></a><a class="flex flex-col items-center justify-center font-normal py-1 active:scale-95 transition-transform duration-150" href="#coolwalk" style="color: #6C756E;"><span class="material-symbols-outlined text-[22px]">directions_walk</span><span class="text-[10px] font-medium mt-0.5">CoolWalk</span></a><a class="flex flex-col items-center justify-center font-normal py-1 active:scale-95 transition-transform duration-150" href="#report" style="color: #6C756E;"><span class="material-symbols-outlined text-[22px]">report_problem</span><span class="text-[10px] font-medium mt-0.5">Report</span></a><a aria-current="page" class="relative flex flex-col items-center justify-center font-bold py-1 active:scale-95 transition-transform duration-150" href="#profile" style="color: #4E6350;"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">person</span><span class="text-[10px] font-bold mt-0.5">Profile</span><span class="absolute -top-0.5 right-2 w-1.5 h-1.5 rounded-full ring-1 ring-[#4E6350]/40" style="background-color: #B6FF4A;"></span></a></nav>
+<!-- Interactive Logic Scripts -->
+<script>
+    let currentPoints = 340;
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const message = document.getElementById('toast-message');
+      message.innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2500);
+    }
+
+    function toggleSetting(name, state) {
+      const status = state ? 'Activated' : 'Disabled';
+      showToast(`${name}: ${status}`);
+    }
+
+    function scrollToRedeem() {
+      const elem = document.getElementById('redeem-section');
+      if (elem) {
+        elem.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function triggerRedemption(title, cost, barcodeCode) {
+      if (currentPoints < cost) {
+        showToast('Insufficient points. Walk more shaded routes to earn!');
+        return;
+      }
+      
+      currentPoints -= cost;
+      document.getElementById('points-display').innerText = currentPoints;
+      
+      document.getElementById('modal-reward-name').innerText = title;
+      document.getElementById('modal-cost').innerText = cost;
+      document.getElementById('modal-code').innerText = barcodeCode;
+      
+      const modal = document.getElementById('redemption-modal');
+      modal.classList.remove('hidden');
+    }
+
+    function closeRedemptionModal() {
+      const modal = document.getElementById('redemption-modal');
+      modal.classList.add('hidden');
+      showToast('Perk voucher saved to your digital passbook!');
+    }
+
+    function openHistoryModal() {
+      document.getElementById('history-modal').classList.remove('hidden');
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('history-modal').classList.add('hidden');
+    }
+  </script>
+<script src="/ecocool-shared-bridge.js"></script>
+</body></html>

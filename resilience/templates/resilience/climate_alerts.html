@@ -1,18 +1,177 @@
 {% extends 'resilience/base.html' %}{% load static %}
-{% block title %}Climate alerts{% endblock %}
-{% block subtitle %}See the signals. Locate the issue. Decide what needs a team response.{% endblock %}
-{% block heading_action %}<a class="small-button" href="{% url 'resilience:climate_alerts' project.id %}"><svg aria-hidden="true"><use href="#i-arrow"/></svg>Refresh inputs</a>{% endblock %}
+{% block title %}AeroThermal AI Copilot{% endblock %}
+{% block subtitle %}Disaster Resilience &amp; Community Readiness Intelligence · Elmina Operations Assistant{% endblock %}
+
+{% block heading_action %}
+<div class="ca-heading-actions">
+  <button class="small-button" id="btn-open-gemini-modal" type="button" title="Configure Gemini API Key">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+    Gemini API Key
+  </button>
+  <a class="small-button" href="{% url 'resilience:audience' project.id 'leadership' %}">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    METMalaysia Weather Radar
+  </a>
+</div>
+{% endblock %}
+
 {% block content %}
-<div class="ca-workspace">
-<div class="ca-summary"><div><span class="ca-overline">PROJECT WATCH</span><strong>{{ review_count }} categor{{ review_count|pluralize:"y,ies" }} to review</strong><p>Based on stored project inputs · {{ checked_at|date:'d M Y, H:i' }} MYT</p></div><div class="ca-stat"><b>{{ active_count }}</b><span>Unresolved reports</span></div><div class="ca-stat"><b>{{ unverified_count }}</b><span>Awaiting verification</span></div><div class="ca-provenance"><span class="ca-chip">{% if demo %}Demo climate inputs{% else %}Stored project inputs{% endif %}</span><small>Review priorities, not an official disaster warning.</small></div></div>
-{% if state %}<div class="ca-scenario"><div><strong>Scenario workspace</strong><small>Changes the shared project snapshot.</small></div>{% if can_manage %}<form action="{% url 'resilience:alert_scenario' project.id %}" method="post">{% csrf_token %}<label class="sr-only" for="shared-scenario">Demo scenario</label><select name="scenario" id="shared-scenario"><option value="normal">Normal inputs</option><option value="storm">Heavy rain</option><option value="heat">Heatwave</option><option value="drought">Drought</option><option value="wind">Windstorm</option></select><button class="small-button" type="submit">Apply scenario</button></form>{% else %}<span class="ca-chip">{{ state.scenario|title }} · Read-only</span>{% endif %}<small>Snapshot saved {{ state.updated_at|date:'d M Y, H:i' }}{% if stale %} · Older than {{ freshness_hours }} hours{% endif %}</small></div>{% endif %}
-{% if state_error %}<p class="ca-error" role="alert">{{ state_error }}</p>{% endif %}
-<div class="ca-hazards">{% for card in cards %}<a class="ca-hazard ca-{{ card.tone }}" href="#evidence-{{ card.kind }}"><div class="ca-card-top"><span class="ca-hazard-icon" aria-hidden="true">{% if card.kind == 'flood' %}<svg viewBox="0 0 24 24"><path d="M12 3S5 10 5 15a7 7 0 0 0 14 0c0-5-7-12-7-12Z M8 15a4 4 0 0 0 4 4"/></svg>{% elif card.kind == 'heat' %}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg>{% elif card.kind == 'drought' %}<svg viewBox="0 0 24 24"><path d="M3 20h18M12 20v-8m0 3C4 15 4 6 4 6c8 0 8 9 8 9Zm0-3c0-8 8-9 8-9s1 9-8 9Z"/></svg>{% else %}<svg viewBox="0 0 24 24"><path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a3 3 0 1 1-3 3M5 17h4a3 3 0 1 1-3 3"/></svg>{% endif %}</span><span class="ca-status">{{ card.status }}</span></div><h2>{{ card.title }}</h2><p>{{ card.subtitle }}</p><div class="ca-metric">{{ card.metric }} <small>{{ card.unit }}</small></div><div class="ca-card-bottom"><span>{{ card.reports }} unresolved report{{ card.reports|pluralize }}</span><span aria-hidden="true">↗</span></div></a>{% endfor %}</div>
-<div class="ca-section-heading"><div><h2>Evidence &amp; response</h2><p>Expand a hazard to see what triggered the review.</p></div><span class="ca-chip">Human review required</span></div>
-<div class="ca-evidence-list">{% for card in cards %}<details id="evidence-{{ card.kind }}" class="ca-evidence ca-{{ card.tone }}" {% if card.level == 2 %}open{% endif %}><summary><span class="ca-dot"></span><span class="ca-evidence-title">{{ card.title }}<small>{{ card.reason }}</small></span><span class="ca-owner">{{ card.owner }}</span><span class="ca-expand" aria-hidden="true">+</span></summary><div class="ca-evidence-body"><div><h3>Inputs behind this status</h3><ul>{% for item in card.evidence %}<li>{{ item }}</li>{% empty %}<li>No connected measurement establishes current severity.</li>{% endfor %}</ul>{% for n in card.notices %}<div class="ca-notice"><strong>{{ n.title }}</strong><p>{{ n.message }}</p><small>{% if n.is_demo %}Demo internal advisory{% else %}Internal advisory{% endif %} · Expires {{ n.expires_at|date:'d M, H:i' }}</small></div>{% endfor %}<p class="ca-gap">{{ card.gaps|join:' ' }}</p></div><div><h3>Suggested team response</h3><ol>{% for item in card.actions %}<li>{{ item }}</li>{% endfor %}</ol><a class="small-button" href="{{ card.link }}">{% if card.kind == 'flood' or card.kind == 'drought' %}Open planning{% else %}Open report inbox{% endif %} →</a></div></div></details>{% endfor %}</div>
-<div class="ca-section-heading"><div><h2>Where attention is needed</h2><p>Unresolved resident reports · sample locations remain labelled.</p></div><a class="inline-link" href="{% url 'resilience:audience' project.id 'operations' %}">All reports →</a></div>
-{% include 'resilience/map_panel.html' %}
-<div class="ca-bottom-grid"><section class="ca-source-panel"><div class="ca-section-heading"><div><h2>Official weather bulletins</h2><p>National feed · local relevance needs review</p></div><button class="small-button" id="ca-fetch-weather" data-url="{% url 'resilience:weather' project.id %}">Check feed</button></div><div id="ca-weather-result" role="status" aria-live="polite"><span class="ca-chip">Not checked</span><p>Bulletins are shown separately from the project's demo scenarios.</p></div><a class="inline-link" href="https://www.met.gov.my/" target="_blank" rel="noopener noreferrer">Open METMalaysia ↗</a></section><section class="ca-source-panel"><h2>Planning context</h2><p>Latest saved proposed-tree shade</p><div class="ca-metric">{% if latest_shade %}{{ latest_shade.shade|floatformat:1 }}<small>% route coverage</small>{% else %}—<small>No calculated run</small>{% endif %}</div>{% if latest_shade %}<small>{{ latest_shade.name }} · Simulation for {{ latest_shade.timestamp }}</small>{% endif %}<p>Geometric shade helps compare planting layouts. It does not establish cooling in °C or reduce an alert automatically.</p><a class="small-button" href="{% url 'dashboard' project.id %}">Open landscape review →</a></section></div>
-<details class="ca-method"><summary>How this prototype assigns review priorities</summary><p>Storage review: entered inflow exceeds available lake buffer. Reserve review: entered storage falls below the entered reserve. Other review flags come from unresolved reports, active internal advisories or a selected demo scenario. These are operational rules, not calibrated disaster thresholds.</p><p>Missing data stays unknown. Non-demo lake snapshots older than {{ freshness_hours }} hours cannot establish a current storage status. Demo snapshots remain usable for scenario exploration and are labelled. A report remains in the queue until staff resolve it.</p><p>Counts include all unresolved reports. The map shows up to the latest 500. Official national bulletins are not automatically matched to Elmina and never trigger discharge. Existing surface-temperature hotspots are not treated as measured heat exposure. El Niño cannot be inferred from a dry-vegetation report.</p></details>
-</div>{% endblock %}
-{% block scripts %}<script src="{% static 'resilience/climate-alerts.js' %}?v=1"></script>{% endblock %}
+<div class="ca-chat-app">
+
+  <!-- Left Sidebar: Compact AI Topics with Photographic Backgrounds (No Scroll) -->
+  <aside class="ca-app-sidebar">
+    
+    <!-- New Chat Button -->
+    <button class="ca-new-chat-btn" id="btn-new-briefing" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      <span>New Inquiry</span>
+    </button>
+
+    <!-- Suggested Inquiries List (Compact Photographic Story Tiles) -->
+    <div class="ca-sidebar-section">
+      <div class="ca-sidebar-section-title">Suggested Topics</div>
+      <div class="ca-topic-list">
+        {% for p in human_prompts %}
+        <button class="ca-topic-tile-btn" type="button" data-prompt="{{ p.question }}"
+          style="background-image: linear-gradient(90deg, rgba(14, 25, 18, 0.88) 0%, rgba(18, 32, 23, 0.72) 100%), 
+          url('{% if forloop.counter == 1 %}{% static "resilience/illustrations/scen_storm.jpg" %}{% elif forloop.counter == 2 %}{% static "resilience/illustrations/scen_normal.jpg" %}{% elif forloop.counter == 3 %}{% static "resilience/illustrations/heat.jpg" %}{% elif forloop.counter == 4 %}{% static "resilience/illustrations/flood.jpg" %}{% elif forloop.counter == 5 %}{% static "resilience/illustrations/tree_keruing.jpg" %}{% else %}{% static "resilience/illustrations/wind.jpg" %}{% endif %}');">
+          <div class="ca-tile-text">
+            <strong class="ca-tile-category">{{ p.category }}</strong>
+            <small class="ca-tile-badge">{{ p.badge }}</small>
+          </div>
+          <svg class="ca-tile-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Emergency Contacts Strip (Compact) -->
+    <div class="ca-sidebar-card ca-compact-card">
+      <div class="ca-card-head">
+        <span class="ca-card-tag">EMERGENCY HOTLINES</span>
+        <span class="ca-pill-badge ca-pill-green">24/7 Ops</span>
+      </div>
+      <div class="ca-hotline-list">
+        <div class="ca-hl-row">
+          <span>National Emergency (MERS)</span>
+          <a href="tel:999">999</a>
+        </div>
+        <div class="ca-hl-row">
+          <span>BOMBA Rescue</span>
+          <a href="tel:994">994</a>
+        </div>
+        <div class="ca-hl-row">
+          <span>NADMA Command</span>
+          <a href="tel:0380642400">03-8064 2400</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Redirect to Overview Radar -->
+    <a href="{% url 'resilience:audience' project.id 'leadership' %}" class="ca-overview-redirect-card">
+      <div class="ca-redirect-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24m6.66 6.66 4.24 4.24M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>
+        <div>
+          <strong>METMalaysia Weather</strong>
+          <small>National Satellite &amp; Radar</small>
+        </div>
+      </div>
+      <svg class="ca-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </a>
+
+
+
+  </aside>
+
+  <!-- Right / Main Chat Area -->
+  <main class="ca-app-main">
+
+    <!-- Top Chat Masthead Bar -->
+    <header class="ca-chat-topbar">
+      <div class="ca-topbar-brand">
+        <div class="ca-topbar-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        </div>
+        <div>
+          <h1>AeroThermal AI Copilot</h1>
+          <p>Disaster Resilience &amp; Community Readiness Assistant · Grounded in NADMA Directives &amp; Elmina Masterplan</p>
+        </div>
+      </div>
+      <div class="ca-topbar-right">
+        <button class="ca-header-key-btn" id="btn-open-gemini-modal-top" type="button" title="Configure Gemini API Key">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+          <span>Gemini API Key</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Chat Messages Viewport (Clean & Spacious) -->
+    <div class="ca-chat-viewport" id="ca-chat-stream" role="log" aria-live="polite">
+
+      <!-- Hero Welcome Screen (Clean 1-Sentence Purpose) -->
+      <div class="ca-welcome-hero" id="ca-welcome-hero">
+        <div class="ca-hero-purpose-card">
+          <p class="ca-purpose-statement">
+            AeroThermal intelligence copilot connects live Sime Darby Property catchment telemetry directly with statutory disaster frameworks from the <strong>Agensi Pengurusan Bencana Negara (NADMA)</strong> and <strong>Jabatan Pengairan dan Saliran (JPS)</strong> to empower township planners with verified, real-time life safety guidance during severe climate events.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Floating Chat Input Dock (Fully Textable & Seamless) -->
+    <div class="ca-chat-input-dock">
+      <form id="ca-chat-form" class="ca-chat-form" autocomplete="off">
+        {% csrf_token %}
+        <div class="ca-input-capsule">
+          <label class="sr-only" for="ca-chat-input">Ask AeroThermal AI Copilot</label>
+          <textarea id="ca-chat-input" rows="1" placeholder="Ask AeroThermal AI anything about flood buffers, shelters, or resident safety..."></textarea>
+          <button class="ca-send-capsule-btn" id="ca-send-btn" type="submit" title="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          </button>
+        </div>
+        <div class="ca-input-dock-meta">
+          <span>Press <b>Enter</b> to send · <b>Shift+Enter</b> for new line</span>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Gemini API Key Configuration Modal -->
+<div class="ca-modal-overlay" id="gemini-modal" hidden>
+  <div class="ca-modal-dialog" role="dialog" aria-labelledby="modal-gemini-title" aria-modal="true">
+    <div class="ca-modal-header">
+      <div>
+        <h3 id="modal-gemini-title">Google Gemini API Configuration</h3>
+        <small>Direct LLM Model Integration</small>
+      </div>
+      <button class="ca-modal-close" id="btn-close-gemini-modal" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="ca-modal-body">
+      <p style="font-size:13px;line-height:1.55;color:#465d4e;margin-bottom:14px;">
+        By default, <b>AeroThermal AI</b> operates with an executive knowledge base fully grounded in official NADMA Malaysia directives, JPS MSMA hydrology, and live City of Elmina telemetry. If you have a <b>Google Gemini API Key</b> (Gemini 3.8 Flash), enter it below for live natural language inference.
+      </p>
+      <label for="gemini-key-input" style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:#233c32;">
+        Google Gemini API Key
+      </label>
+      <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="width:100%;padding:10px 12px;border:1px solid #BAC9C1;border-radius:6px;font-family:monospace;font-size:13px;margin-bottom:8px;">
+      <small style="display:block;color:#6b7c72;font-size:11px;">
+        Your key is stored safely in browser session storage (localStorage) and used only for requests on this workspace.
+      </small>
+      <div id="gemini-key-status" style="margin-top:12px;font-size:12px;font-weight:600;color:#2f765d;"></div>
+    </div>
+    <div class="ca-modal-footer">
+      <button class="small-button" id="btn-clear-gemini-key" type="button" style="margin-right:auto;">Clear Key</button>
+      <button class="small-button" id="btn-cancel-gemini-modal" type="button">Cancel</button>
+      <button class="button" id="btn-save-gemini-key" type="button">Save Key</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'resilience/climate-alerts.js' %}?v=53"></script>
+{% endblock %}

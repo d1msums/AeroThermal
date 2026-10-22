@@ -18,18 +18,27 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def home(request):
-    memberships = (
+    memberships = list(
         Membership.objects
         .filter(user=request.user)
         .select_related("project")
+        .order_by("project_id")
     )
 
+    # Open the dashboard directly when the user has one assigned project.
+    if len(memberships) == 1:
+        return redirect(
+            "resilience:hub",
+            project_id=memberships[0].project_id,
+        )
+
+    # Keep project selection for users with multiple projects,
+    # or show the existing message when none are assigned.
     return render(
         request,
         "planner/home.html",
         {"memberships": memberships},
     )
-
 
 @login_required
 def dashboard(request, project_id):

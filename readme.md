@@ -587,21 +587,6 @@ Replace the project ID and folder path.
 
 Report location is stored separately from the image. The prototype does not infer report coordinates from photo EXIF.
 
----
-
-## 🎬 Five-Minute Demonstration
-
-| Time | Page / action | What to explain |
-|---|---|---|
-| 0:00–0:40 | Overview | Introduce the township workspace and key metrics |
-| 0:40–1:20 | Lake storage and buffer | Explain stored water and available storm capacity |
-| 1:20–2:10 | Report marker → work item | Show location-linked evidence and staff follow-up |
-| 2:10–3:00 | Engineering scenario | Compare demonstration storage conditions |
-| 3:00–3:45 | Map & Tree Simulator | Demonstrate hypothetical layout editing and its current calculation status |
-| 3:45–4:35 | AeroThermal AI | Review evidence and ask a contextual question |
-| 4:35–5:00 | Access roles and companion app | Explain authorized access and the separate resident experience |
-
----
 
 ## 🔄 Opening & Updating the Project
 

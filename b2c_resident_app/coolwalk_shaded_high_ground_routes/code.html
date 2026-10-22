@@ -6,10 +6,10 @@
 <title>CoolWalk – Shaded Route Navigation</title>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Plus Jakarta Sans Font -->
+<!-- Inter Font -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS v3 -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
@@ -46,18 +46,22 @@
             "space-sm": "0.5rem"
           },
           "fontFamily": {
-            "headline-lg": ["Plus Jakarta Sans"],
-            "body-sm": ["Plus Jakarta Sans"],
-            "body-lg": ["Plus Jakarta Sans"],
-            "headline-sm": ["Plus Jakarta Sans"],
-            "body-md": ["Plus Jakarta Sans"],
-            "headline-md": ["Plus Jakarta Sans"]
+            "headline-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"]
           }
         }
       }
     }
   </script>
 <style>
+  *, body, button, input, select, textarea {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  }
+
     /* Custom SVG route dash animations & pulses */
     @keyframes pulseGlow {
       0%, 100% { opacity: 0.9; transform: scale(1); }
@@ -117,13 +121,13 @@
 <!-- Route: Most Shaded (Elmina Rainforest Loop) -->
 <path class="dash-flow shadow-lg transition-all duration-300" d="M70 295 C 95 270, 115 245, 140 230 C 175 210, 180 170, 165 140 C 150 110, 175 90, 225 80" fill="none" id="route-shaded" stroke="#252C27" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.5"></path>
 <!-- Start Pin -->
-<circle cx="70" cy="295" fill="#FFFFFF" r="9" stroke="#667C68" stroke-width="3.5"></circle><circle cx="70" cy="295" fill="#B6FF4A" r="4.5"></circle><text fill="#252C27" font-family="Plus Jakarta Sans" font-size="10" font-weight="800" x="42" y="322">Start: Central Park</text>
+<circle cx="70" cy="295" fill="#FFFFFF" r="9" stroke="#667C68" stroke-width="3.5"></circle><circle cx="70" cy="295" fill="#B6FF4A" r="4.5"></circle><text fill="#252C27" font-family="Inter" font-size="10" font-weight="800" x="42" y="322">Start: Central Park</text>
 <!-- End Pin -->
-<circle cx="225" cy="80" fill="#FFFFFF" r="11" stroke="#667C68" stroke-width="3.5"></circle><circle cx="225" cy="80" fill="#667C68" r="5"></circle><text fill="#252C27" font-family="Plus Jakarta Sans" font-size="10" font-weight="800" x="210" y="65">Elmina Pavilion</text>
+<circle cx="225" cy="80" fill="#FFFFFF" r="11" stroke="#667C68" stroke-width="3.5"></circle><circle cx="225" cy="80" fill="#667C68" r="5"></circle><text fill="#252C27" font-family="Inter" font-size="10" font-weight="800" x="210" y="65">Elmina Pavilion</text>
 <!-- POI Markers -->
 <g transform="translate(148, 185)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#EDF3EB" r="9"></circle><path d="M10 5 L14 11 H12 V15 H8 V11 H6 L10 5 Z" fill="#667C68"></path></g><g transform="translate(195, 125)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#E7D9C9" r="9"></circle><path d="M10 5 C8.5 7.5 7 9.5 7 11.5 C7 13.2 8.3 14.5 10 14.5 C11.7 14.5 13 13.2 13 11.5 C13 9.5 11.5 7.5 10 5 Z" fill="#667C68"></path></g>
 <!-- High Ground Ridge Elevation Peak Point on Map -->
-<g id="ridge-peak-poi" opacity="0.4" transform="translate(48, 130)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#FDF3E7" r="9"></circle><path d="M6 13 L10 6 L14 13 Z" fill="#C26A1B"></path><text fill="#C26A1B" font-family="Plus Jakarta Sans" font-size="8" font-weight="800" x="24" y="14">+18m</text></g>
+<g id="ridge-peak-poi" opacity="0.4" transform="translate(48, 130)"><circle cx="10" cy="10" fill="#FFFFFF" filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.15))" r="11"></circle><circle cx="10" cy="10" fill="#FDF3E7" r="9"></circle><path d="M6 13 L10 6 L14 13 Z" fill="#C26A1B"></path><text fill="#C26A1B" font-family="Inter" font-size="8" font-weight="800" x="24" y="14">+18m</text></g>
 <!-- Live Pulse -->
 <circle class="user-pulse" cx="102" cy="265" fill="#B6FF4A" fill-opacity="0.4" r="14"></circle><circle cx="102" cy="265" fill="#667C68" r="6" stroke="#FFFFFF" stroke-width="2.5"></circle></svg>
 <!-- Top-Right Map Controls Overlay -->

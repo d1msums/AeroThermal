@@ -1,450 +1,413 @@
 # AeroThermal
+## Township climate-resilience dashboard — full team guide
 
-AeroThermal is a B2B climate-resilience web prototype developed for the Sime Darby Property Hackathon.
+A Django B2B prototype for the Sime Darby Property hackathon, with a City of Elmina reference site. The repository/folder remains named `ecocool`; the product is AeroThermal.
 
-It helps township leadership, ESG teams, engineers and planners review lake storage, climate-related concerns, resident reports and proposed tree-shade scenarios.
+**Guide updated: 22 October 2026, based on the uploaded repository snapshot.**
 
-The prototype uses an Elmina reference site. Climate scenarios and sample resident reports are clearly labelled as demonstration data.
+> **Implementation status:** The current `simulation/engine.py` is a placeholder: it returns `mode="mock"`, empty shadows and no calculated shade percentages. Some frontend panels show illustrative shade, cooling, weather and insurance figures. Do not present those as validated measurements. The resident app is a separate static demonstration, not a connected production reporting API.
 
-## Main features
+## Contents
 
-### Township overview
-- Lake storage and available storm buffer.
-- Active resident-report counts.
-- Saved proposed-tree shade results.
-- Maps and charts for reviewing project conditions.
+- [Features and limits](#features-and-limits)
+- [First-time laptop setup](#first-time-laptop-setup)
+- [Optional integrations](#optional-integrations)
+- [Page-by-page walkthrough](#page-by-page-walkthrough)
+- [Team Git workflow](#team-git-workflow)
+- [Troubleshooting](#troubleshooting)
+- [Hosting](#hosting)
+- [Project structure](#project-structure)
 
-### Map & planning
-- Geographic reference map with resident-report locations.
-- Shared climate scenarios.
-- Lake storage and storm-buffer calculations.
-- Illustrative pre-discharge volume for engineering review.
+## Features and limits
 
-### Climate alerts
-- Flood and stormwater review.
-- Heat-exposure concerns.
-- Water-reserve and dry-condition review.
-- Wind and fallen-tree reports.
-- Expandable evidence and suggested team responses.
-- Official weather-feed availability and bulletin review.
+| Area | Available in this snapshot | Limit |
+|---|---|---|
+| Overview | Lake-storage ring, storm buffer, report counts, map and charts | Seeded lake/history data; not live telemetry |
+| Map & Tree Simulator | Layout editing and save/load workflow | Real backend simulation not connected in this snapshot |
+| Engineering view | Shared climate scenarios and storage-volume review | Candidate release is illustrative, not a gate command |
+| Resident reports | Project-scoped inbox, map/photo inspection, assignment and status | App-style sample inputs, not production mobile intake |
+| AeroThermal AI | Climate assessment, local knowledge retrieval and optional Gemini chat | Advisory prototype, not official emergency guidance |
+| Resident App | Static HTML experience in `b2c_resident_app/` | Browser-local demo state and iframe messaging, not shared Django records |
+| Security | Login, project membership, planner/viewer checks and private photo views | Production hardening and integration review still required |
 
-### Resident reports
-- Sample inputs representing reports received from the separate resident mobile app.
-- Report locations and available attachments.
-- Staff verification, assignment and status updates.
-- Project-specific report access.
+The map township selector changes reference views; it is not proof that another township's authenticated database project has been loaded.
 
-### Tree simulator
-- Explore hypothetical proposed-tree layouts.
-- Calculate geometric shade along the reference route.
-- Save and compare scenarios.
+The checked-in weather setting is **AEROTHERMAL_LIVE_WARNINGS = True**. The adapter attempts to fetch national warning records, but static weather cards may also appear. Review the timestamp, location and actual fetch result before calling anything live.
 
-Tree-simulator changes represent hypothetical proposals. They do not modify an approved township plan or authorise tree removal, relocation or planting.
+Tree layouts are hypothetical proposals. They do not authorize tree removal, planting, development or modification of an approved township plan. Displayed insurance/policy claims require independent supporting evidence.
 
-### Access controls
-- Login required for project access.
-- Project membership controls access to data.
-- Planner and viewer permissions.
-- CSRF protection for supported write operations.
-- Restricted access to stored report photos.
+### This update
 
-## B2B and B2C scope
+The Lake storage circle is centred and enlarged to up to **164 px on desktop / 132 px on smaller screens**, with a larger percentage and centred caption. SVG geometry, percentage calculations and existing behavior are unchanged. A CSS version change refreshes the cached stylesheet.
 
-This repository contains the B2B website.
+## First-time laptop setup
 
-The resident-facing B2C mobile app is developed separately. The website currently uses labelled dummy reports to demonstrate how incoming resident information would appear to township teams.
+These instructions use **Windows PowerShell inside VS Code**. Every teammate has a separate local database. Sofea does not need to keep her laptop running for Jia to run her own copy.
 
-A production mobile-app integration is not included.
+### 1. Install prerequisites
 
-## Technology
-
-- Python and Django
-- Django templates, HTML, CSS and JavaScript
-- SQLite for local development
-- Leaflet for interactive maps
-- Google Maps satellite imagery when configured
-- Python simulation dependencies listed in requirements.txt
-
-The project folder may still be named `ecocool`; the product name is AeroThermal.
-
----
-
-## Run the project on your own laptop
-
-These instructions use Windows PowerShell, including the terminal inside VS Code.
-
-Each teammate runs their own Django server and local database. Sofea does not need to keep her laptop running for another teammate to use their own copy.
-
-### 1. Install the prerequisites
-
-Install:
-
-- Git
-- Python 3.12
-- VS Code
-
-Confirm Git and Python are available:
+Install Git, Python 3.12 and VS Code, then check:
 
 ```powershell
 git --version
 py -3.12 --version
 ```
 
-### 2. Clone the repository
-
-Open PowerShell in the folder where you want to keep the project:
+### 2. Clone the project
 
 ```powershell
 git clone https://github.com/d1msums/ecocool.git
 cd ecocool
-```
-
-If the repository is private, sign in with a GitHub account that has collaborator access.
-
-Open the folder in VS Code:
-
-```powershell
 code .
 ```
 
-Alternatively, use **VS Code → File → Open Folder** and select `ecocool`.
+For a private repo, use an authorized collaborator account. If already cloned, use the Git update instructions below instead. All following commands run beside `manage.py`.
 
-### 3. Create your virtual environment
-
-Run this from the folder containing `manage.py`:
+### 3. Create a virtual environment and install dependencies
 
 ```powershell
 py -3.12 -m venv .venv
-```
-
-The following commands use the virtual environment's Python directly, so activating it is optional.
-
-### 4. Install dependencies
-
-```powershell
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-If a requirements file is missing, check that you cloned the latest branch and ask Sofea to commit the file. Avoid guessing dependency versions.
+In VS Code, use **Python: Select Interpreter** and choose `.venv\Scripts\python.exe`. Activation is optional because commands explicitly use this interpreter.
 
-### 5. Create your local database
+Use `requirements.txt`, not the historical requirements backup. There is no required `requirements-sim-lock.txt`. If a pinned version cannot be installed, share the exact error with the team rather than silently guessing replacements.
+
+### 4. Create .env BEFORE running Django
+
+The settings require `DJANGO_SECRET_KEY`. If `.env` does not already exist:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Do not overwrite an existing environment file. Generate a secret:
+
+```powershell
+.\.venv\Scripts\python.exe -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Edit `.env` in VS Code:
+
+```dotenv
+DJANGO_SECRET_KEY='PASTE_YOUR_GENERATED_SECRET'
+GOOGLE_MAPS_API_KEY=
+```
+
+Use quotes around the secret. Keep this file private. The existing settings already load it with python-dotenv. An empty Maps key is fine for initial setup; satellite imagery will be unavailable.
+
+### 5. Create the database and your account
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py migrate
-```
-
-This applies the existing migrations to your local database.
-
-Do not run `makemigrations` just to start the project.
-
-### 6. Create your own account
-
-```powershell
 .\.venv\Scripts\python.exe manage.py createsuperuser
 ```
 
-Choose your own username, email and password.
+Choose your own account name, such as `jia`. Password characters do not appear while typing; this is normal. Do not run `makemigrations` merely to start the cloned app.
 
-For example, Jia can use `jia` as her local username.
-
-The password will not appear while typing in the terminal. This is normal.
-
-Do not commit passwords or share your local database through GitHub.
-
-### 7. Create the Elmina reference project
-
-Run:
+### 6. Create the Elmina project
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py shell -c "exec(open('create_elmina.py', encoding='utf-8').read())"
 ```
 
-The command prints the project's ID.
+The script reads `elmina/site.json` and prints your project ID. A fresh database may use 1, whereas Sofea's earlier database used 3. Use your own ID throughout.
 
-**Your project ID may differ from Sofea's.** A fresh database may assign ID `1`, even if Sofea uses ID `3`.
+The script stops if an existing matching project contains conflicting site data; investigate rather than deleting it.
 
-The reference project uses the geometry in:
+### 7. Assign your project membership
 
-```text
-elmina/site.json
-```
-
-### 8. Assign your account to the project
-
-A superuser account still needs project membership for the B2B dashboard.
-
-Open the Django shell:
+Even a superuser needs a membership for the B2B pages.
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py shell
 ```
 
-Enter the following code. Replace `"jia"` with the username you created:
+Paste the following, replacing `jia` with your username:
 
 ```python
 from django.contrib.auth import get_user_model
 from planner.models import Project, Membership
 
-User = get_user_model()
-user = User.objects.get(username="jia")
-project = Project.objects.get(
-    name="Elmina Valley Central Park - Map Pilot"
-)
-
+user = get_user_model().objects.get(username="jia")
+project = Project.objects.get(name="Elmina Valley Central Park - Map Pilot")
 membership, created = Membership.objects.update_or_create(
     project=project,
     user=user,
     defaults={"role": "planner"},
 )
-
 print("Project ID:", project.pk)
-print("Membership role:", membership.role)
-```
-
-Use `"viewer"` instead of `"planner"` when creating a read-only project membership.
-
-Exit the shell:
-
-```python
+print("Role:", membership.role)
 exit()
 ```
 
-### 9. Load demonstration climate data and reports
+Use `viewer` for read-only membership. For judges/teammates on a shared server, create ordinary users via admin and assign project roles; do not make everyone a superuser.
 
-Replace `1` below with the project ID printed during setup:
+### 8. Load demonstration data
+
+Replace 1 with your printed project ID:
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py seed_resilience --project 1
 .\.venv\Scripts\python.exe manage.py seed_app_reports --project 1
 ```
 
-These commands create:
-- A demonstration lake/climate snapshot.
-- Labelled example resident-app reports.
+These create demo climate state and sample app-style reports. Existing fixture records and work status are preserved on reruns; these commands are not a reset.
 
-Existing example records are preserved when the seed commands are run again.
+To attach approved sample photos you own:
 
-### 10. Check the project
+```powershell
+.\.venv\Scripts\python.exe manage.py seed_app_reports --project 1 --photo-dir "C:\path\to\demo-photos"
+```
+
+Expected names: `blocked-drain.jpg`, `fallen-branch.jpg`, `dry-vegetation.jpg`, `heat-exposure.jpg`. Without photos, labelled illustrations may appear. GPS/location is a separate field, not inferred from photo EXIF.
+
+### 9. Check and start Django
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py check
-```
-
-Resolve any reported errors before starting the server.
-
-### 11. Start Django
-
-```powershell
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-Keep the terminal open while using the website.
+Open **http://127.0.0.1:8000/**, log in and select your project. Keep the terminal running; stop with **Ctrl+C**.
 
-Open:
+Do not rerun historical `install_*.py` scripts during normal startup: the merged repository already contains installed UI changes.
 
-```text
-http://127.0.0.1:8000/
-```
-
-Log in with the account you created and select your project.
-
-For a project with ID `1`, direct links are:
-
-| Page | Local URL |
-|---|---|
-| Overview | http://127.0.0.1:8000/projects/1/resilience/ |
-| Map & planning | http://127.0.0.1:8000/projects/1/resilience/view/engineer/ |
-| Resident reports | http://127.0.0.1:8000/projects/1/resilience/view/operations/ |
-| Climate alerts | http://127.0.0.1:8000/projects/1/resilience/alerts/ |
-| Tree simulator | http://127.0.0.1:8000/projects/1/ |
-
-Replace `1` with your actual project ID.
-
-To stop the server, press:
-
-```text
-Ctrl+C
-```
-
-## Optional: Google satellite map
-
-The reference geometry can be displayed without Google satellite imagery.
-
-For satellite imagery, obtain a Google Maps API key with:
-- Maps JavaScript API enabled.
-- Appropriate billing configuration.
-- Website restrictions permitting your local development addresses.
-
-Local website entries:
-
-```text
-http://127.0.0.1:8000/*
-http://localhost:8000/*
-```
-
-The project reads the Django setting `GOOGLE_MAPS_API_KEY`.
-
-For an environment-variable setup, ensure `config/settings.py` contains:
-
-```python
-import os
-
-GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY", "")
-```
-
-If the setting already exists, update that assignment rather than adding a duplicate.
-
-In the same PowerShell terminal used to start Django:
-
-```powershell
-$env:GOOGLE_MAPS_API_KEY = "YOUR_OWN_API_KEY"
-.\.venv\Scripts\python.exe manage.py runserver
-```
-
-This environment variable applies to the current terminal session.
-
-Do not commit the actual key. A browser map key is visible to browser requests, so website and API restrictions are still necessary.
-
-If satellite imagery fails:
-1. Open browser Developer Tools with F12.
-2. Select Console.
-3. Refresh the page.
-4. Inspect the exact Google Maps error.
-
-An unavailable satellite map does not necessarily mean the key's quota has been exhausted.
-
-## Weather-feed behaviour
-
-The climate scenario selector uses demonstration inputs.
-
-Official weather retrieval is controlled separately by the existing setting:
-
-```python
-AEROTHERMAL_LIVE_WARNINGS = False
-```
-
-If deliberately enabled, the adapter requires internet access and retrieves national warning records.
-
-Returned bulletins require location review before being treated as relevant to Elmina. An empty, disabled or unavailable feed is not an all-clear.
-
----
-
-## Opening the project again later
-
-After completing the first-time setup, you normally only need:
+### 10. Start again another day
 
 ```powershell
 cd C:\path\to\ecocool
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-Then open:
+Do not recreate users, projects or the environment each time.
+
+## Optional integrations
+
+### Google Maps
+
+Put your restricted browser key in `.env` under `GOOGLE_MAPS_API_KEY` and restart Django. Configure Maps JavaScript API access, billing and allowed referrers:
 
 ```text
-http://127.0.0.1:8000/
+http://127.0.0.1:8000/*
+http://localhost:8000/*
 ```
 
-You do not need to recreate your virtual environment, account or demo data each time.
+A browser key is visible in browser requests, so API and website restrictions remain necessary. Check **F12 → Console** for the actual error if satellite imagery fails. A rejected key does not necessarily mean its quota is exhausted. The vector reference remains available.
 
-## Getting the latest team updates
+### Weather
 
-Stop the server first.
+The current settings enable official warning retrieval. For an offline demo, change the existing setting to:
 
-Check for your own uncommitted work:
+```python
+AEROTHERMAL_LIVE_WARNINGS = False
+```
+
+An empty, stale, disabled or failed feed is not an all-clear. National records require date/location review before being applied to Elmina. Static example cards may remain visible without a successful live fetch.
+
+### Gemini / advisory chat
+
+Optionally add a private server-side key to `.env`:
+
+```dotenv
+GEMINI_API_KEY='YOUR_PRIVATE_MODEL_KEY'
+```
+
+Restart Django. The handler also supports GOOGLE_API_KEY, optional Google SDK usage and a REST fallback. Without a working model connection, inspect the local response/fallback indicators rather than claiming Gemini answered.
+
+This is a different key from the Maps browser key. Review what context is sent to the external provider, avoid real resident personal data in demo inputs, and configure usage limits. Generated advice and the local knowledge corpus require verification.
+
+### Resident-app demonstration
+
+In a **second terminal**, from the repo root:
+
+```powershell
+.\.venv\Scripts\python.exe -m http.server 8080 --bind 127.0.0.1 --directory b2c_resident_app
+```
+
+Open **http://127.0.0.1:8080/** or click **Resident App ↗**. Keep Django running separately on port 8000.
+
+The app's return link currently points to B2B project 1. Edit that link in `b2c_resident_app/index.html` if your project ID differs.
+
+Browser-local demo state and iframe messages do not submit reports to Django. The backend web-report creation endpoint is retired. Use seeded reports for this demonstration; see [the future app handoff](docs/RESIDENT_APP_HANDOFF.md).
+
+## Page-by-page walkthrough
+
+All paths below are appended to `http://127.0.0.1:8000`; replace project 1 as needed.
+
+| Current page | Path | Intended use |
+|---|---|---|
+| Project list | `/` | Select an assigned project |
+| Overview | `/projects/1/resilience/` | Leadership/ESG summary |
+| Map & Tree Simulator | `/projects/1/` | Hypothetical layout planning |
+| Engineering view | `/projects/1/resilience/view/engineer/` | Storage/scenario review; direct route remains available |
+| Resident reports | `/projects/1/resilience/view/operations/` | Staff inbox and follow-up |
+| AeroThermal AI | `/projects/1/resilience/alerts/` | Climate assessment and advisory chat |
+| Administration | `/admin/` | Authorized account/membership management |
+
+### Overview
+
+1. Start here and read Demo/Calculated/source labels.
+2. Read the lake ring: 65% means 65% of configured storage is occupied, not a 65% flood probability.
+3. Compare the available storm buffer. It is volume arithmetic, not proof the site is flood-safe.
+4. Click a report pin/card to inspect its attachment, location and status.
+5. Use **Locate on map** or **Open work item**.
+6. Review charts and saved evidence; missing calculations must not be replaced with claimed measured results.
+7. The township selector explores map references, not independent authenticated project datasets.
+
+### Map & Tree Simulator
+
+1. Open the combined tab, explore the reference geometry and proposed-tree controls.
+2. Adjust a hypothetical layout and use the calculate action.
+3. This backend snapshot returns a placeholder response. Any static preview shade/cooling figures are illustrative.
+4. Use available save/load controls for layout workflow, not as evidence of a validated scientific result.
+5. Jia's integration point is `simulation.engine.simulate(payload)`; preserve schema, units, provenance and missing-data behavior.
+
+### Engineering view
+
+1. Open its direct route or the overview engineering link.
+2. As a planner, select a scenario and click **Apply scenario**.
+3. Review stored volume, assumed inflow, available buffer and candidate release.
+4. Read downstream/hold conditions. No physical gate is controlled.
+5. Coordinate with teammates: this changes shared project state, not a private per-user preview.
+
+### Resident reports
+
+1. Filter/search the inbox using the available category/status/location controls.
+2. Select a card/pin and inspect photo, coordinates and source.
+3. Open the work item.
+4. As a planner, assign staff, update status, add a note and save.
+5. Refresh Overview to demonstrate updated counts.
+6. Viewers can read but cannot perform planner-only changes.
+
+Use only sample cases during presentations. A staff status change does not prove a mobile push notification was delivered.
+
+### AeroThermal AI
+
+1. Review flood, heat, dry-condition and wind evidence.
+2. Check timestamps, source labels, missing inputs and unavailable states.
+3. Ask a project-related question and inspect its answer/evidence.
+4. Explain that staff must review suggested actions. The prototype does not issue official emergency orders.
+5. Do not infer an El Niño declaration from one dry reading or a temperature reduction from shade coverage alone.
+
+### Five-minute demonstration
+
+| Time | Show | Explain |
+|---|---|---|
+| 0:00–0:40 | Overview and lake circle | Visual township condition summary |
+| 0:40–1:30 | Report pin → inspector | Location-linked resident-style evidence |
+| 1:30–2:15 | Work item/status change | Project-scoped operational follow-up |
+| 2:15–3:05 | Engineering scenario | Illustrative storage balance, not automatic discharge |
+| 3:05–3:50 | Tree layout | Planning workflow; disclose placeholder calculation |
+| 3:50–4:35 | Climate/AI page | Advisory evidence, not autonomous safety decisions |
+| 4:35–5:00 | Viewer account / wrap-up | Access boundaries and remaining integration work |
+
+## Team Git workflow
+
+### Pull your friend's merged updates
+
+Stop Django and inspect:
 
 ```powershell
 git status
+git branch --show-current
+git remote -v
 ```
 
-Commit your work before pulling updates, or coordinate with the team if you are unsure how to preserve it.
-
-When your working tree is ready:
+Commit intended safe changes or temporarily preserve uncommitted files:
 
 ```powershell
-git pull --ff-only
+git stash push -u -m "Before pulling team update"
+```
+
+Ignored databases/.env are not in the stash; back up important local data outside the repo.
+
+```powershell
+git switch main
+git pull --ff-only origin main
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe manage.py migrate
 .\.venv\Scripts\python.exe manage.py check
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-If Git reports diverging branches, stop and resolve that with the team. Do not force-push or discard another teammate's work.
+If needed, restore with `git stash apply` and resolve overlaps carefully. On divergent branches, stop and coordinate; do not force-push, hard-reset or discard teammate work.
 
-The repository should already contain the installed frontend and page changes. Do not rerun historical upgrade installers during normal setup unless the team specifically instructs you to.
+### Submit this UI/documentation update
 
-## Suggested demonstration
+```powershell
+git switch -c sofea/lake-gauge-readme
+git status
+git diff
+git add readme.md README_AEROTHERMAL.md docs/RENDER_DEPLOYMENT.md resilience/static/resilience/hallmark/ui.css resilience/templates/resilience/base.html resilience/templates/resilience/kpis.html
+git diff --cached
+git commit -m "Enlarge lake gauge and refresh AeroThermal guide"
+git push -u origin sofea/lake-gauge-readme
+```
 
-1. Open the township overview.
-2. Review lake storage, storm buffer and resident reports.
-3. Open Climate alerts.
-4. Select the Heavy rain demonstration scenario.
-5. Explain the assumed inflow and available-buffer shortfall.
-6. Open a resident report and inspect its location and status.
-7. Select Drought to demonstrate the water-reserve concern.
-8. Open Tree simulator to compare hypothetical shade proposals.
+Use an unused branch name, open a pull request to main and ask the team to review. Never commit .env, private uploads, SQLite databases or .venv.
 
-Scenario changes are shared across pages within the same local project.
+Git shares code, not local users, photos, database records or saved scenarios.
 
-## Important prototype boundaries
+### Checks before merging
 
-- Climate snapshots and sample reports are demonstration data.
-- The Elmina geometry is a reference pilot, not the complete approved township plan.
-- Existing tree inventory is incomplete or unavailable in the reference dataset.
-- Tree placement is hypothetical and subject to professional assessment and applicable approvals.
-- Shade results describe geometric route coverage, not a verified air-temperature reduction.
-- Storage calculations are simplified volume balances, not calibrated flood forecasts.
-- A pre-discharge candidate requires engineering review; the prototype does not control a gate.
-- Heatwave, soil-moisture and El Niño monitoring are not established by selecting a demo scenario.
-- Internal advisories do not constitute official government warnings.
-- Production mobile-app intake and push notifications are not included.
+```powershell
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py test planner resilience
+```
+
+Also manually test authentication, nonmember denial, viewer restrictions, scenario changes, private photo access, map fallback, AI error states and responsive layout. The existence of these commands is not a claim that the entire merged project is validated.
 
 ## Troubleshooting
 
-### “No project assigned”
+| Symptom | Action |
+|---|---|
+| KeyError DJANGO_SECRET_KEY | Create .env beside manage.py and set a private secret |
+| Module not found | Use the project's .venv Python and install committed requirements |
+| Pinned package not available | Review exact version/Python compatibility with the team |
+| TemplateDoesNotExist | Check the full app/template path; retain APP_DIRS=True |
+| No project assigned / 404 | Assign membership and use the actual project ID |
+| Old small circle remains | Copy all three UI files, restart and Ctrl+F5; check CSS version |
+| Map key rejected | Inspect console, API permissions, billing and allowed referrers |
+| Simulation not connected / missing shade | Current engine is a placeholder; Jia must connect real calculations |
+| Resident App link fails | Start its separate localhost:8080 server |
+| Mobile report does not reach B2B | No production intake API exists; seed demonstration records |
+| 403 on an edit | Check planner role, session and CSRF; do not disable protection |
+| Photos missing on another laptop | Private uploads are not in Git; seed approved local images |
+| Weather unavailable | Check settings/network; failure is not an all-clear |
+| landscape_urls missing after revert | Check for mixed versions; do not reinstall obsolete landscape updates |
 
-Create a Membership linking your user to the correct project, as described in step 8.
+## Hosting
 
-### Project page returns 404
+Read [the complete Render preparation/deployment guide](docs/RENDER_DEPLOYMENT.md).
 
-Check your local project ID and membership. Do not assume your database uses project ID `3`.
+This snapshot is **not ready to deploy unchanged**: DEBUG is enabled, ALLOWED_HOSTS is empty, storage is SQLite-only, production static/media configuration is absent and app links use localhost. This UI update does not silently alter deployment settings.
 
-### The browser cannot connect
+Before public presentation, review hard-coded example weather, cooling, insurance, "Live App", dispatch and notification claims. UI labels/toasts alone do not establish real integrations.
 
-Make sure `manage.py runserver` is running and the terminal remains open.
+## Project structure
 
-If port 8000 is occupied:
+| Path | Purpose |
+|---|---|
+| config/ | Settings and root routing |
+| planner/ | Projects, memberships, tree UI, scenario persistence and audit |
+| simulation/engine.py | Jia's engine integration point, currently placeholder |
+| contracts/ | Payload examples/contracts |
+| resilience/ | B2B metrics, reports, scenarios, climate assessment and AI |
+| resilience/knowledge/ | Retrieval corpus; independently verify sources |
+| b2c_resident_app/ | Resident-team static demo |
+| elmina/site.json | Reference geometry |
+| create_elmina.py | Non-overwriting project bootstrap |
+| docs/ | Integration and deployment guides |
+| requirements.txt | Main dependency pins |
+| .env.example | Environment names, no real secrets |
+| install_*.py | Historical upgrade scripts, not normal startup |
 
-```powershell
-.\.venv\Scripts\python.exe manage.py runserver 8001
-```
+Sofea: B2B UI/GIS presentation, security integration and documentation.
+Jia/Jiah: calculation implementation and validated outputs.
+Resident-app teammates: resident UI/capture and future authenticated report integration.
 
-Then open:
+Agree on payload schema, units, source timestamps, missing-data handling and access boundaries before merging. Keep illustrative and calculated outputs distinct.
 
-```text
-http://127.0.0.1:8001/
-```
-
-Google Maps website restrictions may also need to allow that port.
-
-### Old colours or labels remain visible
-
-Save the edited files and press Ctrl+Shift+R.
-
-If necessary, open Developer Tools → Network → Disable cache, then refresh while Developer Tools remains open.
-
-### Tree simulator still redirects to Landscape review
-
-The Landscape Review rollback is incomplete. Check that the restored navigation links use the `dashboard` URL and that the retired-editor middleware hook has been removed.
-
-Do not run `install_landscape_review.py` if you want to keep the Tree simulator.
-
-### “No module named resilience.landscape_urls”
-
-The URL configuration still imports the retired Landscape Review add-on. Remove its import and appended URL-pattern lines if using the restored Tree simulator version.
-
-### Climate cards show missing data
-
-Confirm that `seed_resilience` was run for the correct project.
-
-Some measurements intentionally remain unavailable because no real sensor or validated data source is connected.

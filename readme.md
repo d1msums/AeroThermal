@@ -378,7 +378,7 @@ Keep the terminal open while using the dashboard. Stop the server with **Ctrl+C*
 
 ---
 
-## 🧭 Dashboard Walkthrough
+## 🧭 Dashboard Walkthrough 
 
 The example URLs below use project ID `1`. Replace it with your actual ID.
 

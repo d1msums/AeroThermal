@@ -1,9 +1,11 @@
 {% load static %}
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AeroThermal · {{ project.name }}</title>
-<link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}"><link rel="stylesheet" href="{% static 'resilience/visual.css' %}?v=2"><!-- AEROTHERMAL_HALLMARK_V1 -->
-<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=2">
-<meta name="description" content="AeroThermal township workspace for lake storage, shade planning and incoming resident reports."><link rel="stylesheet" href="{% static 'resilience/climate-alerts.css' %}?v=1">
-<link rel="stylesheet" href="{% static 'resilience/landscape-review.css' %}?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'planner/vendor/leaflet.css' %}"><link rel="stylesheet" href="{% static 'resilience/visual.css' %}?v=12"><!-- AEROTHERMAL_HALLMARK_V1 -->
+<link rel="stylesheet" href="{% static 'resilience/hallmark/ui.css' %}?v=12">
+<meta name="description" content="AeroThermal township workspace for lake storage, shade planning and incoming resident reports."><link rel="stylesheet" href="{% static 'resilience/climate-alerts.css' %}?v=50">
 </head><body class="hallmark-workspace"><a class="skip-link" href="#workspace-content">Skip to workspace</a>
 <svg class="icon-library" aria-hidden="true"><defs>
 <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
@@ -16,10 +18,37 @@
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
 </defs></svg>
 {% include 'resilience/hallmark_header.html' %}
-<div class="app-shell"><header class="topbar"><div class="site-context"><span class="site-dot"></span>{{ project.name }}</div><div class="top-actions"><span class="sample-chip">Demo climate</span><button class="text-button" id="open-notes" type="button"><svg><use href="#i-info"/></svg>Data notes</button></div></header>
-<main id="workspace-content" tabindex="-1"><div class="page-heading"><div><div class="eyebrow">{% block eyebrow %}CITY OF ELMINA{% endblock %}</div><h1>{% block title %}Township overview{% endblock %}</h1><p>{% block subtitle %}Lake storage, canopy shade and resident issues.{% endblock %}</p></div>{% block heading_action %}{% endblock %}</div>
-{% block content %}{% endblock %}</main><footer class="workspace-footer">AeroThermal · B2B prototype<span>Mobile-app input is represented by labelled sample reports.</span></footer></div>
-<dialog id="data-notes"><div class="dialog-top"><h2>Data notes</h2><button class="icon-button" id="close-notes" aria-label="Close data notes"><svg><use href="#i-x"/></svg></button></div><p>Lake scenarios and storage history are demonstration inputs, not live telemetry. Hotspots are sample surface values, not imported thermal imagery.</p><p>Shade charts show saved geometric simulation results. They do not establish an air-temperature reduction, flood-safety score or energy saving.</p><p>App report examples use sample locations. Placeholder illustrations are labelled; actual stored photos appear when provided. B2C screens, app notifications and reward redemption belong to the mobile-app team.</p><p>Only project planners can update operations. A release candidate is a volume-balance illustration; no gate command is available.</p><button class="button" id="done-notes">Done</button></dialog>
+<div class="app-shell">
+  <main id="workspace-content" tabindex="-1">
+    <div class="page-heading">
+      <div>
+        <h1>{% block title %}Township overview{% endblock %}</h1>
+        <p>{% block subtitle %}Home command center for Sime Darby Property townships — live weather alerts, retention lake capacity, canopy cooling, and resident reports in one place.{% endblock %}</p>
+      </div>
+      <div class="heading-actions-stack">
+        <label class="sdp-land-picker" for="sdp-township-select" title="Select Sime Darby Property Township Land">
+          <span class="site-dot"></span>
+          <span class="sdp-picker-prefix">Township:</span>
+          <select id="sdp-township-select" aria-label="Select Sime Darby Property Township Land">
+            <option value="elmina" selected>City of Elmina (Shah Alam)</option>
+            <option value="bukit_raja">Bandar Bukit Raja (Klang)</option>
+            <option value="serenia">Serenia City (Sepang)</option>
+            <option value="sjcc">SJCC &amp; Putra Heights (Subang Jaya)</option>
+            <option value="nilai">Nilai Impian (Negeri Sembilan)</option>
+            <option value="pagoh">Bandar Universiti Pagoh (Johor)</option>
+          </select>
+        </label>
+        <div class="heading-actions-wrap">
+          <button class="text-button" id="open-notes" type="button"><svg><use href="#i-info"/></svg>How this page works</button>
+          {% block heading_action %}{% endblock %}
+        </div>
+      </div>
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="workspace-footer">AeroThermal SDP · Masterplanner &amp; Operations Digital Twin<span>Synced with EcoCool Resident Companion (City of Elmina)</span></footer>
+</div>
+<dialog id="data-notes"><div class="dialog-top"><h2>About this dashboard (Plain English guide)</h2><button class="icon-button" id="close-notes" aria-label="Close data notes"><svg><use href="#i-x"/></svg></button></div><p><strong>What is AeroThermal SDP?</strong> This is the central management dashboard for Sime Darby Property township planners and maintenance teams. It connects live METMalaysia weather alerts, park lake water levels, tree shade simulations, and resident mobile app reports in one place.</p><p><strong>Tip:</strong> Click the <strong>ⓘ</strong> icon on any card to read a simple explanation of what that card shows.</p><button class="button" id="done-notes">Got it</button></dialog>
 {{ visual_data|json_script:'visual-data' }}{{ ecocool_map_config|json_script:'ecocool-map-config' }}
-<script src="{% static 'planner/vendor/leaflet.js' %}"></script><script src="{% static 'planner/vendor/Leaflet.GoogleMutant.js' %}"></script><script src="{% static 'resilience/visual.js' %}?v=2"></script>
-{% block scripts %}{% endblock %}<script src="{% static 'resilience/hallmark/ui.js' %}?v=2"></script></body></html>
+<script src="{% static 'planner/vendor/leaflet.js' %}"></script><script src="{% static 'planner/vendor/Leaflet.GoogleMutant.js' %}"></script><script src="{% static 'resilience/visual.js' %}?v=8"></script>
+{% block scripts %}{% endblock %}<script src="{% static 'resilience/hallmark/ui.js' %}?v=8"></script></body></html>

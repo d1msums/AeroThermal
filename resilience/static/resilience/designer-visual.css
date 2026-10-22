@@ -1,4 +1,908 @@
-/* Existing tree designer: visual polish only, existing form IDs stay intact. */
-body.aerothermal-theme{--ink:#263f33;--muted:#809078;--line:#dfe6d8;--paper:#f3f5ef;color-scheme:light;background:#f3f5ef;color:#263f33}.aerothermal-theme .page-heading p{display:none}.aerothermal-theme .page-heading h1{font-size:27px}.aerothermal-theme .back{color:#819274}.aerothermal-theme .workspace>aside,.aerothermal-theme .map-toolbar,.aerothermal-theme .legend,.aerothermal-theme .cards article{background:white;border-color:#dfe6d8}.aerothermal-theme .section-label{color:#809b68}.aerothermal-theme label,.aerothermal-theme h2,.aerothermal-theme h3{color:#3d5732}.aerothermal-theme label span,.aerothermal-theme .hint,.aerothermal-theme .empty,.aerothermal-theme .map-meta{color:#91a17e}.aerothermal-theme input,.aerothermal-theme select{background:#fafbf7;border-color:#dce4d3;color:#48633a}.aerothermal-theme .secondary,.aerothermal-theme .quiet,.aerothermal-theme .time-presets button,.aerothermal-theme .mini-actions button{background:#f6f8f1;color:#748b61;border-color:#dce4d3}.aerothermal-theme .tree-row{background:#fafbf6;border-color:#e3e9dc;color:#4b663e}.aerothermal-theme .tree-row small{color:#91a67e}.aerothermal-theme .tree-row.selected{background:#f1f5e3;border-color:#b8c881}.aerothermal-theme .cards strong{color:#547343}.aerothermal-theme .cards .gain{background:#edf3e3;border-color:#d9e3cd}.aerothermal-theme .cards article>span,.aerothermal-theme .cards small,.aerothermal-theme .method,.aerothermal-theme footer{color:#91a27f}.aerothermal-theme .meter{background:#edf2e7}.aerothermal-theme .meter div{background:#a4c17e}.aerothermal-theme #message{background:#edf3e5;border-color:#d8e5cb;color:#76915f}.aerothermal-theme #message.error{background:#fff0e8;color:#a97150;border-color:#ebc9b3}.aerothermal-theme #basemap-status{background:#edf3e5!important;color:#81996b!important;border-color:#d9e5cd!important}.aerothermal-theme .history{border-color:#dce4d3;color:#7f9570}.aerothermal-theme .divider{border-color:#e0e7d8}.aerothermal-theme .role-pill,.aerothermal-theme .status-badge,.aerothermal-theme .concept-badge{background:#eef4e6;border-color:#dce5d0;color:#839a6c}.aerothermal-theme .legend{color:#7e9570}.aerothermal-theme .topbar .role-pill{background:#244b38;border-color:#3a6249;color:#c1d6af}.aerothermal-theme .topbar .quiet{background:#244b38;border-color:#3a6249;color:#d7e5c9}.aerothermal-theme .list-heading span{background:#e6eedc;color:#809b68}.aerothermal-theme .primary{background:#d4e9b5;border-color:#c3d99f;color:#37542c}.aerothermal-theme .primary.dark{background:#284a36;color:#e2eed8;border-color:#284a36}.aerothermal-theme #at-climate{display:none}.aerothermal-theme .model-details,.aerothermal-theme .source-details{font-size:10px;color:#91a47c;margin:12px 0}.aerothermal-theme .model-details summary,.aerothermal-theme .source-details summary{cursor:pointer}.aerothermal-theme .model-details p,.aerothermal-theme .source-details p{font-size:10px;line-height:1.6}.aerothermal-theme .stakeholder-tabs{margin-bottom:22px}.aerothermal-theme .stakeholder-tabs a{background:white;color:#7b936b;border-color:#dce4d3}.aerothermal-theme .stakeholder-tabs a.current{background:#dfeaca;color:#456238}.aerothermal-theme .cards strong{font-size:25px}.aerothermal-theme .workspace{grid-template-columns:minmax(0,1fr) 290px}
-@media(max-width:760px){.aerothermal-theme .workspace{grid-template-columns:1fr}.aerothermal-theme .workspace>aside{position:static}.aerothermal-theme .cards strong{font-size:23px}}
-.aerothermal-theme .stakeholder-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}.aerothermal-theme .stakeholder-tabs a{display:inline-block;padding:9px 12px;border:1px solid #dce4d3;border-radius:6px;text-decoration:none;font-size:11px}
+/* Unified Map & Tree Simulator — Simple, Visual, Plain-English Layout */
+body.aerothermal-theme {
+  --ink: #111814;
+  --muted: #41564a;
+  --line: #dfe6d8;
+  --paper: #f2f6f0;
+  color-scheme: light;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 88% 14%, rgba(56, 189, 248, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 50% 85%, rgba(182, 255, 74, 0.07) 0%, transparent 48%),
+    #f2f6f0 !important;
+  color: #111814;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Keep sticky header ABOVE the map at all times when scrolling */
+.hm-masthead {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3000 !important;
+}
+
+.aerothermal-theme .map-wrap,
+.aerothermal-theme #map,
+.aerothermal-theme .leaflet-container {
+  position: relative !important;
+  z-index: 1 !important;
+  isolation: isolate !important;
+}
+
+/* Guarantee SVG icons inside buttons & dialogs never blow up */
+.aerothermal-theme .text-button svg,
+.aerothermal-theme .icon-button svg,
+.aerothermal-theme .button svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.aerothermal-theme main#app {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 26px 28px 56px !important;
+}
+
+.aerothermal-theme .page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.aerothermal-theme .page-heading h1 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #111814;
+  margin: 0 0 6px;
+}
+
+.aerothermal-theme .page-heading p {
+  display: block !important;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #41564a !important;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* 1. Workspace Layout: BIG Map on Left (1fr) + Simple 3-Step Box on Right (330px) */
+.aerothermal-theme .workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 330px !important;
+  gap: 20px !important;
+  align-items: stretch !important;
+}
+
+.aerothermal-theme .main-panel {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.aerothermal-theme .workspace > aside#design-controls {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  position: static !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(34, 197, 94, 0.12) 0%, transparent 55%),
+    linear-gradient(165deg, #ffffff 0%, #f8fbf8 100%) !important;
+  border: 1px solid #d5e4d7 !important;
+  border-radius: 18px !important;
+  padding: 20px !important;
+  box-shadow: 0 12px 30px -8px rgba(16, 36, 24, 0.07), inset 0 1px 0 #ffffff !important;
+}
+
+.aerothermal-theme #map {
+  height: 480px !important;
+  width: 100% !important;
+}
+
+.aerothermal-theme .section-label {
+  color: #15803d !important;
+  font-weight: 800 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.05em !important;
+}
+
+.aerothermal-theme label,
+.aerothermal-theme h2,
+.aerothermal-theme h3 {
+  color: #111814 !important;
+}
+
+.aerothermal-theme aside h2 {
+  font-size: 16.5px !important;
+  margin: 4px 0 10px !important;
+}
+
+.aerothermal-theme .divider {
+  margin: 14px 0 !important;
+  border-color: #e2e8f0 !important;
+}
+
+.aerothermal-theme input,
+.aerothermal-theme select {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #111814 !important;
+  border-radius: 10px !important;
+}
+
+.aerothermal-theme .secondary,
+.aerothermal-theme .quiet,
+.aerothermal-theme .time-presets button,
+.aerothermal-theme .mini-actions button {
+  background: #f1f5f9 !important;
+  color: #111814 !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+.aerothermal-theme .secondary:hover,
+.aerothermal-theme .time-presets button:hover,
+.aerothermal-theme .mini-actions button:hover {
+  background: #dcfce7 !important;
+  border-color: #86efac !important;
+  color: #14532d !important;
+}
+
+.aerothermal-theme .primary {
+  background: #bbf7d0 !important;
+  border-color: #86efac !important;
+  color: #14532d !important;
+  font-weight: 700 !important;
+}
+
+.sim-big-run-btn {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid #14532d;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.sim-big-run-btn:hover {
+  transform: translateY(-1px);
+}
+
+.sim-save-compact {
+  display: flex;
+  gap: 6px;
+}
+
+.sim-save-compact .secondary {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 8px 14px !important;
+}
+
+.aerothermal-theme .map-toolbar,
+.aerothermal-theme .legend {
+  background: #ffffff !important;
+  border-color: #d5e4d7 !important;
+  color: #111814 !important;
+}
+
+.sim-layer-toggle {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #111814 !important;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.sim-layer-toggle input {
+  width: 14px !important;
+  height: 14px !important;
+  min-height: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  accent-color: #16a34a;
+}
+
+/* 2. BELOW THE MAP: PROPOSED INSURED TREES (4 PHOTO CARDS + PLANTED LIST) */
+.sim-trees-below-panel {
+  margin-top: 22px;
+  padding: 22px 24px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(34, 197, 94, 0.14) 0%, transparent 48%),
+    linear-gradient(160deg, #ffffff 0%, #f4fbf7 100%) !important;
+  border: 1.5px solid #bbf7d0;
+  box-shadow: 0 12px 30px -8px rgba(16, 36, 24, 0.07), inset 0 1px 0 #ffffff;
+}
+
+.sim-trees-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.sim-trees-header h2 {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 6px 0 4px !important;
+  color: #111814;
+}
+
+.sim-trees-header p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #41564a;
+}
+
+.sim-total-insurance-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border-radius: 99px;
+  background: #dcfce7;
+  border: 1.5px solid #86efac;
+  color: #14532d;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sim-trees-below-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.sim-species-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sim-species-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sim-species-card:hover {
+  transform: translateY(-2px);
+  border-color: #86efac;
+}
+
+.sim-species-card.active {
+  border-color: #16a34a;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.14);
+  background: #f0fdf4;
+}
+
+.sim-species-img {
+  position: relative;
+  height: 135px;
+  overflow: hidden;
+}
+
+.sim-species-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sim-ins-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: rgba(17, 24, 20, 0.85);
+  backdrop-filter: blur(6px);
+  color: #bbf7d0;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.sim-species-body {
+  padding: 11px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sim-species-body strong {
+  font-size: 13px;
+  font-weight: 800;
+  color: #111814;
+}
+
+.sim-species-body span {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #41564a;
+}
+
+.sim-planted-list-box {
+  background: #ffffff;
+  border: 1px solid #d5e4d7;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.aerothermal-theme #tree-list {
+  max-height: 165px !important;
+  overflow-y: auto;
+}
+
+.aerothermal-theme .tree-row {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #111814 !important;
+  padding: 8px 10px !important;
+}
+
+.aerothermal-theme .tree-row.selected {
+  background: #f0fdf4 !important;
+  border-color: #22c55e !important;
+}
+
+/* 3. BIG VISUAL SIMULATION OUTPUT HERO SHOWCASE */
+.sim-output-showcase {
+  margin-top: 22px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(34, 197, 94, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 88% 85%, rgba(45, 212, 191, 0.12) 0%, transparent 45%),
+    linear-gradient(160deg, #ffffff 0%, #f4fbf7 100%) !important;
+  border: 2px solid #86efac;
+  box-shadow: 0 16px 38px -10px rgba(16, 36, 24, 0.09), inset 0 1px 0 #ffffff;
+}
+
+@keyframes simPulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(22, 163, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.sim-pulse-highlight {
+  animation: simPulseGlow 1.2s ease-out;
+}
+
+.sim-output-banner-top {
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #dcfce7 0%, #f0fdf4 100%);
+  border: 1.5px solid #4ade80;
+}
+
+.sim-verified-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: #15803d;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.aerothermal-theme #message {
+  background: transparent !important;
+  border: 0 !important;
+  color: #14532d !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.sim-output-hero-grid {
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.sim-visual-preview-card {
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px -8px rgba(16, 36, 24, 0.08);
+}
+
+.sim-visual-img-wrap {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.sim-visual-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sim-img-top-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 11px;
+  border-radius: 99px;
+  background: rgba(17, 24, 20, 0.82);
+  backdrop-filter: blur(8px);
+  color: #bbf7d0;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.sim-img-bottom-overlay {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sim-img-stat {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(17, 24, 20, 0.84);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+}
+
+.sim-img-stat span {
+  display: block;
+  font-size: 10px;
+  color: #bbf7d0;
+  font-weight: 700;
+}
+
+.sim-img-stat strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.aerothermal-theme .cards {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-bottom: 0 !important;
+}
+
+.aerothermal-theme .cards article {
+  border-radius: 16px !important;
+  padding: 18px !important;
+  box-shadow: 0 8px 22px -6px rgba(16, 36, 24, 0.06) !important;
+}
+
+.aerothermal-theme .cards article.sky-heat {
+  background:
+    radial-gradient(circle at 90% 15%, rgba(251, 146, 60, 0.16) 0%, transparent 65%),
+    linear-gradient(155deg, #ffffff 0%, #fffaf5 100%) !important;
+  border: 1px solid #fed7aa !important;
+}
+
+.aerothermal-theme .cards article.sky-clear {
+  background:
+    radial-gradient(circle at 90% 15%, rgba(34, 197, 94, 0.16) 0%, transparent 65%),
+    linear-gradient(155deg, #ffffff 0%, #f2fcf5 100%) !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.aerothermal-theme .cards article.sky-wind {
+  background:
+    radial-gradient(circle at 90% 15%, rgba(45, 212, 191, 0.18) 0%, transparent 65%),
+    linear-gradient(155deg, #ffffff 0%, #f0fdfa 100%) !important;
+  border: 1px solid #99f6e4 !important;
+}
+
+.aerothermal-theme .cards article span,
+.aerothermal-theme .cards article small {
+  color: #33473b !important;
+  font-size: 12px !important;
+}
+
+.aerothermal-theme .cards strong {
+  font-size: 27px !important;
+  font-weight: 800 !important;
+  color: #111814 !important;
+}
+
+.aerothermal-theme .meter {
+  background: #e2e8f0 !important;
+  height: 8px !important;
+  border-radius: 99px !important;
+}
+
+.aerothermal-theme .meter div {
+  background: linear-gradient(90deg, #22c55e, #15803d) !important;
+  border-radius: 99px !important;
+}
+
+/* 4. LAKE FLOOD BUFFER SIMULATOR */
+.aerothermal-theme #at-climate {
+  display: block !important;
+  margin-top: 22px !important;
+  padding: 22px 24px !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 95% 8%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 6% 92%, rgba(34, 197, 94, 0.10) 0%, transparent 45%),
+    linear-gradient(165deg, #ffffff 0%, #f7fbf9 100%) !important;
+  border: 1px solid #cde2d6 !important;
+  box-shadow: 0 12px 32px -8px rgba(16, 36, 24, 0.08), inset 0 1px 0 #ffffff !important;
+}
+
+.aerothermal-theme #at-climate .at-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.aerothermal-theme #at-climate .at-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.aerothermal-theme #at-climate h2 {
+  font-size: 21px;
+  font-weight: 800;
+  color: #111814 !important;
+  margin: 6px 0 4px;
+}
+
+.aerothermal-theme #at-climate #at-subtitle-text {
+  font-size: 13.5px;
+  color: #41564a !important;
+  margin: 0;
+}
+
+.at-scenario-picker-wrap label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #111814 !important;
+}
+
+.at-scenario-picker-wrap select {
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #86efac !important;
+  background: #f0fdf4 !important;
+  color: #111814 !important;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 240px;
+}
+
+.aerothermal-theme .card-title-with-info {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 10px !important;
+  margin-bottom: 6px !important;
+}
+
+.aerothermal-theme .card-title-with-info h3,
+.aerothermal-theme .card-title-with-info > span {
+  margin: 0 !important;
+}
+
+.aerothermal-theme .card-info-btn {
+  flex: 0 0 24px !important;
+  margin-left: auto !important;
+}
+
+.aerothermal-theme #at-climate .at-card {
+  position: relative;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  box-shadow: 0 8px 22px -6px rgba(16, 36, 24, 0.06) !important;
+}
+
+.aerothermal-theme #at-climate .at-card.sky-rain {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(14, 165, 233, 0.16) 0%, transparent 68%),
+    linear-gradient(155deg, #ffffff 0%, #f0f9ff 100%) !important;
+  border: 1px solid #bae6fd !important;
+}
+
+.aerothermal-theme #at-climate .at-card.sky-storm {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(251, 146, 60, 0.16) 0%, transparent 68%),
+    linear-gradient(155deg, #ffffff 0%, #fffaf5 100%) !important;
+  border: 1px solid #fed7aa !important;
+}
+
+.aerothermal-theme #at-climate .at-card.sky-clear {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(34, 197, 94, 0.16) 0%, transparent 68%),
+    linear-gradient(155deg, #ffffff 0%, #f2fcf5 100%) !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.aerothermal-theme #at-climate .at-card h3,
+.aerothermal-theme #at-climate .at-card h4,
+.aerothermal-theme #at-climate .at-number {
+  color: #111814 !important;
+}
+
+.aerothermal-theme #at-climate .at-card p,
+.aerothermal-theme #at-climate .at-card dt,
+.aerothermal-theme #at-climate .at-card dd {
+  color: #2c3e35 !important;
+}
+
+.aerothermal-theme #at-climate .at-pill {
+  background: rgba(21, 128, 61, 0.12) !important;
+  color: #14532d !important;
+  font-weight: 800 !important;
+  font-size: 10.5px !important;
+  padding: 5px 10px !important;
+}
+
+.sim-gate-action-btn,
+#open-gate-dispatch-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 40px !important;
+  padding: 10px 18px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  border: 1px solid #991b1b !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.24) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.sim-gate-action-btn:hover,
+#open-gate-dispatch-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.34) !important;
+}
+
+.aerothermal-theme #at-climate .at-gauge > div {
+  background: #ffffff !important;
+  color: #111814 !important;
+}
+
+.aerothermal-theme #at-climate .at-gauge strong,
+.aerothermal-theme #at-climate .at-cooling strong {
+  color: #15803d !important;
+}
+
+.aerothermal-theme #at-climate .at-gauge span,
+.aerothermal-theme #at-climate .at-cooling span,
+.aerothermal-theme #at-climate .at-cooling small {
+  color: #33473b !important;
+}
+
+/* Quick Weather Scenario Pills */
+.at-scenario-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.at-mode-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #111814;
+  margin-right: 4px;
+}
+
+.at-scen-pill {
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: #f1f5f9 !important;
+  border: 1.5px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.at-scen-pill:hover {
+  background: #e2e8f0 !important;
+}
+
+.at-scen-pill.active {
+  background: #15803d !important;
+  border-color: #14532d !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.25);
+}
+
+/* Card 1: Visual Weather Photo & Temperature Overlay */
+.at-weather-photo-wrap {
+  position: relative;
+  height: 175px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 10px 0 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.at-weather-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.at-photo-top-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: rgba(17, 24, 20, 0.84);
+  backdrop-filter: blur(6px);
+  color: #bbf7d0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.at-photo-bottom-bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.at-photo-bottom-bar > div {
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: rgba(17, 24, 20, 0.85);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+}
+
+.at-photo-bottom-bar span {
+  display: block;
+  font-size: 9.5px;
+  color: #bbf7d0;
+  font-weight: 700;
+}
+
+.at-photo-bottom-bar strong {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 1px;
+}
+
+.at-what-happens-title {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #111814;
+}
+
+/* Card 2: Lake Impact Box */
+.at-lake-impact-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #93c5fd;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #1e293b;
+}
+
+/* Card 3: 1-2-3 Step-by-Step Solution Checklist */
+.at-solution-steps {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.at-solution-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #fed7aa;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #1e293b;
+}
+
+.at-solution-steps .step-num {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  background: #15803d;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 1080px) {
+  .aerothermal-theme .workspace,
+  .sim-trees-below-grid,
+  .sim-species-photo-grid,
+  .sim-output-hero-grid,
+  .aerothermal-theme .cards,
+  .aerothermal-theme #at-climate .at-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .aerothermal-theme .workspace > aside#design-controls {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+}

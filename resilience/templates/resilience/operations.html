@@ -1,7 +1,515 @@
-{% extends 'resilience/base.html' %}{% block title %}Resident reports{% endblock %}{% block subtitle %}Incoming app reports, mapped for the township team.{% endblock %}
-{% block heading_action %}<button class="small-button" type="button" onclick="location.reload()">Refresh inbox</button>{% endblock %}
-{% block content %}<div class="report-toolbar"><div class="status-tabs" aria-label="Filter report status"><button class="active" data-filter-status="active">Active <b id="count-active">0</b></button><button data-filter-status="open">New <b id="count-open">0</b></button><button data-filter-status="in_progress">In progress <b id="count-progress">0</b></button><button data-filter-status="resolved">Resolved <b id="count-resolved">0</b></button><button data-filter-status="all">All <b id="count-all">0</b></button></div><label class="sr-only" for="hazard-filter">Report category</label><select id="hazard-filter"><option value="all">All categories</option><option value="flood">Drainage</option><option value="wind">Tree obstruction</option><option value="drought">Vegetation</option><option value="heat">Heat exposure</option></select></div>
-{% include 'resilience/map_panel.html' %}
-<section class="panel"><div class="panel-heading"><div><h2>Operational notices</h2><p>Saved project notices · app delivery is not connected</p></div>{% if can_manage %}<button id="open-notice" class="small-button" type="button">Draft notice</button>{% endif %}</div>{% include 'resilience/notices.html' %}</section>
-{% if can_manage %}<dialog id="notice-dialog"><div class="dialog-top"><h2>Draft project notice</h2><button id="close-notice" class="icon-button" aria-label="Close notice"><svg><use href="#i-x"/></svg></button></div><form method="post" action="{% url 'resilience:publish' project.id %}">{% csrf_token %}{{ advisory_form.as_p }}<button class="button">Save demo notice</button></form><p class="subtle">Stored in the project only. The app team owns resident delivery.</p></dialog>{% endif %}
+{% extends 'resilience/base.html' %}
+{% load static %}
+
+{% block title %}Resident Reports &amp; Maintenance Crew Monitor{% endblock %}
+{% block subtitle %}Live field feed from EcoCool Resident App · Real-time maintenance crew dispatch, SLA response tracking, and resident rewards.{% endblock %}
+
+{% block heading_action %}
+<button class="text-button ops-refresh-subbtn" type="button" onclick="location.reload()">&#8635; Refresh live feed</button>
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'resilience/operations.css' %}?v=8">
+
+<div class="ops-shell">
+
+  <!-- 1. TOP 4 OPERATIONAL KPI CARDS (MATCHING OVERVIEW VISUAL STYLE & GRADIENTS) -->
+  <section class="ops-kpi-grid">
+    <!-- Card 1: Incoming Reports (Teal/Mint gradient matching Overview Card 1) -->
+    <article class="ops-kpi-card sky-teal">
+      <div class="ops-kpi-top">
+        <div class="ops-kpi-header-left">
+          <div class="ops-kpi-icon-badge">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            </svg>
+          </div>
+          <span class="ops-kpi-label">Incoming reports</span>
+        </div>
+        <div class="ops-kpi-meta-group">
+          <span class="ops-kpi-tag">Live App</span>
+          <button type="button" class="card-info-btn" data-info-title="Incoming Reports" data-info-text="All hazard photos sent by residents using the EcoCool mobile app. Shows total registered reports.">i</button>
+        </div>
+      </div>
+      <div class="ops-kpi-val">{{ visual_data.counts.total }}</div>
+      <div class="ops-kpi-bottom">
+        <span class="ops-kpi-caption">Synced with EcoCool App</span>
+        <span class="ops-kpi-sub">{{ visual_data.counts.open }} waiting · {{ visual_data.counts.in_progress }} in progress</span>
+      </div>
+    </article>
+
+    <!-- Card 2: Overdue Reports (Sky-blue gradient matching Overview Card 2) -->
+    <article class="ops-kpi-card sky-blue">
+      <div class="ops-kpi-top">
+        <div class="ops-kpi-header-left">
+          <div class="ops-kpi-icon-badge">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+              <line x1="8" y1="14" x2="8" y2="18"></line>
+              <line x1="12" y1="14" x2="12" y2="18"></line>
+              <line x1="16" y1="14" x2="16" y2="18"></line>
+            </svg>
+          </div>
+          <span class="ops-kpi-label">Overdue reports</span>
+        </div>
+        <div class="ops-kpi-meta-group">
+          <span class="ops-kpi-tag">SLA Alert</span>
+          <button type="button" class="card-info-btn" data-info-title="Overdue Reports" data-info-text="Incidents that have exceeded the standard 45-minute response limit and require immediate manager attention.">i</button>
+        </div>
+      </div>
+      <div class="ops-kpi-val">{{ visual_data.sla_delayed|default:1 }}</div>
+      <div class="ops-buffer-track"><span style="width: 25%; background: #0284c7;"></span></div>
+      <div class="ops-kpi-bottom">
+        <span class="ops-kpi-caption">Exceeded standard 45m SLA limit</span>
+        <span class="ops-kpi-sub" style="color:#0284c7;font-weight:600;">1 priority incident delayed</span>
+      </div>
+    </article>
+
+    <!-- Card 3: Active Field Teams (Warm Rose/Coral gradient matching Overview Card 3) -->
+    <article class="ops-kpi-card sky-rose">
+      <div class="ops-kpi-top">
+        <div class="ops-kpi-header-left">
+          <div class="ops-kpi-icon-badge">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+          </div>
+          <span class="ops-kpi-label">Active field teams</span>
+        </div>
+        <div class="ops-kpi-meta-group">
+          <span class="ops-kpi-tag">On Duty</span>
+          <button type="button" class="card-info-btn" data-info-title="Active Teams" data-info-text="Rapid Response teams currently dispatched in Elmina Central Park with active radio communication.">i</button>
+        </div>
+      </div>
+      <div class="ops-kpi-val">{{ visual_data.active_squads|length }}</div>
+      <div class="ops-kpi-bottom">
+        <span class="ops-kpi-caption">0 standby · 3 active on site</span>
+        <a href="#ops-queue-section" class="ops-kpi-link red">Open inbox &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Card 4: Resolved Today (Fresh Lime/Green gradient matching Overview Card 4) -->
+    <article class="ops-kpi-card sky-green">
+      <div class="ops-kpi-top">
+        <div class="ops-kpi-header-left">
+          <div class="ops-kpi-icon-badge">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+          </div>
+          <span class="ops-kpi-label">Resolved today</span>
+        </div>
+        <div class="ops-kpi-meta-group">
+          <span class="ops-kpi-tag">Verified</span>
+          <button type="button" class="card-info-btn" data-info-title="Resolved Today" data-info-text="Reports verified as completely remediated with reward points successfully issued to residents.">i</button>
+        </div>
+      </div>
+      <div class="ops-kpi-val">{{ visual_data.counts.resolved }}</div>
+      <div class="ops-buffer-track"><span style="width: 35%; background: #16a34a;"></span></div>
+      <div class="ops-kpi-bottom">
+        <span class="ops-kpi-caption">Remediation verified on site</span>
+        <a href="#ops-crew-section" class="ops-kpi-link green">+50 GreenPoints credited &rarr;</a>
+      </div>
+    </article>
+  </section>
+
+  <!-- 2. FILTER & SEARCH TOOLBAR (TABS ORDERED: WAITING DISPATCH, IN PROGRESS, ACTIVE FIELD, RESOLVED, ALL REPORTS AT RIGHT) -->
+  <section class="ops-toolbar">
+    <div class="ops-status-tabs" role="tablist" aria-label="Filter report status">
+      <button type="button" class="ops-tab-btn" data-status-filter="open">Waiting Dispatch <b>{{ visual_data.counts.open }}</b></button>
+      <button type="button" class="ops-tab-btn" data-status-filter="in_progress">In Progress <b>{{ visual_data.counts.in_progress }}</b></button>
+      <button type="button" class="ops-tab-btn" data-status-filter="active">Active Field <b>{{ visual_data.counts.active }}</b></button>
+      <button type="button" class="ops-tab-btn" data-status-filter="resolved">Resolved <b>{{ visual_data.counts.resolved }}</b></button>
+      <button type="button" class="ops-tab-btn active" data-status-filter="all">All Reports <b>{{ visual_data.counts.total }}</b></button>
+    </div>
+
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <select id="category-filter-select" style="width:auto;padding:7px 12px;font-size:12.5px;border-radius:8px;border:1px solid #cbd5e1;">
+        <option value="all">All Categories</option>
+        <option value="flood">Drainage / Flood</option>
+        <option value="wind">Tree &amp; Wind Hazard</option>
+        <option value="drought">Soil &amp; Dry Saplings</option>
+        <option value="heat">Heat Exposure</option>
+      </select>
+
+      <div class="ops-search-box">
+        <input type="search" id="ops-search-input" placeholder="Search report, crew lead, or landmark…">
+      </div>
+      <span id="visible-reports-count" style="font-size:12px;color:#64748b;font-weight:600;"></span>
+    </div>
+  </section>
+
+  <!-- 3. MAIN OPERATIONAL GRID (LEFT: INCIDENT QUEUE WITH ACCORDION DRAWERS, RIGHT: MAP & FLEET MONITOR) -->
+  <div class="ops-main-grid">
+
+    <!-- LEFT COLUMN: INCIDENT REPORTS QUEUE (CLICK TO OPEN & CLOSE BOX) -->
+    <div class="ops-queue-wrap" id="ops-queue-section">
+      <div class="ops-queue-header">
+        <h2>Incident Reports Queue</h2>
+        <span style="font-size:11.5px;color:#64748b;">Click any incident to open or close full details</span>
+      </div>
+
+      {% for r in visual_data.reports %}
+      <article class="ops-incident-card {% if r.crew.sla_status == 'delayed' %}is-delayed{% endif %} {% if forloop.counter == 2 %}is-open{% endif %}"
+               data-id="{{ r.id }}"
+               data-status="{{ r.status }}"
+               data-category="{{ r.kind }}">
+        
+        <!-- SUMMARY ROW (ALWAYS VISIBLE, CLICK TO TOGGLE OPEN/CLOSE) -->
+        <div class="ops-incident-summary">
+          <img src="{% static 'resilience/illustrations/' %}{{ r.illustration }}.jpg?v=real1" alt="{{ r.title }}" class="ops-incident-thumb" loading="lazy">
+          <div class="ops-incident-info">
+            <div class="ops-incident-topline">
+              <span class="ops-id-badge">#{{ r.reference }}</span>
+              <span class="status {{ r.status }}">{{ r.status_label|upper }}</span>
+            </div>
+            <strong class="ops-incident-title">{{ r.title }}</strong>
+            <div class="ops-incident-meta">
+              <div class="ops-incident-location">{{ r.crew.location_detail }} <small>({{ r.crew.coords_str }})</small></div>
+              <div class="ops-incident-unit">Unit: {{ r.crew.unit }} (Lead: {{ r.crew.lead }})</div>
+            </div>
+          </div>
+          <div class="ops-incident-action-toggle">
+            <button type="button" class="ops-btn-toggle-box">
+              {% if forloop.counter == 2 %}Close Details ▲{% else %}Inspect Incident ▼{% endif %}
+            </button>
+          </div>
+        </div>
+
+        <!-- EXPANDABLE DETAIL BOX (OPENS WHEN INSPECT IS CLICKED, CAN BE CLOSED ANYTIME) -->
+        <div class="ops-incident-detail-box">
+          <div class="ops-detail-split">
+            <!-- Left: Large Field Photo Preview -->
+            <div class="ops-detail-photo">
+              <img src="{% static 'resilience/illustrations/' %}{{ r.illustration }}.jpg?v=real1" alt="{{ r.title }}" loading="lazy">
+              <span>EcoCool App Field Photo · GPS Verified</span>
+            </div>
+
+            <!-- Right: Details, Location, and Crew Info -->
+            <div class="ops-detail-body">
+              <p class="ops-detail-desc">{{ r.description }}</p>
+
+              <!-- Crew Box with Team Lead Photo -->
+              <div class="ops-detail-crew-box">
+                <div class="ops-detail-crew-col">
+                  <small>Assigned Squad</small>
+                  <strong>{{ r.crew.unit }}</strong>
+                  <span style="font-size:11px;color:#475569;">Lead: {{ r.crew.lead }}</span>
+                </div>
+                <div class="ops-detail-crew-col">
+                  <small>Radio Frequency</small>
+                  <strong>{{ r.crew.contact }}</strong>
+                  <span style="font-size:11px;color:#0f766e;">On-Duty Dispatch</span>
+                </div>
+                <div class="ops-detail-crew-col">
+                  <small>Dispatched &amp; Elapsed</small>
+                  <strong>{{ r.crew.dispatched_time }}</strong>
+                  <span style="font-size:11px;color:#475569;">{{ r.crew.elapsed_mins }} mins elapsed</span>
+                </div>
+              </div>
+
+              <!-- Resident Name, Contact & Points Strip -->
+              <div class="ops-detail-resident-box">
+                <div class="ops-resident-meta">
+                  <span>Resident: <strong>{{ r.crew.resident_name }}</strong></span>
+                  <span>Contact: <strong>{{ r.crew.resident_phone }}</strong></span>
+                </div>
+                <span class="ops-resident-points">+50 GreenPoints</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Live Maintenance Progress Timeline -->
+          <div class="ops-detail-timeline-wrap">
+            <div class="ops-timeline-label">Live Maintenance Progress Timeline</div>
+            <div class="ops-timeline">
+              {% for step in r.crew.timeline %}
+              <div class="ops-step-node {{ step.status }}">
+                <div class="ops-step-dot">
+                  {% if step.status == 'done' %}✓{% elif step.status == 'done_delayed' %}!{% elif step.status == 'current' %}●{% else %}○{% endif %}
+                </div>
+                <span class="ops-step-time">{{ step.time }}</span>
+                <span class="ops-step-name">{{ step.step }}</span>
+                <span class="ops-step-desc">{{ step.detail }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar (Only Mark Resolved and Locate on Map) -->
+          <div class="ops-detail-actions">
+            <div style="font-size:11.5px;color:#64748b;">
+              Required Action: <strong>{{ r.crew.action_summary }}</strong>
+            </div>
+
+            <div class="ops-detail-action-btns">
+              {% if r.status != 'resolved' %}
+                <button type="button" class="ops-btn-resolve" data-report-id="{{ r.id }}" data-triage-url="{{ r.triage_url }}">
+                  Mark Resolved
+                </button>
+              {% else %}
+                <span style="font-size:12px;color:#15803d;font-weight:700;">Resolved</span>
+              {% endif %}
+
+              <button type="button" class="ops-btn-locate" data-lat="{{ r.lat }}" data-lon="{{ r.lon }}" data-title="{{ r.title }}">
+                Locate on Map
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <div class="empty-state">
+        <strong>No incident reports found</strong>
+        <p>No reports currently match your selected status or category filter.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- RIGHT COLUMN: MAP & MAINTENANCE FLEET MONITOR WITH LEAD PORTRAITS -->
+    <div class="ops-sidebar-stack">
+
+      <!-- BOX 1: TOWNSHIP MAP -->
+      <section class="ops-map-card">
+        <div class="ops-map-header">
+          <div>
+            <h3>Elmina Central Park Map</h3>
+            <small style="color:#64748b;">GPS pins of all resident hazard reports</small>
+          </div>
+          <button class="small-button" id="fit-map" type="button">Fit Park</button>
+        </div>
+        <div id="visual-map" role="region" aria-label="Map showing resident report locations"></div>
+        <div class="ops-map-footer">
+          <div>
+            <span style="color:#0284c7;font-weight:700;">● Drainage</span> &nbsp;
+            <span style="color:#ea580c;font-weight:700;">● Tree</span> &nbsp;
+            <span style="color:#ca8a04;font-weight:700;">● Soil</span> &nbsp;
+            <span style="color:#dc2626;font-weight:700;">● Heat</span>
+          </div>
+          <small id="map-status">Google Satellite Active</small>
+        </div>
+      </section>
+
+      <!-- BOX 2: ON-DUTY MAINTENANCE FLEET WITH LEAD PORTRAITS & UNIFORM SQUAD NAMES -->
+      <section class="ops-fleet-card" id="ops-crew-section">
+        <div class="ops-fleet-title">
+          <h3>Maintenance Fleet &amp; SLA Monitor</h3>
+          <small style="color:#64748b;">Active ground teams currently deployed in Elmina Central Park</small>
+        </div>
+
+        <div class="ops-squad-list">
+          {% for squad in visual_data.active_squads %}
+          <div class="ops-squad-row {% if squad.delayed %}delayed-row{% endif %}">
+            <img src="{% static 'resilience/illustrations/' %}{{ squad.photo }}" alt="{{ squad.lead }}" class="ops-lead-avatar" loading="lazy">
+            <div class="ops-squad-info">
+              <strong {% if squad.delayed %}style="color:#b91c1c;"{% endif %}>{{ squad.name }}</strong>
+              <span>Lead: {{ squad.lead }} • {{ squad.assignment }}</span>
+            </div>
+            <div class="ops-squad-action">
+              {% if squad.delayed %}
+                <span class="sla-badge delayed" style="font-size:10.5px;">{{ squad.time_label }}</span>
+                <button type="button" class="ops-btn-nudge ops-fleet-nudge-btn" data-squad="{{ squad.name }}" style="padding:4px 8px;font-size:11px;">Nudge</button>
+              {% else %}
+                <span class="sla-badge on_track" style="font-size:10.5px;">{{ squad.time_label }}</span>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div style="margin-top:14px;padding-top:10px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;font-size:11.5px;color:#64748b;">
+          <span>Active On-Duty: <strong>3 Squads</strong></span>
+          <span>Response Standard: <strong>45 min SLA</strong></span>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- 4. LIVE SAFETY & PARK BROADCAST TO RESIDENT APP (HIGHLIGHTED PROMINENT PICTURES) -->
+  <section class="ops-broadcast-panel">
+    <div class="ops-broadcast-header">
+      <div>
+        <h2>Live Park Advisory Broadcast · EcoCool Resident App</h2>
+        <p>Send instant safety push notifications to residents walking in City of Elmina Central Park during maintenance or weather events.</p>
+      </div>
+      <button class="button ops-broadcast-btn" id="open-broadcast-modal-2" type="button" onclick="document.getElementById('broadcast-modal').showModal()">+ New Custom Broadcast</button>
+    </div>
+
+    <!-- 3 Rich Visual Preset Cards with Highlighted Prominent Pictures -->
+    <div style="margin-bottom:12px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">
+      Quick Broadcast Templates (Click to Preview &amp; Send)
+    </div>
+    <div class="ops-presets-grid">
+      <!-- Preset 1: Storm -->
+      <div class="ops-preset-card storm"
+           data-preset-title="Heavy Rain Alert: Lower Lakeside Jogging Path Closed"
+           data-preset-message="Due to evening thunderstorms and storm drain clearance, the lower lake jogging trail is temporarily closed for 2 hours. Please use the elevated boulevard walkway."
+           data-preset-kind="flood">
+        <div class="ops-preset-cover">
+          <img src="{% static 'resilience/illustrations/scen_storm.jpg' %}" alt="Storm over Elmina lake" loading="lazy">
+          <span class="ops-preset-tag" style="background:#0284c7;">Drainage &amp; Flood</span>
+        </div>
+        <div class="ops-preset-body">
+          <strong>Heavy Rain &amp; Lake Drain Clearance</strong>
+          <p>Warn residents to avoid the lower lakeside trail while lake weir gates and perimeter drains are being cleared.</p>
+          <div class="ops-preset-footer">
+            <span style="color:#0284c7;">Preview Advisory →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset 2: Tree -->
+      <div class="ops-preset-card wind"
+           data-preset-title="Tree Maintenance: Chainsaw Operations at Northwest Loop"
+           data-preset-message="Arborist crew is removing a snapped rain-tree branch near the Forest Bridge. Northwest jogging loop has been diverted for your safety."
+           data-preset-kind="wind">
+        <div class="ops-preset-cover">
+          <img src="{% static 'resilience/illustrations/scen_wind.jpg' %}" alt="Windstorm at Elmina lake" loading="lazy">
+          <span class="ops-preset-tag" style="background:#ea580c;">Tree &amp; Wind Safety</span>
+        </div>
+        <div class="ops-preset-body">
+          <strong>Tree Branch Chainsaw Clearance</strong>
+          <p>Alert joggers and cyclists about active chainsaw work and temporary path detour near Forest Bridge.</p>
+          <div class="ops-preset-footer">
+            <span style="color:#ea580c;">Preview Advisory →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset 3: Heat -->
+      <div class="ops-preset-card heat"
+           data-preset-title="Afternoon Heat Advisory: Recommended Shaded CoolWalk Trail"
+           data-preset-message="Midday surface temperatures have reached 38°C on exposed concrete paths. Please follow the shaded CoolWalk canopy trail along East Lake for maximum comfort."
+           data-preset-kind="heat">
+        <div class="ops-preset-cover">
+          <img src="{% static 'resilience/illustrations/coolwalk_sim_result.jpg' %}" alt="Shaded CoolWalk canopy" loading="lazy">
+          <span class="ops-preset-tag" style="background:#059669;">Thermal Comfort</span>
+        </div>
+        <div class="ops-preset-body">
+          <strong>Afternoon Heat &amp; CoolWalk Trail</strong>
+          <p>Guide families and afternoon walkers to use the newly shaded tree trail during high solar hours.</p>
+          <div class="ops-preset-footer">
+            <span style="color:#059669;">Preview Advisory →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Broadcasts Sent to Resident App -->
+    <div class="ops-active-notices">
+      <h4>Currently Active Broadcasts on Resident App (City of Elmina)</h4>
+      {% for item in advisories %}
+      <div class="ops-notice-item">
+        <div>
+          <span class="ops-category-pill {{ item.kind }}" style="font-size:10px;margin-bottom:4px;">{{ item.get_kind_display }}</span>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.message }}</p>
+          <small style="color:#64748b;">Active until {{ item.expires_at|date:'d M H:i' }} · Pushed to EcoCool Resident App</small>
+        </div>
+        <div>
+          <form method="post" action="{% url 'resilience:withdraw' project.id item.id %}">
+            {% csrf_token %}
+            <button class="small-button withdraw-notice-btn" type="submit" style="color:#dc2626;border-color:#fca5a5;">Withdraw Notice</button>
+          </form>
+        </div>
+      </div>
+      {% empty %}
+      <div style="padding:14px;background:#f8fafc;border-radius:8px;border:1px dashed #cbd5e1;text-align:center;color:#64748b;font-size:13px;">
+        No active emergency advisories right now. Click one of the 3 templates above to send an advisory to residents' phones!
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</div>
+
+<!-- BROADCAST TO RESIDENT APP MODAL (NO HORIZONTAL SCROLLBAR, BLURRED BACKDROP, LIVE SMARTPHONE PREVIEW) -->
+<dialog id="broadcast-modal" class="weather-dialog">
+  <div class="dialog-top">
+    <div>
+      <span class="ops-pill green" style="margin-bottom:6px;">LIVE B2C BROADCAST SYSTEM</span>
+      <h2 style="margin:2px 0 0;">Send Push Advisory to EcoCool Resident App</h2>
+      <p style="margin:4px 0 0;font-size:13px;color:#64748b;">This push notification will instantly appear on the smartphones of registered residents in City of Elmina.</p>
+    </div>
+    <button class="icon-button" id="close-broadcast-modal" type="button" aria-label="Close modal"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+  </div>
+
+  <div class="ops-broadcast-modal-grid">
+    <!-- Left: Broadcast Form -->
+    <form id="broadcast-form" method="post" action="{% url 'resilience:publish' project.id %}">
+      {% csrf_token %}
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px;">Hazard Category</label>
+        <select id="broadcast-kind-select" name="kind" style="width:100%;padding:9px;font-size:13px;border-radius:8px;border:1px solid #cbd5e1;">
+          <option value="flood">Flood / Blocked Drainage</option>
+          <option value="wind">Wind / Fallen Tree Hazard</option>
+          <option value="drought">Dry Vegetation / Fire Risk</option>
+          <option value="heat">Heat Exposure / High UV</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px;">Advisory Headline</label>
+        <input type="text" id="broadcast-title-input" name="title" required placeholder="Advisory Headline" style="width:100%;padding:9px;font-size:13px;border-radius:8px;border:1px solid #cbd5e1;">
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px;">Message to Residents</label>
+        <textarea id="broadcast-message-input" name="message" rows="3" required placeholder="Describe what residents should avoid or recommended alternative paths..." style="width:100%;padding:9px;font-size:13px;border-radius:8px;border:1px solid #cbd5e1;"></textarea>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px;">Display Duration</label>
+        <select name="hours" style="width:100%;padding:9px;font-size:13px;border-radius:8px;border:1px solid #cbd5e1;">
+          <option value="2">2 Hours (Short Weather Event)</option>
+          <option value="6" selected>6 Hours (Standard Maintenance)</option>
+          <option value="12">12 Hours (Half Day)</option>
+          <option value="24">24 Hours (Full Day)</option>
+        </select>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button class="small-button" id="cancel-broadcast-modal" type="button">Cancel</button>
+        <button class="button" type="submit" style="background:#0f766e;border-color:#0f766e;color:#fff;">Publish to Resident Phones</button>
+      </div>
+    </form>
+
+    <!-- Right: Smartphone Live Preview -->
+    <div class="ops-phone-mockup">
+      <div class="ops-phone-notch"></div>
+      <div class="ops-phone-screen">
+        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:#64748b;margin-bottom:4px;">
+          <span>EcoCool Resident</span>
+          <span>9:41 AM</span>
+        </div>
+        <div class="ops-phone-banner">
+          <strong id="phone-preview-title">Heavy Rain Alert: Lower Lake Path Closed</strong>
+          <p id="phone-preview-msg">Due to evening thunderstorms and storm drain clearance, the lower lake jogging trail is temporarily closed for 2 hours. Please use the elevated boulevard walkway.</p>
+          <small style="color:#15803d;font-size:9.5px;font-weight:700;margin-top:2px;">Official Sime Darby Property Township Notice</small>
+        </div>
+        <div style="margin-top:auto;padding-top:10px;border-top:1px solid #f1f5f9;font-size:10px;color:#94a3b8;text-align:center;">
+          City of Elmina Community Feed
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- PLAIN-ENGLISH CARD INFO POPOVER DIALOG -->
+<dialog id="card-info-dialog" class="plain-info-dialog">
+  <div class="dialog-top">
+    <h2 id="card-info-title">What does this card show?</h2>
+    <button class="icon-button" id="close-card-info" type="button" aria-label="Close explanation"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+  </div>
+  <p id="card-info-body" style="font-size:15px;line-height:1.65;color:#252C27;margin:10px 0 18px;"></p>
+  <button class="button" id="done-card-info" type="button">Got it, thanks!</button>
+</dialog>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'resilience/operations.js' %}?v=4"></script>
 {% endblock %}

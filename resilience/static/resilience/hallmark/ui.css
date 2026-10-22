@@ -121,3 +121,1282 @@ body.aerothermal-theme{font-family:var(--font-body);background:var(--color-paper
 .hallmark-workspace .kpi.has-active-reports .inline-link {
   color: #b42318;
 }
+
+
+/* ==========================================================================
+   AEROTHERMAL EXECUTIVE BOTANICAL UPGRADE (UNIFIED WITH B2C RESIDENT APP)
+   ========================================================================== */
+body.hallmark-workspace {
+  background-color: #F7F5EF !important;
+  color: #1D241F !important;
+  font-family: 'Plus Jakarta Sans', var(--font-body) !important;
+}
+
+/* 1. Deep Forest Charcoal Masthead (#252C27) + Electric Lime (#B6FF4A) Active Pill */
+.hallmark-workspace .hm-masthead {
+  background: linear-gradient(135deg, #252C27 0%, #1D241F 100%) !important;
+  border-bottom: 1px solid rgba(182, 255, 74, 0.22) !important;
+  padding: 12px 28px !important;
+  box-shadow: 0 10px 30px rgba(20, 28, 22, 0.14) !important;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+}
+
+.hm-brand > img {
+  background: #FFFFFF;
+  padding: 4px 8px;
+  border-radius: 8px;
+  height: 36px !important;
+  width: auto !important;
+}
+
+.hm-wordmark {
+  color: #F7F5EF !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 19px !important;
+  letter-spacing: -0.03em !important;
+}
+
+.hm-wordmark small {
+  color: rgba(247, 245, 239, 0.68) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+.hallmark-workspace .hm-navigation {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 4px !important;
+}
+
+.hallmark-workspace .hm-navigation a {
+  color: rgba(247, 245, 239, 0.82) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 8px 14px !important;
+  min-height: 38px !important;
+  border-radius: 9px !important;
+  transition: all 0.18s ease !important;
+}
+
+.hallmark-workspace .hm-navigation a:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+.hallmark-workspace .hm-navigation a.active {
+  background: #B6FF4A !important;
+  color: #1A2500 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(182, 255, 74, 0.28) !important;
+}
+
+.hallmark-workspace .hm-navigation a.active svg {
+  stroke: #1A2500 !important;
+}
+
+.hm-right-cluster {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.b2c-launch-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(182, 255, 74, 0.14);
+  border: 1px solid rgba(182, 255, 74, 0.45);
+  color: #B6FF4A !important;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.b2c-launch-pill:hover {
+  background: #B6FF4A;
+  color: #1A2500 !important;
+}
+
+.b2c-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #B6FF4A;
+  box-shadow: 0 0 8px #B6FF4A;
+}
+
+.hm-account {
+  color: #F7F5EF !important;
+}
+
+.hm-account > b {
+  background: #4E6350 !important;
+  color: #B6FF4A !important;
+  border: 1px solid rgba(182, 255, 74, 0.35);
+  border-radius: 10px !important;
+}
+
+.hm-account small {
+  color: rgba(247, 245, 239, 0.65) !important;
+}
+
+/* 2. Page Heading & Eyebrow Pill Bar (Replaces Redundant Second Topbar) */
+.eyebrow-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.site-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: #E8EFE6;
+  border: 1px solid #C6D6C2;
+  color: #2C4230;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.site-pill .site-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4E6350;
+}
+
+.hallmark-workspace .sample-chip {
+  background: #FEF3C7 !important;
+  color: #92400E !important;
+  border: 1px solid #FDE68A !important;
+  border-radius: 999px !important;
+  padding: 4px 11px !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+}
+
+.heading-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* 3. Elevated Botanical Cards & KPI Grid */
+.hallmark-workspace .kpi-grid .kpi,
+.hallmark-workspace .panel,
+.hallmark-workspace .scenario-strip {
+  border: 1px solid #E2DDD2 !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 8px 24px rgba(37, 44, 39, 0.05) !important;
+}
+
+.hallmark-workspace .kpi-grid .kpi {
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.hallmark-workspace .kpi-grid .kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(37, 44, 39, 0.08) !important;
+}
+
+.hallmark-workspace .button {
+  background: #395240 !important;
+  border-color: #395240 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(57, 82, 64, 0.2) !important;
+}
+
+.hallmark-workspace .button:hover {
+  background: #252C27 !important;
+}
+
+/* 4. Dedicated Engineering Workbench Split Grid (Map & Planning Tab) */
+.engineer-workbench-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr);
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.engineer-side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+@media (max-width: 1024px) {
+  .engineer-workbench-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overview-map-only #visual-map {
+  height: 450px;
+}
+
+/* ==========================================================================
+   5. SIME DARBY TOWNSHIP DROPDOWN, INFO TOOLTIPS & METMALAYSIA HOME HUB
+   ========================================================================== */
+
+/* Top-Right Single-Line Sime Darby Township Selector Pill */
+.heading-actions-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.sdp-land-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 12px;
+  border-radius: 999px;
+  background: #E8EFE6;
+  border: 1.5px solid #B8CCB3;
+  color: #1F3524;
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(37, 44, 39, 0.06);
+  cursor: pointer;
+  white-space: nowrap !important;
+  flex-wrap: nowrap !important;
+}
+
+.sdp-land-picker .site-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #16A34A;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+
+.sdp-picker-prefix {
+  color: #4E6350;
+  font-weight: 700;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap !important;
+}
+
+.sdp-land-picker select {
+  min-height: 28px !important;
+  height: 28px !important;
+  width: auto !important;
+  padding: 0 22px 0 4px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #1A2E1E !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  cursor: pointer;
+  outline: none !important;
+  white-space: nowrap !important;
+}
+
+/* Plain-English Card Info Button (ⓘ) + Instant Hover Tooltip */
+.kpi-meta-group {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-info-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 1.5px solid #B8C4B9 !important;
+  background: #F4F1EA !important;
+  color: #395240 !important;
+  font-family: var(--font-display);
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  font-style: italic;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 4px;
+  transition: all 0.15s ease !important;
+}
+
+.card-info-btn:hover {
+  background: #395240 !important;
+  color: #FFFFFF !important;
+  border-color: #395240 !important;
+  transform: scale(1.08);
+}
+
+.card-info-btn::after {
+  content: attr(data-info-text);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: 265px;
+  padding: 10px 13px;
+  border-radius: 12px;
+  background: #1E2620;
+  color: #F9FBF9;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 999;
+}
+
+.card-info-btn:hover::after,
+.card-info-btn:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Official METMalaysia Home Hub */
+.hallmark-workspace .kpi-grid {
+  gap: 20px !important;
+  margin-bottom: 28px !important;
+}
+
+.hallmark-workspace .charts-grid {
+  gap: 20px !important;
+  margin-bottom: 28px !important;
+}
+
+.met-home-hub {
+  padding: 24px 26px !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF8F3 100%) !important;
+  border: 1.5px solid #DCD6C8 !important;
+}
+
+.met-hub-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #EAE5D9;
+}
+
+.met-hub-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.met-hub-brand h2 {
+  font-size: 19px !important;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.met-hub-brand p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #5B675D;
+}
+
+.met-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  color: #B91C1C;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.met-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
+}
+
+.met-hub-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.met-refresh-subbtn {
+  min-height: 26px !important;
+  padding: 2px 6px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #4E6350 !important;
+}
+
+.met-refresh-subbtn:hover {
+  color: #111814 !important;
+  text-decoration: underline;
+}
+
+.met-valid-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.met-subhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 12px;
+}
+
+.met-section-kicker {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #395240;
+  text-transform: uppercase;
+}
+
+.met-subhead small {
+  font-size: 11.5px;
+  color: #68736A;
+}
+
+/* 6-TOWNSHIP COMPACT ROW WITH SUBTLE VISUAL SKY BACKDROPS */
+.cuaca-semasa-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1360px) {
+  .cuaca-semasa-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .cuaca-semasa-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cuaca-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 14px !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2DDD2 !important;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease !important;
+  min-height: 154px !important;
+  white-space: normal !important;
+}
+
+.cuaca-card.sky-storm {
+  background: radial-gradient(circle at 92% 14%, rgba(251, 191, 36, 0.16) 0%, transparent 45%), linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 65%) !important;
+}
+
+.cuaca-card.sky-rain {
+  background: radial-gradient(circle at 92% 14%, rgba(56, 189, 248, 0.16) 0%, transparent 45%), linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 65%) !important;
+}
+
+.cuaca-card.sky-wind {
+  background: radial-gradient(circle at 92% 14%, rgba(251, 146, 60, 0.15) 0%, transparent 45%), linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 65%) !important;
+}
+
+.cuaca-card.sky-clear {
+  background: radial-gradient(circle at 92% 14%, rgba(74, 222, 128, 0.14) 0%, transparent 45%), linear-gradient(180deg, #F4FBF7 0%, #FFFFFF 65%) !important;
+}
+
+.cuaca-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(37, 44, 39, 0.08) !important;
+}
+
+.cuaca-card.alert-border {
+  border-top: 4px solid #DC2626 !important;
+}
+
+.cuaca-card.safe-border {
+  border-top: 4px solid #16A34A !important;
+}
+
+.cuaca-card.active {
+  border-color: #395240 !important;
+  box-shadow: 0 0 0 2px rgba(57, 82, 64, 0.22) !important;
+}
+
+.cuaca-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.cuaca-state {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #68736A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cuaca-card-top h3 {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #1F2821;
+  margin: 2px 0 0;
+  line-height: 1.2;
+}
+
+.cuaca-status-pill {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.cuaca-status-pill.red {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+.cuaca-status-pill.green {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.cuaca-main-temp {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 2px 0;
+}
+
+.cuaca-big-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+}
+
+.cuaca-main-temp strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: #1E2620;
+  line-height: 1.05;
+}
+
+.cuaca-main-temp span {
+  display: block;
+  font-size: 11px;
+  color: #5B675D;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cuaca-hourly {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed #E5E0D5;
+  text-align: center;
+}
+
+.cuaca-hourly small {
+  display: block;
+  font-size: 9.5px;
+  color: #68736A;
+  font-weight: 600;
+}
+
+.cuaca-hourly span {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* SPACIOUS VISUAL RED ALERT VS GREEN SAFE DIAGRAM CARDS */
+.amaran-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+@media (max-width: 980px) {
+  .amaran-visual-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.amaran-card {
+  border-radius: 18px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1.5px solid #E2DDD2;
+  background: #FFFFFF;
+}
+
+.amaran-card.is-alert {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 65%);
+  border-color: #FCA5A5;
+  border-left: 6px solid #DC2626;
+}
+
+.amaran-card.is-safe {
+  background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 65%);
+  border-color: #86EFAC;
+  border-left: 6px solid #16A34A;
+}
+
+.amaran-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.amaran-badge {
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.amaran-badge.red {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+
+.amaran-badge.green {
+  background: #16A34A;
+  color: #FFFFFF;
+}
+
+.amaran-date {
+  font-size: 12px;
+  font-weight: 700;
+  color: #7C2D12;
+  background: #FFEDD5;
+  padding: 4px 11px;
+  border-radius: 999px;
+}
+
+.amaran-card.is-safe .amaran-date {
+  color: #14532D;
+  background: #DCFCE7;
+}
+
+.amaran-body {
+  display: grid;
+  grid-template-columns: 94px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.amaran-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.amaran-diagram.red-tint {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+.amaran-diagram.green-tint {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+}
+
+.amaran-diagram svg {
+  width: 56px;
+  height: 56px;
+}
+
+.diagram-metric {
+  font-size: 11.5px;
+  font-weight: 800;
+  margin-top: 4px;
+  color: #991B1B;
+}
+
+.amaran-diagram.green-tint .diagram-metric {
+  color: #166534;
+}
+
+.amaran-copy h3 {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #1E2620;
+  margin: 0 0 6px;
+}
+
+.amaran-copy p {
+  font-size: 13.5px;
+  color: #455047;
+  line-height: 1.58;
+  margin: 0 0 14px;
+}
+
+.amaran-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.amaran-meter-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #5B675D;
+}
+
+.amaran-meter-label strong {
+  color: #B91C1C;
+  font-weight: 800;
+}
+
+.amaran-meter-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #E5E7EB;
+  overflow: hidden;
+}
+
+.amaran-meter-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.amaran-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px dashed #FECACA;
+}
+
+.affected-chip {
+  font-size: 12px;
+  font-weight: 700;
+  color: #991B1B;
+}
+
+.text-link-btn {
+  min-height: 32px !important;
+  padding: 4px 13px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #B91C1C !important;
+  background: #FEE2E2 !important;
+  border: 1px solid #FCA5A5 !important;
+  border-radius: 999px !important;
+  cursor: pointer;
+}
+
+.text-link-btn:hover {
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+/* Radar Category Filter Pills on Township Spatial Radar */
+.radar-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 22px 14px !important;
+}
+
+.radar-category-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.radar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px !important;
+  padding: 5px 14px !important;
+  border-radius: 999px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  background: #F4F1EA !important;
+  border: 1.5px solid #DCD6C8 !important;
+  color: #395240 !important;
+  cursor: pointer;
+}
+
+.radar-pill.active {
+  background: #395240 !important;
+  border-color: #395240 !important;
+  color: #FFFFFF !important;
+}
+
+.radar-pill .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.flood { background: #0284c7 !important; }
+.dot.wind { background: #d97706 !important; }
+.dot.drought { background: #65a30d !important; }
+.dot.heat { background: #ef4444 !important; }
+
+/* Dialogs for Plain-English Card Info & Full METMalaysia Warning Text */
+.plain-info-dialog,
+.weather-full-dialog {
+  width: min(840px, calc(100% - 40px)) !important;
+  max-width: 840px !important;
+  padding: 32px 36px !important;
+  border-radius: 22px !important;
+  border: 1.5px solid #DCD6C8 !important;
+}
+
+.plain-info-dialog {
+  width: min(500px, calc(100% - 32px)) !important;
+  max-width: 500px !important;
+}
+
+.weather-full-text-list,
+#weather-result {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 62vh;
+  overflow-y: auto;
+  margin-top: 18px;
+  padding-right: 6px;
+}
+
+#weather-result article,
+#weather-result .raw-warning-item,
+.raw-warning-item {
+  padding: 22px 28px !important;
+  border-radius: 16px !important;
+  background: #FAF8F3 !important;
+  border: 1.5px solid #E2DDD2 !important;
+  border-left: 6px solid #DC2626 !important;
+}
+
+#weather-result article.is-safe-raw,
+#weather-result .raw-warning-item.is-safe-raw,
+.raw-warning-item.is-safe-raw {
+  background: #F4FBF6 !important;
+  border-color: #BBF7D0 !important;
+  border-left: 6px solid #16A34A !important;
+}
+
+.met-valid-pill.safe-pill {
+  background: #DCFCE7 !important;
+  border-color: #86EFAC !important;
+  color: #166534 !important;
+}
+
+.raw-warning-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.raw-warning-head strong {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #1E2620;
+}
+
+#weather-result article p,
+.raw-warning-item p {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.72 !important;
+  color: #252C27 !important;
+}
+
+/* Take Action Button & State Teams Dispatch Modal */
+.take-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px !important;
+  padding: 5px 14px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  background: #DC2626 !important;
+  border: 1px solid #B91C1C !important;
+  border-radius: 999px !important;
+  box-shadow: 0 3px 10px rgba(220, 38, 38, 0.22) !important;
+  cursor: pointer;
+}
+
+.take-action-btn:hover {
+  background: #991B1B !important;
+  transform: translateY(-1px);
+}
+
+.sdp-action-teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.sdp-team-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: #FAF8F3;
+  border: 1.5px solid #E2DDD2;
+  cursor: pointer;
+}
+
+.sdp-team-row:hover {
+  border-color: #395240;
+  background: #F4F8F4;
+}
+
+.sdp-team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.sdp-team-info strong {
+  font-size: 14.5px;
+  color: #1E2620;
+}
+
+.sdp-team-info span {
+  font-size: 12.5px;
+  color: #5B675D;
+}
+
+.sdp-action-feedback {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #DCFCE7;
+  border: 1.5px solid #86EFAC;
+  color: #14532D;
+  font-size: 13.5px;
+}
+
+/* ==========================================================================
+   6. APPLE HIG / SF PRO TYPOGRAPHY SYSTEM OVERRIDE
+   ========================================================================== */
+body.hallmark-workspace,
+body.aerothermal-theme,
+.hallmark-workspace :is(h1, h2, h3, h4, p, span, strong, b, small, button, input, select, textarea, a, label, dt, dd),
+.aerothermal-theme :is(h1, h2, h3, h4, p, span, strong, b, small, button, input, select, textarea, a, label) {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hallmark-workspace h1,
+.aerothermal-theme .page-heading h1 {
+  font-weight: 700 !important;
+  letter-spacing: -0.028em !important;
+}
+
+.hallmark-workspace h2,
+.hallmark-workspace h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.hallmark-workspace .kpi-value strong,
+.cuaca-main-temp strong {
+  font-weight: 700 !important;
+  letter-spacing: -0.032em !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   7. APPLE LUMINOUS AMBIENT SHADE GLOW (PAGE BACKGROUND + ALL CARDS)
+   ========================================================================== */
+
+/* Page Background: Soft Apple Botanical & Sky Mesh Glow */
+html:has(body.hallmark-workspace),
+body.hallmark-workspace,
+body.aerothermal-theme {
+  background-color: #F3F6F2 !important;
+  background-image:
+    radial-gradient(ellipse 72% 48% at 12% 6%, rgba(187, 235, 203, 0.52) 0%, transparent 62%),
+    radial-gradient(ellipse 64% 44% at 90% 14%, rgba(198, 232, 249, 0.48) 0%, transparent 58%),
+    radial-gradient(ellipse 68% 50% at 78% 62%, rgba(254, 235, 200, 0.36) 0%, transparent 60%),
+    radial-gradient(ellipse 75% 52% at 22% 88%, rgba(212, 238, 195, 0.46) 0%, transparent 64%),
+    linear-gradient(180deg, #F1F6F1 0%, #F6F5EF 52%, #EFF5F0 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* Frosted Glass Apple Masthead with Crisp Black Typography */
+.hallmark-workspace .hm-masthead {
+  background: rgba(255, 255, 255, 0.86) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(210, 218, 208, 0.9) !important;
+  box-shadow: 0 4px 24px rgba(17, 24, 20, 0.05) !important;
+}
+
+.hallmark-workspace .hm-wordmark {
+  color: #111814 !important;
+  font-weight: 800 !important;
+}
+
+.hallmark-workspace .hm-wordmark small {
+  color: #4A554D !important;
+  font-weight: 600 !important;
+}
+
+.hallmark-workspace .hm-navigation {
+  background: rgba(17, 24, 20, 0.05) !important;
+  border: 1px solid rgba(17, 24, 20, 0.08) !important;
+}
+
+.hallmark-workspace .hm-navigation a {
+  color: #18201B !important;
+  font-weight: 600 !important;
+}
+
+.hallmark-workspace .hm-navigation a:hover {
+  background: rgba(17, 24, 20, 0.08) !important;
+  color: #000000 !important;
+}
+
+.hallmark-workspace .hm-navigation a.active {
+  background: #18201B !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(24, 32, 27, 0.18) !important;
+}
+
+.hallmark-workspace .hm-navigation a.active svg {
+  stroke: #B6FF4A !important;
+}
+
+.hallmark-workspace .b2c-launch-pill {
+  background: #ECFCCB !important;
+  border: 1.5px solid #84CC16 !important;
+  color: #1A2E05 !important;
+  font-weight: 700 !important;
+}
+
+.hallmark-workspace .b2c-launch-pill:hover {
+  background: #84CC16 !important;
+  color: #000000 !important;
+}
+
+.hallmark-workspace .b2c-dot {
+  background: #16A34A !important;
+  box-shadow: 0 0 6px rgba(22, 163, 74, 0.6) !important;
+}
+
+.hallmark-workspace .hm-account,
+.hallmark-workspace .hm-account span {
+  color: #111814 !important;
+  font-weight: 700 !important;
+}
+
+.hallmark-workspace .hm-account small {
+  color: #4A554D !important;
+  font-weight: 500 !important;
+}
+
+.hallmark-workspace .hm-account > b {
+  background: #18201B !important;
+  color: #FFFFFF !important;
+  border: 0 !important;
+}
+
+/* KPI Cards: Individual Contextual Shade Glows */
+.hallmark-workspace .kpi-grid .kpi {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(214, 222, 212, 0.9) !important;
+  box-shadow: 0 10px 28px rgba(37, 44, 39, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* KPI 1: Lake Storage — Emerald Aqua Glow */
+.hallmark-workspace .kpi-grid .kpi:nth-child(1) {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(16, 185, 129, 0.18) 0%, transparent 52%),
+    radial-gradient(circle at 12% 90%, rgba(56, 189, 248, 0.1) 0%, transparent 48%),
+    linear-gradient(180deg, #F2FBF7 0%, #FFFFFF 68%) !important;
+}
+
+/* KPI 2: Storm Buffer — Sky Water Glow */
+.hallmark-workspace .kpi-grid .kpi:nth-child(2) {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(56, 189, 248, 0.2) 0%, transparent 52%),
+    radial-gradient(circle at 10% 88%, rgba(14, 165, 233, 0.08) 0%, transparent 48%),
+    linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 68%) !important;
+}
+
+/* KPI 3: Active Resident Reports — Warm Amber-Coral Glow */
+.hallmark-workspace .kpi-grid .kpi:nth-child(3) {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(251, 146, 60, 0.2) 0%, transparent 52%),
+    radial-gradient(circle at 10% 88%, rgba(244, 63, 94, 0.08) 0%, transparent 48%),
+    linear-gradient(180deg, #FFF8F1 0%, #FFFFFF 68%) !important;
+}
+
+/* KPI 4: Latest Proposed-Tree Shade — Botanical Canopy Glow */
+.hallmark-workspace .kpi-grid .kpi:nth-child(4) {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(132, 204, 22, 0.2) 0%, transparent 52%),
+    radial-gradient(circle at 10% 88%, rgba(34, 197, 94, 0.1) 0%, transparent 48%),
+    linear-gradient(180deg, #F4FCEB 0%, #FFFFFF 68%) !important;
+}
+
+/* METMalaysia Home Hub Container — Luminous Glass Glow */
+.met-home-hub {
+  background:
+    radial-gradient(circle at 96% 8%, rgba(254, 202, 202, 0.26) 0%, transparent 40%),
+    radial-gradient(circle at 4% 92%, rgba(187, 247, 208, 0.24) 0%, transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(250, 252, 249, 0.98) 100%) !important;
+  box-shadow: 0 14px 36px rgba(37, 44, 39, 0.06), inset 0 1px 0 #FFFFFF !important;
+}
+
+/* METMalaysia Red Alert & Green Safe Cards — Enhanced Corner Glow */
+.amaran-card.is-alert {
+  background:
+    radial-gradient(circle at 94% 14%, rgba(239, 68, 68, 0.17) 0%, transparent 48%),
+    radial-gradient(circle at 8% 90%, rgba(251, 146, 60, 0.1) 0%, transparent 45%),
+    linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 65%) !important;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.06) !important;
+}
+
+.amaran-card.is-safe {
+  background:
+    radial-gradient(circle at 94% 14%, rgba(34, 197, 94, 0.17) 0%, transparent 48%),
+    radial-gradient(circle at 8% 90%, rgba(16, 185, 129, 0.09) 0%, transparent 45%),
+    linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 65%) !important;
+  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.05) !important;
+}
+
+/* The 3 Analytics Chart Panels — Contextual Shade Glows */
+.hallmark-workspace .charts-grid > .panel:nth-child(1) {
+  background:
+    radial-gradient(circle at 92% 12%, rgba(56, 189, 248, 0.16) 0%, transparent 48%),
+    linear-gradient(180deg, #F3FAFE 0%, #FFFFFF 62%) !important;
+}
+
+.hallmark-workspace .charts-grid > .panel:nth-child(2) {
+  background:
+    radial-gradient(circle at 92% 12%, rgba(251, 191, 36, 0.16) 0%, transparent 48%),
+    linear-gradient(180deg, #FFFDF4 0%, #FFFFFF 62%) !important;
+}
+
+.hallmark-workspace .charts-grid > .panel:nth-child(3) {
+  background:
+    radial-gradient(circle at 92% 12%, rgba(132, 204, 22, 0.17) 0%, transparent 48%),
+    linear-gradient(180deg, #F5FCEB 0%, #FFFFFF 62%) !important;
+}
+
+/* Map Panels & Other Workspace Panels (Engineering, Operations, Tree Simulator) */
+.hallmark-workspace .map-panel,
+.hallmark-workspace .panel:not(.met-home-hub) {
+  background:
+    radial-gradient(circle at 95% 10%, rgba(74, 222, 128, 0.12) 0%, transparent 44%),
+    radial-gradient(circle at 6% 92%, rgba(56, 189, 248, 0.09) 0%, transparent 44%),
+    linear-gradient(180deg, #F8FBF8 0%, #FFFFFF 65%) !important;
+}
+
+.aerothermal-theme .cards article,
+.aerothermal-theme .workspace > aside {
+  background:
+    radial-gradient(circle at 92% 14%, rgba(132, 204, 22, 0.16) 0%, transparent 50%),
+    linear-gradient(180deg, #F5FBF2 0%, #FFFFFF 68%) !important;
+  box-shadow: 0 10px 28px rgba(37, 44, 39, 0.05) !important;
+}

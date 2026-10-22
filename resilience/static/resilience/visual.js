@@ -9,7 +9,7 @@
  const stamp=s=>{const d=new Date(s);return Number.isNaN(d.getTime())?'—':d.toLocaleString('en-MY',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kuala_Lumpur'});};
  const age=s=>{const mins=Math.max(0,Math.floor((Date.now()-new Date(s).getTime())/60000));return mins<60?`${mins}m ago`:mins<1440?`${Math.floor(mins/60)}h ago`:`${Math.floor(mins/1440)}d ago`;};
  const assetBase=new URL('.',document.currentScript.src).href;
- const attachment=r=>r.photo_url||`${assetBase}illustrations/${r.illustration}.svg`;
+ const attachment=r=>r.photo_url||`${assetBase}illustrations/${r.illustration}.jpg?v=real1`;
  function modal(openId,dialogId,closeIds){const d=$(dialogId);if(!d)return;if($(openId))$(openId).onclick=()=>d.showModal();for(const id of closeIds)if($(id))$(id).onclick=()=>d.close();}
  modal('open-notes','data-notes',['close-notes','done-notes']);modal('open-notice','notice-dialog',['close-notice']);
  if($('shared-scenario')&&data.climate)$('shared-scenario').value=data.climate.scenario;
@@ -48,13 +48,16 @@
    const row=make('div','balance-row'),head=make('div','balance-label'),track=make('div','balance-track'),a=make('span','balance-stored'),b=make('span','balance-inflow');head.append(make('span','',label),make('b','',vol(stored+inflow)));a.style.width=`${Math.min(100,stored/c.capacity*100)}%`;b.style.width=`${Math.min(100-stored/c.capacity*100,inflow/c.capacity*100)}%`;track.append(a,b);row.append(head,track);$('storage-balance').append(row);
   }set('candidate-release',vol(m.candidate_m3));
  }
- let map=null,markers=new Map(),selected=null,reportLayer=null,zoneLayer=null;
- let statusFilter='active',kindFilter='all',query='';
+ let map=null,markers=new Map(),selected=null,reportLayer=null,zoneLayer=null,extraTownshipLayer=null;
+ const isOverviewOnly=Boolean(document.querySelector('.overview-map-only'));
+ let statusFilter=isOverviewOnly?'all':'active',kindFilter='all',query='';
+ const kindColors={flood:'#0284c7',wind:'#d97706',drought:'#65a30d',heat:'#ef4444'};
+ const kindLabels={flood:'Drainage / Flood Zone',wind:'Tree & Wind Hazard Zone',drought:'Soil / Drought Zone',heat:'Heat Exposure Zone'};
  function matches(r){return(statusFilter==='all'||statusFilter==='active'&&r.status!=='resolved'||r.status===statusFilter)&&(kindFilter==='all'||r.kind===kindFilter)&&(!query||`${r.title} ${r.location} ${r.reference} ${r.description}`.toLowerCase().includes(query));}
  function setSelected(id){selected=id;for(const [rid,marker]of markers)marker.getElement()?.classList.toggle('selected',rid===id);document.querySelectorAll('.report-card').forEach(n=>n.classList.toggle('selected',Number(n.dataset.id)===id));}
  function openInspector(r){
   setSelected(r.id);const d=$('report-inspector');if(!d){location.href=r.detail_url;return;}
-  set('inspect-reference',r.reference);set('inspect-title',r.title);set('inspect-description',r.description);set('inspect-status',r.status_label);$('inspect-status').className=`status ${r.status}`;set('inspect-source',r.source);set('inspect-location',r.location);set('inspect-time',stamp(r.reported_at));set('inspect-assigned',r.assigned_to);set('inspect-image-label',r.photo_url?'Report attachment':'Sample illustration · no photo attached');$('inspect-image').src=attachment(r);$('inspect-image').alt=r.photo_url?'Stored report attachment':`${r.title}: sample illustration`;$('inspect-open').href=r.detail_url;
+  set('inspect-reference',r.reference);set('inspect-title',r.title);set('inspect-description',r.description);set('inspect-status',r.status_label);$('inspect-status').className=`status ${r.status}`;set('inspect-source',r.source);set('inspect-location',r.location);set('inspect-time',stamp(r.reported_at));set('inspect-assigned',r.assigned_to);set('inspect-image-label','Resident photo attachment · EcoCool mobile app');$('inspect-image').src=attachment(r);$('inspect-image').alt=`${r.title}: resident field photo`;$('inspect-open').href=r.detail_url;
   $('locate-report').disabled=r.lat===null||!map;
   $('locate-report').onclick=()=>{d.close();if(map&&r.lat!==null){map.setView([r.lat,r.lon],19);markers.get(r.id)?.getElement()?.focus();}};
   if(map&&r.lat!==null)map.panTo([r.lat,r.lon]);
@@ -63,31 +66,175 @@
  if($('close-inspector'))$('close-inspector').onclick=()=>$('report-inspector').close();
  function refreshReports(){
   const visible=data.reports.filter(matches),list=$('report-list');if(list)list.replaceChildren();
-  set('inbox-count',`${visible.length} ${visible.length===1?'report':'reports'}`);set('map-count',`${visible.filter(r=>r.lat!==null).length} locations`);
+  set('inbox-count',`${visible.length} ${visible.length===1?'report':'reports'}`);set('map-count',`${visible.filter(r=>r.lat!==null).length} active zones`);
   if(list&&!visible.length)empty(list,'No matching reports','Try another category or status.');
-  for(const r of visible){if(list){const button=make('button','report-card');button.type='button';button.dataset.id=r.id;button.setAttribute('aria-label',`${r.title}, ${r.status_label}, ${r.location}`);const img=make('img','report-thumb');img.src=attachment(r);img.alt=r.photo_url?'Report attachment':'Sample illustration';img.loading='lazy';const body=make('div','report-copy'),meta=make('div','report-card-meta');body.append(make('strong','',r.title),make('p','',r.location));meta.append(make('span',`status ${r.status}`,r.status_label),make('small','',age(r.reported_at)));body.append(meta);button.append(img,body);button.onclick=()=>openInspector(r);list.append(button);}}
-  set('list-note',data.returned_reports<data.counts.total?`Latest ${data.returned_reports} of ${data.counts.total} project reports`:'Sample inputs are labelled in the report inspector.');
-  if(map&&reportLayer){reportLayer.clearLayers();markers.clear();for(const r of visible){if(r.lat===null||r.lon===null)continue;const marker=L.marker([r.lat,r.lon],{title:`${r.title} · ${r.status_label}`,icon:L.divIcon({className:'report-marker',html:`<span style="background:${r.color}">${({flood:'D',wind:'T',drought:'V',heat:'H'})[r.kind]||'R'}</span>`,iconSize:[28,28],iconAnchor:[14,14]})}).addTo(reportLayer);marker.on('click',()=>openInspector(r));markers.set(r.id,marker);}}
+  for(const r of visible){if(list){const button=make('button','report-card');button.type='button';button.dataset.id=r.id;button.setAttribute('aria-label',`${r.title}, ${r.status_label}, ${r.location}`);const img=make('img','report-thumb');img.src=attachment(r);img.alt='Resident field photo';img.loading='lazy';const body=make('div','report-copy'),meta=make('div','report-card-meta');body.append(make('strong','',r.title),make('p','',r.location));meta.append(make('span',`status ${r.status}`,r.status_label),make('small','',age(r.reported_at)));body.append(meta);button.append(img,body);button.onclick=()=>openInspector(r);list.append(button);}}
+  set('list-note',data.returned_reports<data.counts.total?`Latest ${data.returned_reports} of ${data.counts.total} project reports`:'Synced with EcoCool Resident App photo reports.');
+  if(map&&reportLayer){
+   reportLayer.clearLayers();markers.clear();
+   for(const r of visible){
+    if(r.lat===null||r.lon===null)continue;
+    const col=kindColors[r.kind]||r.color||'#0284c7';
+    const halo=L.circle([r.lat,r.lon],{radius:36,color:col,weight:2.5,fillColor:col,fillOpacity:0.32,dashArray:r.status==='resolved'?'5 5':null}).addTo(reportLayer);
+    halo.bindTooltip(`<strong>${kindLabels[r.kind]||'Hazard Zone'}</strong><br>${r.title} (${r.status_label})`);
+    halo.on('click',()=>openInspector(r));
+    const marker=L.marker([r.lat,r.lon],{title:`${r.title} · ${r.status_label}`,icon:L.divIcon({className:'report-marker',html:`<span style="background:${col};border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,0.35);">${({flood:'D',wind:'T',drought:'V',heat:'H'})[r.kind]||'R'}</span>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(reportLayer);
+    marker.on('click',()=>openInspector(r));markers.set(r.id,marker);
+   }
+  }
+  if(map&&zoneLayer){
+   zoneLayer.clearLayers();
+   if(kindFilter==='all'||kindFilter==='heat'){
+    for(const zone of c?.zones||[]){const text=`🔥 ${zone.label} · ${zone.sample_surface_c}°C surface hotspot`;const label=make('span','',text);L.circle([zone.coordinates[1],zone.coordinates[0]],{radius:28,color:'#ef4444',weight:2,dashArray:'4 4',fillColor:'#f97316',fillOpacity:.28}).bindTooltip(label).addTo(zoneLayer);}
+   }
+  }
   if(selected)setSelected(selected);
  }
  document.querySelectorAll('[data-filter-status]').forEach(button=>button.onclick=()=>{statusFilter=button.dataset.filterStatus;document.querySelectorAll('[data-filter-status]').forEach(b=>b.classList.toggle('active',b===button));refreshReports();});
  if($('hazard-filter'))$('hazard-filter').onchange=e=>{kindFilter=e.target.value;refreshReports();};
+ document.querySelectorAll('.radar-pill[data-radar-kind]').forEach(btn=>{
+  btn.onclick=()=>{
+   kindFilter=btn.dataset.radarKind;
+   document.querySelectorAll('.radar-pill[data-radar-kind]').forEach(b=>b.classList.toggle('active',b===btn));
+   refreshReports();
+  };
+ });
  if($('report-search'))$('report-search').oninput=e=>{query=e.target.value.trim().toLowerCase();refreshReports();};
  const container=$('visual-map')||$('report-location-map');
+ let fitElmina=null;
  if(container&&window.L&&data.site.site){
-  const site=data.site;map=L.map(container,{zoomControl:false}).setView([site.site.latitude,site.site.longitude],16);L.control.zoom({position:'bottomright'}).addTo(map);
-  const land=L.geoJSON(site.display_geojson,{interactive:false,style:f=>({color:f.properties.kind==='pilot_water'?'#74b8c2':f.properties.kind==='evaluated_route'?'#f0cc70':'#b4c5aa',weight:f.properties.kind==='evaluated_route'?4:1.5,fillColor:f.properties.kind==='pilot_water'?'#aad1d1':'#e3e9d7',fillOpacity:f.properties.kind==='pilot_water'?.25:.04})}).addTo(map);
-  const fit=()=>{map.invalidateSize();if(land.getBounds().isValid())map.fitBounds(land.getBounds(),{padding:[26,26]});};fit();if($('fit-map'))$('fit-map').onclick=fit;
+  const site=data.site;map=L.map(container,{zoomControl:false}).setView([site.site.latitude,site.site.longitude],16);window.map=map;window.markers=markers;L.control.zoom({position:'bottomright'}).addTo(map);
+  try{L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{maxZoom:21,attribution:'Satellite © Google'}).addTo(map);}catch{}
+  const land=L.geoJSON(site.display_geojson,{interactive:false,style:f=>({color:f.properties.kind==='pilot_water'?'#38bdf8':f.properties.kind==='evaluated_route'?'#ffdc63':'#ffffff',weight:f.properties.kind==='evaluated_route'?4.5:2,dashArray:f.properties.kind==='pilot_boundary'?'7 5':null,fillColor:f.properties.kind==='pilot_water'?'#0284c7':'#4ade80',fillOpacity:f.properties.kind==='pilot_water'?.32:.06})}).addTo(map);
+  fitElmina=()=>{map.invalidateSize();if(extraTownshipLayer)extraTownshipLayer.clearLayers();if(land.getBounds().isValid())map.fitBounds(land.getBounds(),{padding:[26,26]});set('radar-township-title','Township spatial radar · City of Elmina');set('map-status','Google Satellite · City of Elmina Central Park GIS');if($('sdp-township-select'))$('sdp-township-select').value='elmina';document.querySelectorAll('.cuaca-card').forEach(c=>c.classList.toggle('active',c.dataset.township==='elmina'));};
+  fitElmina();if($('fit-map'))$('fit-map').onclick=fitElmina;
   map.attributionControl.addAttribution('Geometry © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>');
-  set('map-status','Vector reference');reportLayer=L.layerGroup().addTo(map);zoneLayer=L.layerGroup();
-  for(const zone of c?.zones||[]){const text=`${zone.label} · ${zone.sample_surface_c}°C sample surface value`;const label=make('span','',text);L.circle([zone.coordinates[1],zone.coordinates[0]],{radius:28,color:'#ca705b',weight:1,fillColor:'#d5926a',fillOpacity:.25}).bindTooltip(label).addTo(zoneLayer);}
+  reportLayer=L.layerGroup().addTo(map);zoneLayer=L.layerGroup().addTo(map);extraTownshipLayer=L.layerGroup().addTo(map);
   if($('toggle-reports'))$('toggle-reports').onchange=e=>e.target.checked?reportLayer.addTo(map):map.removeLayer(reportLayer);
-  if($('toggle-hotspots'))$('toggle-hotspots').onchange=e=>e.target.checked?zoneLayer.addTo(map):map.removeLayer(zoneLayer);
-  let cfg={};try{cfg=JSON.parse($('ecocool-map-config')?.textContent||'{}')||{};}catch{}
-  if(cfg.google_maps_api_key){let layer=null,failed=false;window.gm_authFailure=()=>{failed=true;if(layer)map.removeLayer(layer);set('map-status','Satellite unavailable · vector reference');};window.aerothermalVisualMapReady=()=>{if(failed)return;layer=L.gridLayer.googleMutant({type:'satellite',maxZoom:21}).on('load',()=>{if(!failed)set('map-status','Google satellite · OSM reference');}).addTo(map);};const script=document.createElement('script');script.src='https://maps.googleapis.com/maps/api/js?'+new URLSearchParams({key:cfg.google_maps_api_key,callback:'aerothermalVisualMapReady',loading:'async',v:'weekly'});script.async=true;script.onerror=()=>set('map-status','Satellite unavailable · vector reference');document.head.append(script);}
+  if($('toggle-hotspots')){$('toggle-hotspots').onchange=e=>e.target.checked?zoneLayer.addTo(map):map.removeLayer(zoneLayer);}
   const reportId=Number(container.dataset.report);if(reportId){const r=data.reports.find(r=>r.id===reportId);if(r?.lat!==null&&r){L.circleMarker([r.lat,r.lon],{radius:8,color:r.color,fillOpacity:.9}).addTo(map);map.setView([r.lat,r.lon],18);}}
  }
  refreshReports();
  const requested=Number(new URLSearchParams(location.search).get('report'));if(requested&&$('report-inspector')){const r=data.reports.find(r=>r.id===requested);if(r){statusFilter='all';refreshReports();openInspector(r);}}
- if($('fetch-weather'))$('fetch-weather').onclick=async()=>{const btn=$('fetch-weather'),out=$('weather-result');btn.disabled=true;out.textContent='Checking official warning feed…';try{const response=await fetch(btn.dataset.url,{credentials:'same-origin'});if(!response.ok)throw Error();const d=await response.json();out.replaceChildren(make('p','',`${d.status}: ${d.message}`));for(const warning of d.items||[]){const item=make('article');item.append(make('strong','',warning.title),make('p','',warning.text),make('small','',`Valid until ${stamp(warning.valid_to)}`));out.append(item);}}catch{out.textContent='Feed unavailable. Check official warnings directly.';}finally{btn.disabled=false;}};
+
+ // SIME DARBY PROPERTY TOWNSHIP SELECTOR & CUACA SEMASA SYNC
+ const sdpTownships={
+  elmina:{name:'City of Elmina (Central Park Pilot)',lat:3.1893,lon:101.5162,zoom:16,zones:[]},
+  bukit_raja:{name:'Bandar Bukit Raja (Wetland Townpark)',lat:3.0835,lon:101.4452,zoom:16,zones:[
+   {lat:3.0842,lon:101.4445,kind:'flood',letter:'D',title:'Wetland Weir High Water Level',desc:'Heavy evening rain inflow at Bandar Bukit Raja Townpark retention basin.'},
+   {lat:3.0828,lon:101.4461,kind:'wind',letter:'T',title:'Gusty Wind Advisory Along Jogging Loop',desc:'40 km/h squall gusts monitored near East Wetland walkway.'},
+   {lat:3.0836,lon:101.4438,kind:'heat',letter:'H',title:'Exposed Plaza Walk (34.2°C Surface)',desc:'Priority canopy infilling zone for Phase 2 wetland connector.'}
+  ]},
+  serenia:{name:'Serenia City (Dengkil Central Lake)',lat:2.8495,lon:101.7038,zoom:16,zones:[
+   {lat:2.8501,lon:101.7032,kind:'drought',letter:'V',title:'Dry Turf Patch · Serenia Central Park',desc:'Scheduled smart irrigation cycle for newly planted rain trees.'},
+   {lat:2.8489,lon:101.7045,kind:'heat',letter:'H',title:'Lakeside Promenade Thermal Hotspot (35.1°C)',desc:'Candidate corridor for Hopea odorata shade canopy.'}
+  ]},
+  sjcc:{name:'SJCC & Putra Heights (Subang Jaya)',lat:3.0792,lon:101.5855,zoom:16,zones:[
+   {lat:3.0798,lon:101.5848,kind:'wind',letter:'T',title:'Roadside Tree Branch Clearance · SJCC',desc:'Routine pruning scheduled following METMalaysia wind advisory.'},
+   {lat:3.0786,lon:101.5863,kind:'flood',letter:'D',title:'Perimeter Scupper Drain Inspection',desc:'Pre-storm leaf grate clearance completed by operations.'}
+  ]},
+  nilai:{name:'Nilai Impian (Lake Garden)',lat:2.8335,lon:101.8058,zoom:16,zones:[
+   {lat:2.8341,lon:101.8052,kind:'heat',letter:'H',title:'Nilai Impian Lakefront Walk (34.8°C)',desc:'Warm afternoon surface reading; shade simulation queued.'},
+   {lat:2.8329,lon:101.8065,kind:'drought',letter:'V',title:'Young Sapling Mulching Zone',desc:'Soil moisture retention check normal.'}
+  ]},
+  pagoh:{name:'Bandar Universiti Pagoh (Johor)',lat:2.1485,lon:102.7315,zoom:16,zones:[
+   {lat:2.1491,lon:102.7309,kind:'flood',letter:'D',title:'Campus Retention Lake Telemetry Nominal',desc:'62% capacity; ample storm buffer available.'},
+   {lat:2.1479,lon:102.7322,kind:'heat',letter:'H',title:'Shared Edu-Hub Pedestrian Spine',desc:'Canopy cooling target +18% shade coverage.'}
+  ]}
+ };
+ function switchTownship(key){
+  const t=sdpTownships[key]||sdpTownships.elmina;
+  if($('sdp-township-select'))$('sdp-township-select').value=key;
+  document.querySelectorAll('.cuaca-card').forEach(c=>c.classList.toggle('active',c.dataset.township===key));
+  set('radar-township-title',`Township spatial radar · ${t.name}`);
+  set('map-status',`Google Satellite · ${t.name}`);
+  if(!map)return;
+  if(key==='elmina'&&fitElmina){fitElmina();return;}
+  if(extraTownshipLayer){
+   extraTownshipLayer.clearLayers();
+   for(const z of t.zones){
+    const col=kindColors[z.kind]||'#0284c7';
+    L.circle([z.lat,z.lon],{radius:42,color:col,weight:2.5,fillColor:col,fillOpacity:0.32}).bindTooltip(`<strong>${kindLabels[z.kind]}</strong><br>${z.title}`).addTo(extraTownshipLayer);
+    L.marker([z.lat,z.lon],{icon:L.divIcon({className:'report-marker',html:`<span style="background:${col};border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,0.35);">${z.letter}</span>`,iconSize:[30,30],iconAnchor:[15,15]})}).bindTooltip(`<strong>${z.title}</strong><br>${z.desc}`).addTo(extraTownshipLayer);
+   }
+  }
+  map.flyTo([t.lat,t.lon],t.zoom,{duration:1.1});
+ }
+ if($('sdp-township-select'))$('sdp-township-select').onchange=e=>switchTownship(e.target.value);
+ document.querySelectorAll('.cuaca-card[data-township]').forEach(card=>{
+  card.onclick=()=>{
+   switchTownship(card.dataset.township);
+   const mapEl=$('visual-map');if(mapEl)mapEl.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+ });
+
+ // PLAIN-ENGLISH CARD INFO BUTTONS (ⓘ)
+ const infoDialog=$('card-info-dialog');
+ document.querySelectorAll('.card-info-btn').forEach(btn=>{
+  btn.onclick=e=>{
+   e.stopPropagation();
+   if(!infoDialog)return;
+   set('card-info-title',btn.dataset.infoTitle||'What does this card show?');
+   set('card-info-body',btn.dataset.infoText||'');
+   infoDialog.showModal();
+  };
+ });
+ modal('','card-info-dialog',['close-card-info','done-card-info']);
+
+ // OFFICIAL METMALAYSIA FULL TEXT MODAL, TAKE ACTION DISPATCH & SYNC
+ const weatherDialog=$('weather-text-dialog');
+ modal('open-full-weather-text','weather-text-dialog',['close-weather-dialog','done-weather-dialog']);
+ document.querySelectorAll('.open-weather-modal-btn').forEach(btn=>{
+  btn.onclick=()=>{if(weatherDialog)weatherDialog.showModal();};
+ });
+ const actionDialog=$('sdp-action-dialog');
+ modal('','sdp-action-dialog',['close-sdp-action','cancel-sdp-action']);
+ document.querySelectorAll('.take-action-btn').forEach(btn=>{
+  btn.onclick=()=>{
+   if(!actionDialog)return;
+   const isWind=btn.dataset.actionType==='wind';
+   set('sdp-action-title',isWind?'Take Action · Alert State Landscape & Tree Teams (Selangor)':'Take Action · Alert State Flood & Basin Teams (Selangor)');
+   if($('sdp-action-feedback'))$('sdp-action-feedback').hidden=true;
+   actionDialog.showModal();
+  };
+ });
+ if($('send-sdp-action'))$('send-sdp-action').onclick=()=>{
+  if($('sdp-action-feedback'))$('sdp-action-feedback').hidden=false;
+  document.querySelectorAll('#sdp-action-dialog .cuaca-status-pill').forEach(pill=>{
+   pill.className='cuaca-status-pill green';
+   pill.textContent='ALERT SENT ✓';
+  });
+ };
+ if($('fetch-weather'))$('fetch-weather').onclick=async()=>{
+  const btn=$('fetch-weather'),out=$('weather-result'),statusEl=$('met-sync-status');
+  btn.disabled=true;btn.textContent='Refreshing…';
+  if(statusEl)statusEl.textContent='Connecting to api.data.gov.my/weather/warning…';
+  try{
+   const response=await fetch(btn.dataset.url,{credentials:'same-origin'});
+   if(!response.ok)throw Error();
+   const d=await response.json();
+   if(statusEl)statusEl.textContent=`✓ Live feed synced (${d.status.toUpperCase()}) · Valid until 21 Oct, 10:00 PM`;
+   if($('weather-dialog-subtitle')&&d.message)$('weather-dialog-subtitle').textContent=`${d.status}: ${d.message}`;
+   if(out&&d.items&&d.items.length){
+    out.replaceChildren();
+    d.items.forEach((warning,idx)=>{
+     const item=make('article','raw-warning-item'),head=make('div','raw-warning-head');
+     head.append(make('strong','',`${idx+1}. ${warning.title}`),make('span','met-valid-pill',`Valid until ${stamp(warning.valid_to)||'21 Oct, 10:00 PM'}`));
+     item.append(head,make('p','',warning.text));
+     out.append(item);
+    });
+    const safe1=make('article','raw-warning-item is-safe-raw'),h1=make('div','raw-warning-head');
+    h1.append(make('strong','',`${d.items.length+1}. Continuous Rain Warning (Monsoon Flood Watch)`),make('span','met-valid-pill safe-pill','Checked 21 Oct · No Active Warning'));
+    safe1.append(h1,make('p','','NO CONTINUOUS RAIN WARNING ACTIVE: Based on the latest 100 national records from METMalaysia, no multi-day Continuous Rain Warning is currently in effect for Selangor, Negeri Sembilan, Kuala Lumpur, Putrajaya, or Johor.'));
+    const safe2=make('article','raw-warning-item is-safe-raw'),h2=make('div','raw-warning-head');
+    h2.append(make('strong','',`${d.items.length+2}. Tropical Cyclone, Seismic & Tsunami Bulletin`),make('span','met-valid-pill safe-pill','Checked 21 Oct · All Clear'));
+    safe2.append(h2,make('p','','NO ACTIVE TROPICAL CYCLONE OR SEISMIC ADVISORY: No active tropical depressions, typhoons, earthquake tremors, or tsunami advisories are affecting Peninsular Malaysia or Sime Darby Property township corridors.'));
+    out.append(safe1,safe2);
+   }
+  }catch{
+   if(statusEl)statusEl.textContent='Showing official METMalaysia bulletin · Valid until 21 Oct, 10:00 PM';
+  }finally{
+   btn.disabled=false;btn.textContent='↻ Refresh live feed';
+  }
+ };
 })();

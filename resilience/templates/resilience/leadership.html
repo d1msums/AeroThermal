@@ -1,7 +1,510 @@
 {% extends 'resilience/base.html' %}
-{% block heading_action %}<a class="small-button" href="{% url 'resilience:export' project.id %}"><svg><use href="#i-down"/></svg>Export scenarios</a>{% endblock %}
-{% block content %}{% include 'resilience/kpis.html' %}{% include 'resilience/map_panel.html' %}
-<div class="charts-grid"><section class="panel"><div class="panel-heading"><div><h2>Storage trend</h2><p>Reference sequence · demo</p></div><span class="data-tag">% of capacity</span></div><div id="storage-chart" class="line-chart"></div></section>
-<section class="panel"><div class="panel-heading"><div><h2>Report progress</h2><p>Current project inbox</p></div></div><div class="donut-layout"><div id="status-donut" class="status-donut"><div><strong data-value="total">0</strong><span>reports</span></div></div><div id="status-legend"></div></div></section>
-<section class="panel"><div class="panel-heading"><div><h2>Saved shade runs</h2><p>Individual saved times · route centreline</p></div><span class="data-tag">Calculated</span></div><div id="shade-chart"></div></section></div>
+{% block title %}Township overview{% endblock %}
+{% block subtitle %}Home command center for Sime Darby Property townships — live METMalaysia weather alerts, flood retention health, park cooling shade, and resident field reports in one view.{% endblock %}
+{% block heading_action %}{% endblock %}
+{% block content %}
+{% include 'resilience/kpis.html' %}
+
+<!-- OFFICIAL METMALAYSIA WEATHER & WARNING HUB (100% PLAIN ENGLISH + SPACIOUS LAYOUT) -->
+<section class="panel met-home-hub" style="margin-bottom: 32px;">
+  <div class="met-hub-top">
+    <div class="met-hub-brand">
+      <span class="met-live-badge"><i class="met-pulse"></i>OFFICIAL METMALAYSIA FEED</span>
+      <div>
+        <h2>Live Weather &amp; Safety Alerts · Sime Darby Property Townships
+          <button type="button" class="card-info-btn" aria-label="What is this weather section?" data-info-title="Live Weather & Safety Alerts" data-info-text="Shows current weather at Sime Darby Property townships and turns long METMalaysia warnings into simple Red (Danger/Alert) and Green (Safe) cards.">i</button>
+        </h2>
+        <p>Real-time weather across Sime Darby Property locations · Click any township card below to view it on the satellite map</p>
+      </div>
+    </div>
+    <div class="met-hub-actions">
+      <button class="button" id="open-full-weather-text" type="button">Read full warning text</button>
+      <button class="text-button met-refresh-subbtn" id="fetch-weather" type="button" data-url="{% url 'resilience:weather' project.id %}">↻ Refresh live feed</button>
+    </div>
+  </div>
+
+  <!-- PART 1: CURRENT WEATHER ACROSS SIME DARBY PROPERTY TOWNSHIPS -->
+  <div class="met-subhead">
+    <span class="met-section-kicker">CURRENT WEATHER · SIME DARBY PROPERTY TOWNSHIPS</span>
+    <small id="met-sync-status">Updated 21 Oct · Evening Forecast (6:00 PM – 7:00 PM)</small>
+  </div>
+  <div class="cuaca-semasa-grid" id="cuaca-semasa-grid">
+    <!-- 1. City of Elmina -->
+    <button type="button" class="cuaca-card sky-storm active alert-border" data-township="elmina">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">SHAH ALAM · SELANGOR</span>
+          <h3>City of Elmina</h3>
+        </div>
+        <span class="cuaca-status-pill red">ALERT</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M14 30h21a7 7 0 0 0 1-13.9A10 10 0 0 0 17 12a8 8 0 0 0-3 15.4" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>
+          <path d="M23 26l-4 8h5l-2 8 8-10h-5l3-6z" fill="#F59E0B" stroke="#B45309" stroke-width="1.2"/>
+        </svg>
+        <div>
+          <strong>31°C</strong>
+          <span>Thunderstorms</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>⛈️</span></div>
+        <div><small>6:30 PM</small><span>⛈️</span></div>
+        <div><small>7:00 PM</small><span>🌧️</span></div>
+      </div>
+    </button>
+
+    <!-- 2. Bandar Bukit Raja -->
+    <button type="button" class="cuaca-card sky-rain alert-border" data-township="bukit_raja">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">KLANG · SELANGOR</span>
+          <h3>Bandar Bukit Raja</h3>
+        </div>
+        <span class="cuaca-status-pill red">ALERT</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M14 30h21a7 7 0 0 0 1-13.9A10 10 0 0 0 17 12a8 8 0 0 0-3 15.4" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>
+          <path d="M18 34l-2 6M25 34l-2 6M32 34l-2 6" stroke="#0284C7" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <strong>30°C</strong>
+          <span>Heavy Showers</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>⛈️</span></div>
+        <div><small>6:30 PM</small><span>🌧️</span></div>
+        <div><small>7:00 PM</small><span>🌧️</span></div>
+      </div>
+    </button>
+
+    <!-- 3. SJCC & Putra Heights -->
+    <button type="button" class="cuaca-card sky-wind alert-border" data-township="sjcc">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">SUBANG JAYA · SELANGOR</span>
+          <h3>SJCC &amp; Putra Heights</h3>
+        </div>
+        <span class="cuaca-status-pill red">ALERT</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M14 30h21a7 7 0 0 0 1-13.9A10 10 0 0 0 17 12a8 8 0 0 0-3 15.4" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+          <path d="M12 36h18a3 3 0 1 0-3-3M16 40h12" stroke="#D97706" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        </svg>
+        <div>
+          <strong>32°C</strong>
+          <span>Windy &amp; Rain</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>🌦️</span></div>
+        <div><small>6:30 PM</small><span>⛈️</span></div>
+        <div><small>7:00 PM</small><span>☁️</span></div>
+      </div>
+    </button>
+
+    <!-- 4. Serenia City -->
+    <button type="button" class="cuaca-card sky-clear safe-border" data-township="serenia">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">SEPANG · SELANGOR</span>
+          <h3>Serenia City</h3>
+        </div>
+        <span class="cuaca-status-pill green">SAFE</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="19" cy="18" r="7" fill="#FBBF24"/>
+          <path d="M18 32h18a6 6 0 0 0 .8-11.9A8.5 8.5 0 0 0 21 17a7 7 0 0 0-3 13.3" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+        </svg>
+        <div>
+          <strong>33°C</strong>
+          <span>Partly Cloudy</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>⛅</span></div>
+        <div><small>6:30 PM</small><span>⛅</span></div>
+        <div><small>7:00 PM</small><span>🌙</span></div>
+      </div>
+    </button>
+
+    <!-- 5. Nilai Impian -->
+    <button type="button" class="cuaca-card sky-clear safe-border" data-township="nilai">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">NILAI · N. SEMBILAN</span>
+          <h3>Nilai Impian</h3>
+        </div>
+        <span class="cuaca-status-pill green">SAFE</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="9" fill="#F59E0B"/>
+          <path d="M24 8v4M24 36v4M8 24h4M36 24h4M13 13l3 3M32 32l3 3M13 35l3-3M32 16l3-3" stroke="#F59E0B" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <strong>33°C</strong>
+          <span>Sunny &amp; Warm</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>☀️</span></div>
+        <div><small>6:30 PM</small><span>⛅</span></div>
+        <div><small>7:00 PM</small><span>🌙</span></div>
+      </div>
+    </button>
+
+    <!-- 6. Bandar Universiti Pagoh -->
+    <button type="button" class="cuaca-card sky-clear safe-border" data-township="pagoh">
+      <div class="cuaca-card-top">
+        <div>
+          <span class="cuaca-state">PAGOH · JOHOR</span>
+          <h3>Bandar Univ. Pagoh</h3>
+        </div>
+        <span class="cuaca-status-pill green">SAFE</span>
+      </div>
+      <div class="cuaca-main-temp">
+        <svg class="cuaca-big-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="19" cy="18" r="7" fill="#FBBF24"/>
+          <path d="M18 32h18a6 6 0 0 0 .8-11.9A8.5 8.5 0 0 0 21 17a7 7 0 0 0-3 13.3" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+        </svg>
+        <div>
+          <strong>31°C</strong>
+          <span>Calm Evening</span>
+        </div>
+      </div>
+      <div class="cuaca-hourly">
+        <div><small>6:00 PM</small><span>⛅</span></div>
+        <div><small>6:30 PM</small><span>🌙</span></div>
+        <div><small>7:00 PM</small><span>🌙</span></div>
+      </div>
+    </button>
+  </div>
+
+  <!-- PART 2: OFFICIAL METMALAYSIA WARNINGS -->
+  <div class="met-subhead" style="margin-top: 24px;">
+    <span class="met-section-kicker">OFFICIAL METMALAYSIA WARNINGS</span>
+  </div>
+  <div class="amaran-visual-grid" id="amaran-visual-grid">
+    <!-- RED ALERT 1: Thunderstorm Warning -->
+    <article class="amaran-card is-alert" id="amaran-card-thunder">
+      <div class="amaran-card-header">
+        <span class="amaran-badge red">🔴 ALERT · THUNDERSTORM WARNING</span>
+        <span class="amaran-date" id="amaran-date-1">Valid until 21 Oct, 10:00 PM</span>
+      </div>
+      <div class="amaran-body">
+        <div class="amaran-diagram red-tint" aria-hidden="true">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#FECACA" stroke-width="2" stroke-dasharray="4 3"/>
+            <path d="M20 40h28a9 9 0 0 0 1-17.8A13 13 0 0 0 24 17a10 10 0 0 0-4 19.2" fill="#EF4444" opacity="0.18"/>
+            <path d="M35 28l-6 13h8l-3 13 13-16h-8l4-10z" fill="#DC2626"/>
+          </svg>
+          <span class="diagram-metric">Heavy Rain</span>
+        </div>
+        <div class="amaran-copy">
+          <h3>Heavy Rain &amp; Thunderstorms Tonight</h3>
+          <p>Heavy rain is hitting <strong>Shah Alam (City of Elmina), Klang (Bandar Bukit Raja), and Subang Jaya</strong>. Drains and park lakes will fill up fast.</p>
+          <div class="amaran-meter">
+            <div class="amaran-meter-label"><span>Flash Flood Risk</span><strong>HIGH — Keep drains clear &amp; lower lake water</strong></div>
+            <div class="amaran-meter-bar"><span style="width: 84%; background: #DC2626;"></span></div>
+          </div>
+          <div class="amaran-card-foot">
+            <span class="affected-chip">📍 Townships affected: City of Elmina, Bandar Bukit Raja, SJCC</span>
+            <button type="button" class="take-action-btn" data-action-type="flood">⚡ Take action →</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- RED ALERT 2: Strong Wind Warning -->
+    <article class="amaran-card is-alert" id="amaran-card-wind">
+      <div class="amaran-card-header">
+        <span class="amaran-badge red">🔴 ALERT · STRONG WIND WARNING</span>
+        <span class="amaran-date" id="amaran-date-2">Valid until 23 Oct, 12:00 AM</span>
+      </div>
+      <div class="amaran-body">
+        <div class="amaran-diagram red-tint" aria-hidden="true">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#FED7AA" stroke-width="2" stroke-dasharray="4 3"/>
+            <path d="M14 28h32a6 6 0 1 0-6-6M10 38h42a7 7 0 1 1-7 7M18 48h24" fill="none" stroke="#EA580C" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+          <span class="diagram-metric">40–50 km/h</span>
+        </div>
+        <div class="amaran-copy">
+          <h3>Strong Winds (Risk of Falling Tree Branches)</h3>
+          <p>Wind speeds up to <strong>50 km/h</strong> can snap weak tree branches along park jogging paths. Maintenance teams should check walkways after rain.</p>
+          <div class="amaran-meter">
+            <div class="amaran-meter-label"><span>Falling Branch Risk</span><strong>MEDIUM-HIGH — Check park walkways</strong></div>
+            <div class="amaran-meter-bar"><span style="width: 72%; background: #EA580C;"></span></div>
+          </div>
+          <div class="amaran-card-foot">
+            <span class="affected-chip">📍 Areas affected: Park walkways &amp; lakeside paths</span>
+            <button type="button" class="take-action-btn" data-action-type="wind">⚡ Take action →</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- GREEN SAFE 3: Non-Stop Monsoon Rain -->
+    <article class="amaran-card is-safe">
+      <div class="amaran-card-header">
+        <span class="amaran-badge green">🟢 SAFE · NON-STOP MONSOON RAIN</span>
+        <span class="amaran-date">Checked 21 Oct · All Clear</span>
+      </div>
+      <div class="amaran-body">
+        <div class="amaran-diagram green-tint" aria-hidden="true">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
+            <path d="M25 37l8 8 15-16" fill="none" stroke="#15803D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="diagram-metric">0 Alerts</span>
+        </div>
+        <div class="amaran-copy">
+          <h3>No Multi-Day Continuous Rain</h3>
+          <p>Tonight's rain is just a normal evening storm — <strong>no non-stop multi-day monsoon rain</strong> is expected at any Sime Darby Property township.</p>
+          <div class="amaran-meter">
+            <div class="amaran-meter-label"><span>Major Flood Risk</span><strong style="color:#15803D;">SAFE — Lake levels are normal</strong></div>
+            <div class="amaran-meter-bar"><span style="width: 18%; background: #16A34A;"></span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- GREEN SAFE 4: Tropical Storms & Earthquakes -->
+    <article class="amaran-card is-safe">
+      <div class="amaran-card-header">
+        <span class="amaran-badge green">🟢 SAFE · TROPICAL STORMS &amp; QUAKES</span>
+        <span class="amaran-date">Checked 21 Oct · All Clear</span>
+      </div>
+      <div class="amaran-body">
+        <div class="amaran-diagram green-tint" aria-hidden="true">
+          <svg viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
+            <path d="M25 37l8 8 15-16" fill="none" stroke="#15803D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="diagram-metric">All Clear</span>
+        </div>
+        <div class="amaran-copy">
+          <h3>No Tropical Cyclones or Earthquakes</h3>
+          <p><strong>Zero regional typhoons or earthquake tremors</strong> affecting Peninsular Malaysia. All township buildings and lake dams are completely safe.</p>
+          <div class="amaran-meter">
+            <div class="amaran-meter-label"><span>Township Structural Safety</span><strong style="color:#15803D;">100% SAFE</strong></div>
+            <div class="amaran-meter-bar"><span style="width: 12%; background: #16A34A;"></span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 3 ANALYTICS CHARTS WITH PLAIN-ENGLISH INFO BUTTONS -->
+<div class="charts-grid" style="margin-bottom: 24px;">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Retention lake storage trend
+          <button type="button" class="card-info-btn" aria-label="What is Retention lake storage trend?" data-info-title="Retention Lake Storage Trend" data-info-text="Shows how the water level in the park's flood retention lake changed over recent hours. If the line goes up fast, the lake is filling up from rain.">i</button>
+        </h2>
+        <p>Water level changes across recent check-ins</p>
+      </div>
+      <span class="data-tag">% of capacity</span>
+    </div>
+    <div id="storage-chart" class="line-chart"></div>
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Resident report resolution
+          <button type="button" class="card-info-btn" aria-label="What is Resident report resolution?" data-info-title="Resident Report Resolution" data-info-text="A simple breakdown of all resident reports sent from the EcoCool mobile app: how many are brand new, how many are currently being fixed (In Progress), and how many are Done (Resolved).">i</button>
+        </h2>
+        <p>How fast maintenance teams are fixing resident issues</p>
+      </div>
+      <a class="inline-link" href="{% url 'resilience:audience' project.id 'operations' %}">Open triage →</a>
+    </div>
+    <div class="donut-layout">
+      <div id="status-donut" class="status-donut"><div><strong data-value="total">0</strong><span>reports</span></div></div>
+      <div id="status-legend"></div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Saved canopy shade runs
+          <button type="button" class="card-info-btn" aria-label="What is Saved canopy shade runs?" data-info-title="Saved Canopy Shade Runs" data-info-text="Compares different tree-planting plans tested in the Tree Simulator. Higher percentages mean more cool shade for residents walking or jogging in the park.">i</button>
+        </h2>
+        <p>Walkway shade coverage by tree-planting plan</p>
+      </div>
+      <a class="inline-link" href="{% url 'dashboard' project.id %}">Tree simulator →</a>
+    </div>
+    <div id="shade-chart"></div>
+  </section>
+</div>
+
+<!-- FULL-WIDTH TOWNSHIP SPATIAL RADAR (SHOWING ALL 4 HAZARD CATEGORIES CLEARLY) -->
+<section class="panel map-panel overview-map-only">
+  <div class="panel-heading">
+    <div>
+      <h2><span id="radar-township-title">Township spatial radar · City of Elmina</span>
+        <button type="button" class="card-info-btn" aria-label="What is Township spatial radar?" data-info-title="Township Spatial Radar Map" data-info-text="An interactive Google Satellite map showing all 4 types of township issues: Drainage/Flood (Blue), Tree/Wind (Orange), Soil/Drought (Olive Green), and Heat Hotspots (Red). Click the filter buttons below to view each category or click any pin to see the resident's photo!">i</button>
+      </h2>
+      <p>Colored circles show active impact zones for all 4 hazard categories. Click any pin or zone to inspect resident field photos.</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="small-button" id="fit-map" type="button">Reset Elmina view</button>
+      <a class="small-button" href="{% url 'resilience:audience' project.id 'engineer' %}">Engineering view →</a>
+      <a class="button" href="{% url 'resilience:audience' project.id 'operations' %}">Full report inbox →</a>
+    </div>
+  </div>
+  <div class="map-toggles radar-filter-bar">
+    <div class="radar-category-pills" role="group" aria-label="Filter map by hazard category">
+      <button type="button" class="radar-pill active" data-radar-kind="all">All 4 Categories (7 Zones)</button>
+      <button type="button" class="radar-pill flood" data-radar-kind="flood"><i class="dot flood"></i>Drainage / Flood</button>
+      <button type="button" class="radar-pill wind" data-radar-kind="wind"><i class="dot wind"></i>Tree / Wind</button>
+      <button type="button" class="radar-pill drought" data-radar-kind="drought"><i class="dot drought"></i>Soil / Drought</button>
+      <button type="button" class="radar-pill heat" data-radar-kind="heat"><i class="dot heat"></i>Heat Exposure</button>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;margin-left:auto;">
+      <label><input type="checkbox" id="toggle-reports" checked>Resident pins &amp; hazard zones</label>
+      <label><input type="checkbox" id="toggle-hotspots" checked>Surface heat sensors</label>
+      <span id="map-count"></span>
+    </div>
+  </div>
+  <div id="visual-map" role="region" aria-label="Township overview map"></div>
+  <div class="map-footer">
+    <div class="map-legend">
+      <span><i class="dot flood"></i><strong>D</strong> · Drainage / Flood Zone</span>
+      <span><i class="dot wind"></i><strong>T</strong> · Tree &amp; Wind Zone</span>
+      <span><i class="dot drought"></i><strong>V</strong> · Soil / Drought Zone</span>
+      <span><i class="dot heat"></i><strong>H</strong> · Heat Exposure Zone</span>
+    </div>
+    <small id="map-status">Loading map</small>
+  </div>
+</section>
+
+<!-- PLAIN-ENGLISH CARD INFO POPOVER DIALOG -->
+<dialog id="card-info-dialog" class="plain-info-dialog">
+  <div class="dialog-top">
+    <h2 id="card-info-title">What does this card show?</h2>
+    <button class="icon-button" id="close-card-info" type="button" aria-label="Close explanation"><svg><use href="#i-x"/></svg></button>
+  </div>
+  <p id="card-info-body" style="font-size:15px;line-height:1.65;color:#252C27;margin:10px 0 18px;"></p>
+  <button class="button" id="done-card-info" type="button">Got it, thanks!</button>
+</dialog>
+
+<!-- FULL OFFICIAL METMALAYSIA WARNING TEXT DIALOG (OPENED WHEN USER CLICKS 'READ FULL TEXT') -->
+<dialog id="weather-text-dialog" class="weather-full-dialog">
+  <div class="dialog-top">
+    <div>
+      <span class="amaran-badge red" style="margin-bottom:8px;display:inline-flex;">OFFICIAL METMALAYSIA BULLETIN · FULL VERBATIM FEED</span>
+      <h2 id="weather-dialog-title">Full Official Warning Text · METMalaysia</h2>
+      <p id="weather-dialog-subtitle" style="margin:4px 0 0;font-size:13px;color:#5B675D;">Retrieved: Latest 100 national records checked from <code>api.data.gov.my/weather/warning</code>. Showing all active official warning categories in full detail.</p>
+    </div>
+    <button class="icon-button" id="close-weather-dialog" type="button" aria-label="Close full warning text"><svg><use href="#i-x"/></svg></button>
+  </div>
+  <div id="weather-result" class="weather-full-text-list">
+    <article class="raw-warning-item">
+      <div class="raw-warning-head">
+        <strong>1. Thunderstorm Warning (Inland &amp; Township Corridors)</strong>
+        <span class="met-valid-pill">Valid until 21 Oct, 10:00 PM</span>
+      </div>
+      <p>Thunderstorms, heavy rain and strong winds are expected over the states of <strong>Perak</strong> (Larut, Matang Dan Selama, Hulu Perak, Kuala Kangsar, Kinta, Kampar, Batang Padang and Muallim), <strong>Kelantan</strong> (Jeli, Kuala Krai and Gua Musang), <strong>Terengganu</strong> (Besut, Hulu Terengganu, Dungun and Kemaman), <strong>Pahang</strong> (Cameron Highlands, Lipis, Raub, Jerantut, Bentong, Temerloh, Maran and Kuantan), <strong>Selangor</strong> (Kuala Selangor, Hulu Selangor, Klang / Bandar Bukit Raja, Gombak and Petaling / Shah Alam / City of Elmina / Subang Jaya), <strong>Sarawak</strong>: Sri Aman, Betong, Sarikei, Sibu (Sibu and Kanowit), Mukah (Tanjung Manis and Daro), Kapit (Song and Kapit), Bintulu (Tatau) and Limbang, and <strong>Sabah</strong>: Interior (Sipitang, Tenom, Nabawan and Keningau) and West Coast (Papar, Putatan, Penampang, Kota Kinabalu and Tuaran) until 10:00 PM; Wednesday, 21 October 2026.<br><br><em>Warning Criteria:</em> Warning is issued when there are signs of a thunderstorm with a rain intensity greater than 20.0 mm/hour that is approaching or expected to occur for more than an hour. A thunderstorm warning is a short-term warning valid for a period of not more than six hours for a single release.</p>
+    </article>
+
+    <article class="raw-warning-item">
+      <div class="raw-warning-head">
+        <strong>2. Strong Winds &amp; Rough Seas Warning · First Category (Shipping &amp; Regional Squalls)</strong>
+        <span class="met-valid-pill">Valid until 23 Oct, 12:00 AM</span>
+      </div>
+      <p><strong>FIRST CATEGORY (SHIPPING):</strong> Strong winds of 40–50 kmph with waves up to 3.5 metres are expected to occur over the shipping waters of Condore, Reef North, Layang-Layang, Labuan, Palawan and Sulu until Friday, 23 October 2026. This condition of strong winds and rough seas is dangerous to small crafts, recreational sea activities and sea sports. Associated monsoon squall lines may push gusty evening winds (40–50 km/h) across western Peninsular Malaysia townships.</p>
+    </article>
+
+    <article class="raw-warning-item">
+      <div class="raw-warning-head">
+        <strong>3. Strong Winds &amp; Rough Seas Warning · First Category (Coastal &amp; Straits Waters)</strong>
+        <span class="met-valid-pill">Valid until 23 Oct, 12:00 AM</span>
+      </div>
+      <p><strong>FIRST CATEGORY (COASTAL &amp; STRAITS):</strong> Strong winds of 40–50 kmph with waves up to 3.5 metres are expected to occur over the waters of Sabah (West Coast and Kudat) and Labuan until Friday, 23 October 2026. This condition of strong winds and rough seas is dangerous to small crafts, recreational sea activities and sea sports. Township landscape operations should monitor mature park tree canopies and lakeside walkways for wind-throw hazards during evening squall lines.</p>
+    </article>
+
+    <article class="raw-warning-item is-safe-raw">
+      <div class="raw-warning-head">
+        <strong>4. Continuous Rain Warning (Monsoon Flood Watch)</strong>
+        <span class="met-valid-pill safe-pill">Checked 21 Oct · No Active Warning</span>
+      </div>
+      <p><strong>NO CONTINUOUS RAIN WARNING ACTIVE:</strong> Based on the latest 100 national records from METMalaysia, no multi-day Continuous Rain Warning (Alert, Severe, or Danger level) is currently in effect for Selangor, Negeri Sembilan, Kuala Lumpur, Putrajaya, or Johor. Rainfall events tonight are localized convective evening thunderstorms rather than prolonged monsoon inundation.</p>
+    </article>
+
+    <article class="raw-warning-item is-safe-raw">
+      <div class="raw-warning-head">
+        <strong>5. Tropical Cyclone, Seismic &amp; Tsunami Bulletin</strong>
+        <span class="met-valid-pill safe-pill">Checked 21 Oct · All Clear</span>
+      </div>
+      <p><strong>NO ACTIVE TROPICAL CYCLONE OR SEISMIC ADVISORY:</strong> No active tropical depressions, typhoons, earthquake tremors, or tsunami advisories are affecting Peninsular Malaysia or Sime Darby Property township corridors at the time of retrieval.</p>
+    </article>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid #E2DDD2;">
+    <small style="color:#5B675D;">Source: Official METMalaysia Open API (<code>api.data.gov.my/weather/warning</code>)</small>
+    <button class="button" id="done-weather-dialog" type="button">Close bulletin</button>
+  </div>
+</dialog>
+
+<!-- TAKE ACTION · CONTACT SIME DARBY STATE OPERATIONS DIALOG -->
+<dialog id="sdp-action-dialog" class="weather-full-dialog">
+  <div class="dialog-top">
+    <div>
+      <span class="amaran-badge red" style="margin-bottom:8px;display:inline-flex;">⚡ STATE EMERGENCY &amp; READINESS DISPATCH</span>
+      <h2 id="sdp-action-title">Contact Sime Darby Property State Teams · Selangor</h2>
+      <p id="sdp-action-subtitle" style="margin:4px 0 0;font-size:13.5px;color:#5B675D;">Send a 1-click preparation alert to on-duty Sime Darby Property township teams in affected states so they can get ready before the storm hits.</p>
+    </div>
+    <button class="icon-button" id="close-sdp-action" type="button" aria-label="Close take action dialog"><svg><use href="#i-x"/></svg></button>
+  </div>
+
+  <div class="sdp-action-teams-list">
+    <label class="sdp-team-row">
+      <input type="checkbox" checked>
+      <div class="sdp-team-info">
+        <strong>City of Elmina · Basin &amp; Drainage Operations (Shah Alam, Selangor)</strong>
+        <span>On-Duty Lead: Ir. Razif &amp; Central Park Gate Crew · Action: Lower retention lake water level &amp; clear perimeter drain grates</span>
+      </div>
+      <span class="cuaca-status-pill red">STANDBY</span>
+    </label>
+
+    <label class="sdp-team-row">
+      <input type="checkbox" checked>
+      <div class="sdp-team-info">
+        <strong>Bandar Bukit Raja · Wetland Townpark Patrol (Klang, Selangor)</strong>
+        <span>On-Duty Lead: En. Hafiz &amp; Klang Flood Unit · Action: Open wetland weir buffer &amp; inspect low-lying culverts</span>
+      </div>
+      <span class="cuaca-status-pill red">STANDBY</span>
+    </label>
+
+    <label class="sdp-team-row">
+      <input type="checkbox" checked>
+      <div class="sdp-team-info">
+        <strong>SJCC &amp; Putra Heights · Landscape &amp; Tree Squad (Subang Jaya, Selangor)</strong>
+        <span>On-Duty Lead: Pn. Nadia &amp; Arborist Response Team · Action: Standby chainsaw &amp; walkway clearance crew for 50 km/h wind gusts</span>
+      </div>
+      <span class="cuaca-status-pill red">STANDBY</span>
+    </label>
+  </div>
+
+  <div id="sdp-action-feedback" class="sdp-action-feedback" hidden>
+    ✓ <strong>Readiness Alert Sent!</strong> All selected Selangor township teams have received the METMalaysia warning and preparation checklist via WhatsApp &amp; Operations Inbox.
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid #E2DDD2;">
+    <a class="small-button" href="{% url 'resilience:audience' project.id 'engineer' %}">Open Basin Engineering Controls →</a>
+    <div style="display:flex;gap:10px;">
+      <button class="small-button" id="cancel-sdp-action" type="button">Cancel</button>
+      <button class="button" id="send-sdp-action" type="button">⚡ Send Alert to State Teams</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="report-inspector" class="inspector"><div class="inspector-top"><span id="inspect-reference"></span><button class="icon-button" id="close-inspector" type="button" aria-label="Close report"><svg><use href="#i-x"/></svg></button></div><div class="attachment-wrap"><img id="inspect-image" alt="Report attachment"><span id="inspect-image-label"></span></div><div class="inspector-body"><div class="inspector-tags"><span id="inspect-status" class="status"></span><span id="inspect-source" class="data-tag"></span></div><h2 id="inspect-title"></h2><p id="inspect-description"></p><dl class="facts"><div><dt>Location</dt><dd id="inspect-location"></dd></div><div><dt>Reported</dt><dd id="inspect-time"></dd></div><div><dt>Assigned</dt><dd id="inspect-assigned"></dd></div></dl><div class="inspection-actions"><button id="locate-report" class="small-button" type="button">Locate on map</button><a id="inspect-open" class="button">Open work item <svg><use href="#i-arrow"/></svg></a></div></div></dialog>
 {% endblock %}

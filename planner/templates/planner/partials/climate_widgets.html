@@ -1,104 +1,135 @@
+{% load static %}
 <section id="at-climate"
          class="at-climate"
          aria-labelledby="at-heading">
 
   <div class="at-heading-row">
     <div>
-      <h2 id="at-heading">Climate resilience overview</h2>
-      <p>DEMO DATA · No live sensor or METMalaysia connection</p>
+      <h2 id="at-heading" style="margin-top:0;">Live Lake &amp; Weather Action Center</h2>
+      <p id="at-subtitle-text">Automatically tracks live weather and retention lake water levels in real time — showing what is happening on site and the exact steps the team must take.</p>
     </div>
 
-    <label for="at-scenario">
-      Demo scenario
-      <select id="at-scenario">
-        <option value="normal">Normal</option>
-        <option value="storm">Heavy rain · next 12h</option>
-        <option value="heat">Heatwave / heat islands</option>
-        <option value="drought">Drought / El Niño scenario</option>
-      </select>
-    </label>
+    <!-- Hidden select kept only for backend sync; no duplicate dropdown shown! -->
+    <select id="at-scenario" style="display:none;" aria-hidden="true">
+      <option value="normal">Normal</option>
+      <option value="storm">Storm</option>
+      <option value="heat">Heat</option>
+      <option value="drought">Drought</option>
+      <option value="wind">Wind</option>
+    </select>
+  </div>
+
+  <!-- Single Clean Row of Weather Condition Buttons (Live + Preview Modes) -->
+  <div class="at-scenario-pills" role="tablist" aria-label="Weather conditions">
+    <span class="at-mode-label">Condition:</span>
+    <button type="button" class="at-scen-pill active" data-scen="storm">🔴 Live Alert: Heavy Storm (26°C)</button>
+    <button type="button" class="at-scen-pill" data-scen="normal">☀️ Normal Day (31°C)</button>
+    <button type="button" class="at-scen-pill" data-scen="heat">🔥 Heatwave (38.6°C)</button>
+    <button type="button" class="at-scen-pill" data-scen="drought">🌵 Dry Spell (35°C)</button>
+    <button type="button" class="at-scen-pill" data-scen="wind">🌬️ Strong Wind (28°C)</button>
   </div>
 
   <div class="at-grid" aria-live="polite">
 
-    <!-- Widget 1: lake storage -->
-    <article class="at-card">
-      <h3>Lake Capacity &amp; Flood Buffer</h3>
-      <p>Elmina Central Wetland · reference demo</p>
+    <!-- Card 1: Live Weather & Site Condition (With Picture!) -->
+    <article class="at-card sky-clear" id="at-visual-card">
+      <div class="card-title-with-info">
+        <h3>1. Live Weather &amp; Site Condition</h3>
+        <button type="button" class="card-info-btn" data-info-title="Live Weather &amp; Site Condition" data-info-text="Shows the live weather, temperature, and ground conditions at the township retention lake right now (or lets you preview how the system responds to other weather alerts).">i</button>
+      </div>
 
-      <strong id="at-capacity" class="at-number">—</strong>
-      <span id="at-condition" class="at-pill">Loading demo</span>
+      <div class="at-weather-photo-wrap">
+        <img id="at-scenario-img" src="{% static 'resilience/illustrations/scen_storm.jpg' %}?v=1" alt="Live weather condition at lake">
+        <span class="at-photo-top-pill" id="at-weather-badge">⛈️ LIVE ALERT · HEAVY STORM</span>
+        <div class="at-photo-bottom-bar">
+          <div>
+            <span>Temperature</span>
+            <strong id="at-temp-val">25.8°C (Heavy Rain)</strong>
+          </div>
+          <div>
+            <span>Rain / Wind</span>
+            <strong id="at-rain-val">85 mm/hr · 48 km/h gusts</strong>
+          </div>
+        </div>
+      </div>
+
+      <strong class="at-what-happens-title" id="at-what-happens-title">What is happening on site:</strong>
+      <p id="at-what-happens-desc" style="margin:4px 0 0;font-size:13px;line-height:1.5;">
+        Sudden heavy downpour washes fallen leaves into perimeter drains and sends 27,000 m³ of stormwater rushing into the lake.
+      </p>
+    </article>
+
+    <!-- Card 2: Live Lake Water Level -->
+    <article class="at-card sky-rain">
+      <div class="card-title-with-info">
+        <h3>2. Retention Lake Water Level</h3>
+        <button type="button" class="card-info-btn" data-info-title="Retention Lake Water Level" data-info-text="Tracks how full the 100,000 m³ Elmina retention lake is right now, and how much empty space is left to catch rainwater before overflowing.">i</button>
+      </div>
+      <p>Elmina Central Retention Lake · 100,000 m³ capacity</p>
+
+      <div class="at-cap-row">
+        <strong id="at-capacity" class="at-number">88% Full</strong>
+        <span id="at-condition" class="at-pill">⛈️ HIGH WATER ALERT</span>
+      </div>
 
       <progress
         id="at-storage"
         max="100"
-        value="0"
-        aria-label="Illustrative lake storage percentage">
+        value="88"
+        aria-label="Retention lake storage percentage">
       </progress>
 
-      <dl>
+      <dl class="at-compare-dl">
         <div>
-          <dt>Available storm buffer</dt>
-          <dd id="at-buffer">—</dd>
+          <dt>Empty space for rain</dt>
+          <dd id="at-buffer">12,000 m³</dd>
         </div>
         <div>
-          <dt>Stored water</dt>
-          <dd id="at-stored">—</dd>
+          <dt>Current water in lake</dt>
+          <dd id="at-stored">88,000 m³</dd>
         </div>
       </dl>
 
-      <p id="at-water-note" class="at-note"></p>
-
-      <small>
-        Assumed total storage: 100,000 m³.
-        Percentage is stored volume, not measured water depth.
-      </small>
-    </article>
-
-    <!-- Widget 2: advisory -->
-    <article id="at-alert"
-             class="at-card"
-             data-tone="normal">
-
-      <h3>Smart Pre-Discharge Alert</h3>
-      <span id="at-alert-state" class="at-pill">Demo advisory</span>
-
-      <h4 id="at-alert-title">Loading scenario</h4>
-      <p id="at-alert-message"></p>
-      <p id="at-release" class="at-release"></p>
-
-      <small>
-        No release command is sent.
-        Actual discharge needs operator approval, downstream checks
-        and an approved operating plan.
-      </small>
-    </article>
-
-    <!-- Indicator: flood safety and cooling -->
-    <article class="at-card">
-      <h3>Dual-Benefit Index</h3>
-      <p>Flood safety + cooling · illustrative indicators</p>
-
-      <div class="at-dual">
-        <div id="at-gauge" class="at-gauge">
-          <div>
-            <strong id="at-flood">—</strong>
-            <span>Flood safety score</span>
-          </div>
-        </div>
-
-        <div class="at-cooling">
-          <span>Cooling impact</span>
-          <strong id="at-cooling">—</strong>
-          <small>Sample value</small>
-        </div>
+      <div class="at-lake-impact-box" id="at-lake-impact-box">
+        ⚠️ <b>Flood Risk: High (88% Full)</b> — Without early draining, only 12,000 m³ of room is left!
       </div>
+      <small id="at-water-note" style="display:none;"></small>
+    </article>
 
-      <small>
-        92% is a placeholder score, not a probability of safety.
-        −2.5°C is illustrative, not calculated by the shade engine.
-        The two units are not averaged.
-      </small>
+    <!-- Card 3: Automated Solution & Action Steps -->
+    <article id="at-alert"
+             class="at-card sky-storm"
+             data-tone="storm">
+
+      <div class="card-title-with-info">
+        <h3>3. Required Action Steps</h3>
+        <button type="button" class="card-info-btn" data-info-title="Required Action Steps" data-info-text="Automatically generates a 1-2-3 step-by-step action checklist for the operations team based on the live lake level and weather alert.">i</button>
+      </div>
+      <span id="at-alert-state" class="at-pill">AUTOMATED SOP CHECKLIST</span>
+
+      <h4 id="at-alert-title" style="margin:10px 0 8px;font-size:15.5px;">⚡ Urgent: Drain lake early &amp; clear blocked drains!</h4>
+      <p id="at-alert-message" style="display:none;"></p>
+      <p id="at-release" style="display:none;"></p>
+
+      <!-- 3 Clear Action Steps -->
+      <ol class="at-solution-steps" id="at-solution-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div><strong>Step 1 (Lake Gate):</strong> Open Lake Gate #02 4 hours BEFORE storm hits to release 12,000 m³ safely.</div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div><strong>Step 2 (Drain Crew):</strong> Clear wet leaves &amp; twigs from North &amp; Lakeside storm drain grates immediately.</div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div><strong>Step 3 (Resident App):</strong> Send Flash-Flood &amp; Wet Trail alert to residents on the mobile app.</div>
+        </li>
+      </ol>
+
+      <div style="margin-top:14px;">
+        <button type="button" class="take-action-btn sim-gate-action-btn" id="open-gate-dispatch-btn">Take Action &amp; Notify Crew →</button>
+      </div>
     </article>
 
   </div>

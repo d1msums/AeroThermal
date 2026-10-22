@@ -1,6 +1,50 @@
 <div class="kpi-grid">
-<article class="kpi"><div class="kpi-label">Lake storage<span class="data-tag">Demo</span></div>{% include 'resilience/hallmark_gauge.html' %}<progress id="lake-progress" max="100" value="0" aria-label="Lake storage"></progress><div class="kpi-caption" id="storage-caption">No snapshot</div></article>
-<article class="kpi"><div class="kpi-label">Storm buffer<span class="data-tag">Demo</span></div><div class="kpi-value"><strong data-value="buffer">—</strong><span class="unit">m³</span></div><div class="buffer-track"><span id="buffer-fill"></span></div><div class="kpi-caption">Available storage before new inflow</div></article>
-<article class="kpi"><div class="kpi-label">Active resident reports<span class="data-tag">Project</span></div><div class="kpi-value"><strong data-value="active">—</strong></div><div class="kpi-caption" id="report-caption"></div><a class="inline-link" href="{% url 'resilience:audience' project.id 'operations' %}">Open inbox <svg><use href="#i-arrow"/></svg></a></article>
-<article class="kpi"><div class="kpi-label">Latest proposed-tree shade<span class="data-tag">Calculated</span></div><div class="kpi-value"><strong data-value="shade">—</strong><span class="unit" id="shade-unit"></span></div><div class="kpi-caption" id="shade-caption">Review saved shade evidence</div><a class="inline-link" href="{% url 'dashboard' project.id %}">Landscape review <svg><use href="#i-arrow"/></svg></a></article>
+<article class="kpi">
+  <div class="kpi-label">
+    <span>Lake storage</span>
+    <span class="kpi-meta-group">
+      <span class="data-tag">Demo</span>
+      <button type="button" class="card-info-btn" aria-label="What is Lake storage?" data-info-title="Lake Storage (%)" data-info-text="Shows how full the township retention lake is right now. A lower percentage (like 60%) is good because it means the lake has plenty of empty room to catch rainwater before a storm hits.">i</button>
+    </span>
+  </div>
+  {% include 'resilience/hallmark_gauge.html' %}
+  <progress id="lake-progress" max="100" value="0" aria-label="Lake storage"></progress>
+  <div class="kpi-caption" id="storage-caption">No snapshot</div>
+</article>
+<article class="kpi">
+  <div class="kpi-label">
+    <span>Storm buffer</span>
+    <span class="kpi-meta-group">
+      <span class="data-tag">Demo</span>
+      <button type="button" class="card-info-btn" aria-label="What is Storm buffer?" data-info-title="Storm Buffer (m³)" data-info-text="Shows how much extra rainwater (in cubic meters) the lake can safely hold right now before overflowing. Think of it as the township's safety cushion against flash floods.">i</button>
+    </span>
+  </div>
+  <div class="kpi-value"><strong data-value="buffer">—</strong><span class="unit">m³</span></div>
+  <div class="buffer-track"><span id="buffer-fill"></span></div>
+  <div class="kpi-caption">Extra rainwater space available right now</div>
+</article>
+<article class="kpi">
+  <div class="kpi-label">
+    <span>Active resident reports</span>
+    <span class="kpi-meta-group">
+      <span class="data-tag">Live App</span>
+      <button type="button" class="card-info-btn" aria-label="What is Active resident reports?" data-info-title="Active Resident Reports" data-info-text="Counts how many issues reported by residents on the EcoCool phone app (like clogged drains, fallen branches, or hot walkways) are still waiting to be fixed by our maintenance team.">i</button>
+    </span>
+  </div>
+  <div class="kpi-value"><strong data-value="active">—</strong></div>
+  <div class="kpi-caption" id="report-caption"></div>
+  <a class="inline-link" href="{% url 'resilience:audience' project.id 'operations' %}">Open inbox <svg><use href="#i-arrow"/></svg></a>
+</article>
+<article class="kpi">
+  <div class="kpi-label">
+    <span>Latest proposed-tree shade</span>
+    <span class="kpi-meta-group">
+      <span class="data-tag">Calculated</span>
+      <button type="button" class="card-info-btn" aria-label="What is Latest proposed-tree shade?" data-info-title="Park Walkway Tree Shade (%)" data-info-text="Shows how much of the park jogging and walking path is covered by cool tree shade, based on the latest tree-planting layout tested in our Tree Simulator.">i</button>
+    </span>
+  </div>
+  <div class="kpi-value"><strong data-value="shade">—</strong><span class="unit" id="shade-unit"></span></div>
+  <div class="kpi-caption" id="shade-caption">Review saved shade evidence</div>
+  <a class="inline-link" href="{% url 'dashboard' project.id %}">Open Tree Simulator <svg><use href="#i-arrow"/></svg></a>
+</article>
 </div>

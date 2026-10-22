@@ -1,0 +1,50 @@
+[
+  {
+    "id": "NADMA-D20-PPS-STANDARDS",
+    "source": "NADMA Directive No. 20",
+    "clause": "Clause 14.3 & JKM PPS Operational Manual (2023)",
+    "title": "Evacuation Shelter (PPS) Auxiliary Power, Water & Sanitation Standards",
+    "text": "All designated Tier 1 Evacuation Shelters (Pusat Pemindahan Sementara - PPS) accredited under the National Disaster Management Agency (NADMA) must maintain verified on-site life-safety redundancies: (1) An automated Auto-Mains Failure (AMF) diesel generator rated at 150 kVA minimum with at least 72 hours of on-site continuous fuel storage; (2) Dedicated potable water reservoirs of 10,000 Liters minimum (guaranteeing 3 days of survival water at 3L/person/day for 1,200 evacuees); (3) Universal accessibility compliance under Malaysian Standard MS 1184 (1:12 ramp gradients and dedicated OKU sanitation cubicles); (4) Staged isolation bays for triage and infection control.",
+    "keywords": ["pps", "shelter", "evacuation", "hall", "generator", "genset", "power", "water", "potable", "accreditation", "nadma standard", "jkm", "oku", "wheelchair", "150 kva", "10,000"]
+  },
+  {
+    "id": "JPS-MSMA-100YR-HYDROLOGY",
+    "source": "JPS Urban Stormwater Management Manual (MSMA 2nd Ed.)",
+    "clause": "Chapter 7 & 9 - Detention Basin Hydraulics & 100-Year ARI Hydrology",
+    "title": "100-Year ARI Dual-Stage Detention Storage & Flood Surge Attenuation",
+    "text": "Under JPS MSMA 2nd Edition standards, masterplanned urban townships in Selangor must design retention basin systems for 100-Year Average Recurrence Interval (ARI) rainfall events (up to 420 mm over a 24-hour storm duration). The primary retention system buffers peak hydrograph inflows by temporarily holding stormwater in a dual-stage basin, reducing peak outflow into natural river corridors by up to 70%. Stepped overflow spillway weirs operate passively via gravity hydraulics without requiring electrical grid power, preventing embankment failure even during electrical blackouts.",
+    "keywords": ["flood", "2021", "100-year", "ari", "storm", "hydrology", "jps", "msma", "basin", "detention", "buffer", "overflow", "weir", "capacity", "holding", "deluge", "gravity"]
+  },
+  {
+    "id": "JPS-SG-BULOH-WEIR-PROTOCOL",
+    "source": "JPS Selangor River Basin Operations Guideline",
+    "clause": "Protocol SOP-JPS-SGB-04 - Controlled Weir Discharge Operations",
+    "title": "Lake Spillway Release Protocol & Downstream River Inundation Prevention",
+    "text": "Premature manual opening of upstream township weir gates during heavy rainfall is strictly prohibited under JPS Selangor flood control directives. The retention basin is designed to act as an urban sponge. Manual gate opening while downstream telemetry at Sungai Buloh gauging stations remains above Alert Level will compound flood surges in low-lying downstream villages (e.g. Kampung Kubu Gajah, Meru, Paya Jaras). Discharge must follow the 3-stage protocol: 75-84% capacity = passive auto mode; 85-90% capacity = maintain HOLD status until JPS Selangor confirms river capacity; >90% capacity = staggered low-velocity release not exceeding 4.5 m3/second.",
+    "keywords": ["85%", "weir", "gate", "sungai buloh", "spillway", "release", "jps", "downstream", "hold", "discharge", "meru", "kubu gajah"]
+  },
+  {
+    "id": "ECOCOOL-PRIHATIN-VULNERABLE",
+    "source": "NADMA Community-Based Disaster Risk Management (CBDRM)",
+    "clause": "Framework Clause 8 - Vulnerable Community Safeguards & Geofencing",
+    "title": "EcoCool Prihatin: Vulnerable Resident Priority Evacuation Framework",
+    "text": "Township disaster risk mitigation requires proactive geofencing of high-risk and mobility-impaired residents before inundation occurs. Under the EcoCool Prihatin framework, registered vulnerable residents (including seniors over 65, dialysis/bedridden patients, and persons with disabilities/OKU) in lower-lying topographical parcels are mapped with verified emergency caregiver contacts. Upon escalation to Orange Alert, an automated Interactive Voice Response (IVR) phone notification is broadcast, and Sime Darby Property Auxiliary Police dispatch high-clearance 4WD vehicles for early transfer directly to accredited PPS medical bays.",
+    "keywords": ["senior", "elderly", "vulnerable", "oku", "wheelchair", "prihatin", "ilham", "revo", "chronic", "infant", "caregiver", "evacuate"]
+  },
+  {
+    "id": "MUNICIPAL-ARBORIST-SLA",
+    "source": "Sime Darby Property Urban Forestry & Landscape Risk SOP",
+    "clause": "SOP-LD-2025-09 - Hazard Clearance & Emergency Access SLAs",
+    "title": "Arborist Squad Service Level Agreements (SLA) & Native Tree Preservation",
+    "text": "Following severe windstorms and squalls, certified arborist squads operate under mandatory Service Level Agreements: (1) Primary emergency arterial routes and ambulance lanes must be cleared and reopened within a 45-minute SLA; (2) Pedestrian trail obstructions along CoolWalk corridors must be cordoned and cleared within 2 hours; (3) Biomass mulching and haulage must be completed within 24 hours. For mature Endangered, Rare & Threatened (ERT) native rainforest species (such as Shorea roxburghii and Hopea odorata), specialized arboricultural wound surgery and structural balancing prunes must be performed to preserve the living canopy rather than executing premature tree felling.",
+    "keywords": ["tree", "branch", "wind", "arborist", "coolwalk", "sla", "shahrul", "crane", "fallen", "chainsaw", "obstruction", "ert", "heritage"]
+  },
+  {
+    "id": "NADMA-ECOCOOL-ALERT-BROADCAST",
+    "source": "NADMA Directive No. 20 & METMalaysia Warning Dissemination",
+    "clause": "Clause 16 - Multi-Hazard Early Warning Broadcast Architecture",
+    "title": "3-Tier Community Weather & Hazard Broadcast Protocol",
+    "text": "Multi-hazard early warning dissemination integrates national meteorological feeds (METMalaysia) and local retention catchment status into a 3-tier color-coded system: (1) Tier 1 Yellow Advisory: Approaching convective storm cells detected within 45 minutes; resident app suggests seeking shelter in shaded CoolWalk gazebos; (2) Tier 2 Orange Warning: Gales exceeding 50 km/h or detention basin storage crossing 75% capacity; push notifications advise moving vehicles from low-lying kerbs and cordoning lakeside trails; (3) Tier 3 Red Alarm: Official disaster declaration by Petaling District Disaster Committee (JPBD); full-screen mobile alarm directs orderly relocation to designated PPS with direct SOS dispatch.",
+    "keywords": ["broadcast", "app", "push", "phone", "notification", "resident", "alert level", "warning", "tier", "yellow", "orange", "red", "metmalaysia"]
+  }
+]

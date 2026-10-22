@@ -3,205 +3,231 @@
 # 🌿 AeroThermal SDP
 ### Township Climate Resilience & Planning Dashboard
 
-**An interactive B2B web prototype for township leadership, ESG teams, engineers and planners.**
+**A visual B2B workspace for township leadership, ESG teams, engineers and planners.**
 
 *Sime Darby Property University Hackathon 2026*
 
 ![Platform](https://img.shields.io/badge/Platform-B2B_Web_Dashboard-263D2D?style=for-the-badge)
 ![Framework](https://img.shields.io/badge/Framework-Django-0C4B33?style=for-the-badge)
 ![Focus](https://img.shields.io/badge/Focus-Climate_Resilience-A3E635?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Prototype-38BDF8?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Hosted_Prototype-38BDF8?style=for-the-badge)
 
-**Flood preparedness · Heat exposure · Dry conditions · Community reports**
+### [🚀 Open AeroThermal](https://aerothermal.onrender.com/)
 
-[Explore Features](#-key-features) · [Run Locally](#-installation--local-setup) · [Dashboard Walkthrough](#-dashboard-walkthrough) · [Demo Guide](#-five-minute-demonstration)
+[Features](#features) · [Dashboard Guide](#dashboard-guide) · [Local Setup](#local-setup) · [Render Deployment](#render-deployment) · [Troubleshooting](#troubleshooting)
+
+**Flood preparedness · Heat exposure · Dry conditions · Resident reports**
 
 </div>
 
 ---
 
-## 🌍 About AeroThermal
+## About
 
-AeroThermal brings township climate information, geographic context and operational follow-up into one visual workspace.
+AeroThermal combines lake-storage information, geographic context, resident-style reports and planning tools in one dashboard.
 
-The prototype helps users explore questions such as:
+It helps township teams review:
 
-- How much water is currently stored in the reference lake?
-- How much capacity remains available for incoming rainfall?
-- Where are residents reporting blocked drains, fallen branches or heat exposure?
-- Which reports require staff attention?
-- How can proposed tree layouts be explored within a planning workflow?
-- What information should be reviewed before responding to a climate-related concern?
+- Available lake capacity before an assumed storm.
+- Reported drainage, vegetation and heat-related concerns.
+- Report locations, attachments and operational follow-up.
+- Hypothetical tree-planting layouts.
+- Climate evidence and advisory responses.
 
-The B2B dashboard focuses on township management. A separate **EcoCool Resident Companion** demonstration presents the resident-facing experience.
+**City of Elmina** is the primary reference project used by the setup instructions. Additional township views support geographic exploration.
 
-**City of Elmina** is the primary reference project used by the setup instructions. Additional township views are included in the interface for exploration.
+The repository also includes a separate **EcoCool Resident Companion** demonstration.
 
-> This is a demonstration prototype. Data sources and implementation status are explained in [Prototype Data & Current Scope](#-prototype-data--current-scope).
+> AeroThermal is a prototype. Demonstration inputs, illustrative previews and connected data sources have different levels of completeness. See [Current Implementation Scope](#current-implementation-scope).
 
----
+## Hosted Access
 
-## ✨ Key Features
+Open:
 
-### 💧 Lake Storage & Storm Buffer
+**https://aerothermal.onrender.com/**
 
-A visual summary of the configured lake capacity and stored water volume.
+1. Sign in with an account created in the hosted database.
+2. Select a project assigned to that account.
+3. Open the B2B workspace.
 
-- Circular lake-storage indicator.
-- Stored volume and total capacity.
-- Available storm-buffer volume.
-- Demonstration storage-history chart.
-- Scenario-based review of assumed rainfall inflow.
+Access requires both a valid account and project membership. Local laptop accounts do not automatically exist on the hosted website.
 
-**Example interpretation**
+The application runs on Render’s free web-service tier. After inactivity, the first request may take longer while the service starts.
 
-For a configured capacity of **100,000 m³** and stored volume of **65,000 m³**:
+## Features
 
-| Metric | Value |
+| Feature | Purpose |
+|---|---|
+| Township overview | Review headline metrics, maps and charts |
+| Lake-storage indicator | See stored water as a percentage of configured capacity |
+| Storm buffer | Review remaining storage volume |
+| Engineering scenarios | Explore assumed inflow and storage conditions |
+| Geographic map | Locate reports and reference planning features |
+| Resident-report inbox | Inspect, assign and update project reports |
+| Map & Tree Simulator | Explore and save hypothetical proposed-tree layouts |
+| AeroThermal AI | Review climate evidence and ask contextual questions |
+| Project access controls | Separate viewer and planner capabilities |
+
+### Lake Storage and Storm Buffer
+
+The lake card displays the percentage of configured capacity currently occupied.
+
+For example:
+
+| Metric | Demonstration value |
 |---|---:|
-| Lake storage | 65% |
+| Total capacity | 100,000 m³ |
 | Stored water | 65,000 m³ |
-| Available capacity | 35,000 m³ |
+| Lake storage | 65% |
+| Available buffer | 35,000 m³ |
 
-The storage percentage describes how full the lake is. It is not a flood probability.
+Storage percentage is not flood probability. Available capacity alone does not establish that a site is safe during a storm.
 
-### 🌧️ Stormwater Scenario Review
+### Engineering Scenarios
 
-The engineering view supports reviewing how different demonstration conditions affect lake storage.
+The engineering view supports:
 
-- Apply available climate scenarios.
-- Compare stored volume, assumed inflow and remaining capacity.
-- Review an illustrative candidate release volume.
-- Inspect downstream review and hold conditions.
+- Applying available demonstration scenarios.
+- Comparing stored volume and assumed inflow.
+- Reviewing remaining capacity.
+- Inspecting an illustrative candidate release volume.
+- Reviewing downstream hold conditions.
 
-Scenario changes update the shared project state. Candidate release figures support discussion; the prototype does not operate physical gates.
+Applying a scenario changes shared project state. The prototype does not operate physical gates.
 
-### 🗺️ Geographic Overview
+### Resident Reports
 
-Maps place reports and planning information in a geographic context.
+The B2B inbox provides:
 
-- City of Elmina reference geometry.
-- Google satellite background when configured.
-- Vector reference fallback.
-- Resident-report markers.
-- Report inspection and location focus.
-- Township reference-view selection.
-
-Changing a township reference view does not automatically switch the authenticated database project.
-
-### 🌳 Map & Tree Simulator
-
-An interactive workspace for exploring proposed tree layouts.
-
-- View the reference site.
-- Add and select proposed trees using the available controls.
-- Adjust tree dimensions.
-- Remove proposed trees from a hypothetical layout.
-- Save and reload layouts.
-- Inspect the simulation response.
-
-**Current calculation status:** the checked-in `simulation/engine.py` is a placeholder. It returns mock-mode output without calculated shade percentages. Example shade and cooling values shown in interface previews should be treated as illustrative until the calculation engine is connected and validated.
-
-Proposed layouts do not authorize changes to existing trees or approved township plans.
-
-### 📍 Resident Reports
-
-An operational inbox showing how resident information can support township follow-up.
-
-- Report locations and available attachments.
-- Category and status filters.
-- Search and map inspection.
+- Report categories and locations.
+- Available image attachments.
+- Status and search filters.
+- Map inspection.
 - Staff assignment.
-- Status updates and review notes.
-- Project-specific access.
-- Updated report counts after changes are saved.
+- Review notes and status updates.
 
-The current B2B demonstration uses seeded app-style reports. The separate resident demo does not yet submit reports through a production Django intake API.
+Current demonstration inputs are seeded app-style records. Production mobile report intake is not connected in the inspected repository snapshot.
 
-### 🤖 AeroThermal AI
+### Map & Tree Simulator
 
-A climate-assessment and advisory interface.
+The planning interface supports proposed-tree editing and layout persistence.
 
-- Review flood, heat, dry-condition and wind-related evidence.
-- Inspect available source information.
-- Ask project-related questions.
-- Retrieve material from the local knowledge corpus.
-- Optionally use a configured Gemini connection.
+The checked-in backend engine in `simulation/engine.py` is currently a placeholder. It returns mock-mode output without calculated shade percentages.
 
-Responses support human review. They are not official warnings, engineering approvals or emergency instructions.
+Example shade and cooling figures in interface previews are illustrative until a validated calculation engine is integrated.
 
-### 🔐 Project Access Controls
+### AeroThermal AI
 
-Access is based on authenticated accounts and project memberships.
+The advisory page combines climate assessment with local knowledge retrieval and an optional Gemini connection.
 
-| Access type | Purpose |
+Responses support staff review. They do not replace official warnings or engineering approval.
+
+## Dashboard Guide
+
+After login, use your assigned project. Project IDs can differ between installations.
+
+### 1. Overview
+
+Use this page to understand the project before opening individual tools.
+
+1. Review the lake-storage ring.
+2. Compare stored volume and storm buffer.
+3. Check active report counts.
+4. Explore the map and available charts.
+5. Click a report marker or card.
+6. Use the information buttons for metric explanations.
+
+Read data labels and timestamps when interpreting results.
+
+### 2. Report Inspector
+
+Use this feature to understand an individual issue.
+
+1. Select a report marker or card.
+2. Review its category, location, attachment and status.
+3. Choose **Locate on map** to focus on the location.
+4. Choose **Open work item** to review the operational record.
+
+Some attachments are labelled demonstration illustrations.
+
+### 3. Resident Reports
+
+Use this page to organize follow-up.
+
+1. Open **Resident reports**.
+2. Filter or search the inbox.
+3. Open a report.
+4. With planner access, assign staff and update its status.
+5. Add a note and save.
+6. Refresh Overview to see updated counts.
+
+A saved staff update does not establish that a mobile notification was delivered.
+
+### 4. Engineering View
+
+Use this page to explore storm-storage assumptions.
+
+1. Open the engineering link or its direct route.
+2. Select a scenario.
+3. Click **Apply scenario**.
+4. Review stored volume, assumed inflow and available buffer.
+5. Inspect candidate release and hold conditions.
+
+Coordinate scenario changes when multiple users share a project.
+
+### 5. Map & Tree Simulator
+
+Use this page to explore hypothetical layouts.
+
+1. Open **Map & Tree Simulator**.
+2. Explore the reference map.
+3. Add or select proposed trees using the available controls.
+4. Adjust their dimensions or positions.
+5. Inspect the current calculation response.
+6. Use the available save/load controls.
+
+The backend currently returns placeholder results. Proposed layouts do not authorize changes to existing trees or approved plans.
+
+### 6. AeroThermal AI
+
+Use this page to review evidence and ask questions.
+
+1. Review flood, heat, dry-condition and wind information.
+2. Check source indicators and timestamps.
+3. Identify unavailable inputs.
+4. Ask a project-related question.
+5. Review the response and supporting material.
+
+Example questions:
+
+- “What should be reviewed before considering a lake release?”
+- “Which reports need attention during heavy rainfall?”
+- “What information is missing from this heat assessment?”
+
+### Page Routes
+
+Replace `PROJECT_ID` with the assigned project’s ID.
+
+| Page | Route |
 |---|---|
-| Viewer | Read permitted project information |
-| Planner | Read information and perform supported planning/report updates |
-| Administrator | Manage accounts, projects and memberships through Django admin |
+| Project list | `/` |
+| Login | `/accounts/login/` |
+| Overview | `/projects/PROJECT_ID/resilience/` |
+| Map & Tree Simulator | `/projects/PROJECT_ID/` |
+| Engineering view | `/projects/PROJECT_ID/resilience/view/engineer/` |
+| Resident reports | `/projects/PROJECT_ID/resilience/view/operations/` |
+| AeroThermal AI | `/projects/PROJECT_ID/resilience/alerts/` |
+| Administration | `/admin/` |
 
-A superuser still needs the appropriate project membership to open the B2B workspace.
+Append these paths to either the hosted address or `http://127.0.0.1:8000`.
 
----
+## Local Setup
 
-## 🔄 How the Prototype Works
-
-The demonstration follows this workflow:
-
-1. **Load project information**  
-   The reference geometry, climate snapshot and sample reports are stored in the local Django database.
-
-2. **Review the overview**  
-   The dashboard presents storage, buffer, report counts and geographic context.
-
-3. **Inspect an issue**  
-   A report marker or inbox item opens its location, attachment and status.
-
-4. **Explore a scenario**  
-   A planner changes a demonstration climate scenario or proposed tree layout.
-
-5. **Record follow-up**  
-   Authorized users assign reports, update their status and add review notes.
-
-6. **Review the updated dashboard**  
-   Refresh the overview to see the current stored project information.
-
-The resident-facing demonstration runs separately and illustrates the companion experience.
-
----
-
-## 🧰 Technology
-
-| Layer | Technology |
-|---|---|
-| Backend | Python and Django |
-| Frontend | Django templates, HTML, CSS and JavaScript |
-| Local database | SQLite |
-| Mapping | Leaflet |
-| Optional satellite imagery | Google Maps JavaScript API |
-| Optional external AI | Gemini |
-| Resident demonstration | Static HTML, CSS and JavaScript |
-| Configuration | Environment variables and python-dotenv |
-
-The repository is named `ecocool`; the dashboard product name is **AeroThermal**.
-
----
-
-## 🚀 Installation & Local Setup
-
-These instructions use **Windows PowerShell**, including the terminal inside VS Code.
-
-Run project commands from the folder containing `manage.py`.
+These instructions use Windows PowerShell inside VS Code.
 
 ### 1. Install prerequisites
 
-Install:
-
-- Python 3.12
-- Git
-- Visual Studio Code
-
-Confirm that Python and Git are available:
+Install Python 3.12, Git and VS Code.
 
 ```powershell
 py -3.12 --version
@@ -216,112 +242,79 @@ cd ecocool
 code .
 ```
 
-If the repository is private, authenticate with a GitHub account that has access.
+Run subsequent commands from the folder containing `manage.py`.
 
-If you already have a clone, use the update instructions later in this guide.
-
-### 3. Create a virtual environment
+### 3. Create the environment
 
 ```powershell
 py -3.12 -m venv .venv
-```
-
-In VS Code, open **Python: Select Interpreter** and select:
-
-```text
-.venv\Scripts\python.exe
-```
-
-The commands below use this interpreter directly, so activating the environment is optional.
-
-### 4. Install dependencies
-
-```powershell
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Use the committed `requirements.txt`.
+Select `.venv\Scripts\python.exe` as the VS Code Python interpreter.
 
-If a dependency cannot be installed, inspect the exact error and check its compatibility with the selected Python version.
+### 4. Configure local secrets
 
-### 5. Configure the environment
-
-If `.env` does not already exist, copy the example:
+If `.env` does not already exist:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Do not overwrite an existing `.env` containing your configuration.
-
-Generate a Django secret:
+Generate a secret:
 
 ```powershell
 .\.venv\Scripts\python.exe -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 
-Open `.env` and configure:
+Edit `.env`:
 
 ```dotenv
-DJANGO_SECRET_KEY='PASTE_YOUR_GENERATED_SECRET_HERE'
+DJANGO_SECRET_KEY='PASTE_YOUR_GENERATED_SECRET'
 GOOGLE_MAPS_API_KEY=
 ```
 
-The Django secret is required before running management commands.
+Optional external AI configuration:
 
-The Maps key can remain empty during initial setup. Satellite imagery requires a valid configured key.
+```dotenv
+GEMINI_API_KEY='YOUR_PRIVATE_MODEL_KEY'
+```
 
-Keep `.env` out of Git.
+Do not overwrite an existing `.env` or commit real secrets.
 
-### 6. Create database tables
+For normal local development, leave `DATABASE_URL` unset so the project uses local SQLite.
+
+### 5. Create tables and an account
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py migrate
-```
-
-This applies the existing database migrations.
-
-You do not need to run `makemigrations` simply to start a cloned project.
-
-### 7. Create an administrator account
-
-```powershell
 .\.venv\Scripts\python.exe manage.py createsuperuser
 ```
 
-Choose a username, email and password.
+Choose your own credentials. Password characters are hidden while typing.
 
-The password will not appear as you type.
-
-### 8. Create the Elmina reference project
+### 6. Create the reference project
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py shell -c "exec(open('create_elmina.py', encoding='utf-8').read())"
 ```
 
-The script reads:
+The script prints the project ID. It preserves matching existing project data and stops if conflicting site data is found.
 
-```text
-elmina/site.json
-```
+### 7. Assign membership and seed demo data
 
-It prints the created or existing project ID.
-
-**Keep this ID.** Your project may be `1`, even if another installation uses a different ID.
-
-### 9. Assign project membership
-
-Open the Django shell:
+Open Django’s shell:
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py shell
 ```
 
-Paste the following, replacing `YOUR_USERNAME` with the account you created:
+Replace `YOUR_USERNAME`, then paste:
 
 ```python
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from planner.models import Project, Membership
 
 user = get_user_model().objects.get(username="YOUR_USERNAME")
@@ -330,34 +323,24 @@ project = Project.objects.get(
     name="Elmina Valley Central Park - Map Pilot"
 )
 
-membership, created = Membership.objects.update_or_create(
+Membership.objects.update_or_create(
     project=project,
     user=user,
     defaults={"role": "planner"},
 )
 
+call_command("seed_resilience", project=project.pk)
+call_command("seed_app_reports", project=project.pk)
+
 print("Project ID:", project.pk)
-print("Membership role:", membership.role)
+print("Dashboard path:", f"/projects/{project.pk}/resilience/")
 
 exit()
 ```
 
-Use `"viewer"` instead of `"planner"` for read-only project access.
+Use `"viewer"` for read-only membership. Even an administrator needs project membership for the B2B pages.
 
-### 10. Load demonstration data
-
-Replace `1` with the project ID printed during setup:
-
-```powershell
-.\.venv\Scripts\python.exe manage.py seed_resilience --project 1
-.\.venv\Scripts\python.exe manage.py seed_app_reports --project 1
-```
-
-These commands create the demonstration climate snapshot and sample resident reports.
-
-Running them again preserves existing fixture records and their workflow state.
-
-### 11. Check and start Django
+### 8. Start the dashboard
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py check
@@ -370,248 +353,397 @@ Open:
 http://127.0.0.1:8000/
 ```
 
-Log in and choose your assigned project.
+Stop the server with **Ctrl+C**.
 
-Keep the terminal open while using the dashboard. Stop the server with **Ctrl+C**.
+Historical `install_*.py` scripts are not part of normal startup.
 
-> Historical `install_*.py` scripts are not part of normal startup. The merged repository already contains the installed interface.
+## Resident Companion Demo
 
----
-
-## 🧭 Dashboard Walkthrough 
-
-The example URLs below use project ID `1`. Replace it with your actual ID.
-
-| Page | Local URL |
-|---|---|
-| Project list | `http://127.0.0.1:8000/` |
-| Overview | `http://127.0.0.1:8000/projects/1/resilience/` |
-| Map & Tree Simulator | `http://127.0.0.1:8000/projects/1/` |
-| Engineering view | `http://127.0.0.1:8000/projects/1/resilience/view/engineer/` |
-| Resident reports | `http://127.0.0.1:8000/projects/1/resilience/view/operations/` |
-| AeroThermal AI | `http://127.0.0.1:8000/projects/1/resilience/alerts/` |
-| Administration | `http://127.0.0.1:8000/admin/` |
-
-### 1. Overview — Understand the Project
-
-**Use this page when:** you want a quick picture of the project before opening individual reports or planning tools.
-
-1. Open the project’s Overview.
-2. Read the lake-storage percentage.
-3. Compare the stored volume with the available storm buffer.
-4. Review the active report count.
-5. Explore the map and available charts.
-6. Click a report card or marker to inspect its details.
-7. Use the information buttons for short explanations of individual metrics.
-
-Check the data labels and timestamps while interpreting the page.
-
-### 2. Report Inspector — Understand an Issue
-
-**Use this feature when:** you want to see what was reported and where it happened.
-
-1. Select a report marker or inbox card.
-2. Review the report category, location and status.
-3. Inspect its attachment, where available.
-4. Click **Locate on map** to focus on its position.
-5. Click **Open work item** to review the operational record.
-
-An attachment may be a labelled demonstration illustration rather than a resident photograph.
-
-### 3. Resident Reports — Track Follow-up
-
-**Use this page when:** staff need to organize and review reported issues.
-
-1. Open **Resident reports**.
-2. Use the available status/category filters.
-3. Search for a location or report.
-4. Select a report and open its work item.
-5. With planner access, assign staff and update its status.
-6. Add a review note and save.
-7. Return to Overview and refresh to see the updated report counts.
-
-Viewer accounts can inspect permitted information but cannot perform planner-only updates.
-
-### 4. Engineering View — Explore Storm Storage
-
-**Use this page when:** you want to discuss how a demonstration scenario changes the lake-volume balance.
-
-1. Open the engineering view from its link or direct URL.
-2. Select an available scenario.
-3. Click **Apply scenario**.
-4. Review stored volume, assumed inflow and remaining buffer.
-5. Inspect the candidate release and any review/hold conditions.
-6. Compare the resulting values with the previous scenario.
-
-Scenario selection changes shared project data. Coordinate when several people are using the same hosted project.
-
-A release recommendation is a scenario output; no physical water-control action takes place.
-
-### 5. Map & Tree Simulator — Explore a Layout
-
-**Use this page when:** you want to demonstrate proposed planting and layout management.
-
-1. Open **Map & Tree Simulator**.
-2. Explore the reference map.
-3. Use the available controls to add or select proposed trees.
-4. Adjust dimensions and inspect their positions.
-5. Use the calculation button to inspect the current simulation response.
-6. Save and reload a layout using the available controls.
-
-In the current repository snapshot, the backend calculation is a placeholder. Static shade/cooling previews should be described as examples.
-
-Layout changes represent planning proposals and do not modify an approved township plan.
-
-### 6. AeroThermal AI — Review Climate Evidence
-
-**Use this page when:** you want to inspect climate concerns and ask contextual questions.
-
-1. Open **AeroThermal AI**.
-2. Review the available flood, heat, dry-condition and wind information.
-3. Check timestamps and source indicators.
-4. Identify missing or unavailable inputs.
-5. Enter a project-related question.
-6. Read the response and supporting material.
-
-Example questions:
-
-- “What should be reviewed before considering a lake release?”
-- “Which reports need follow-up during heavy rainfall?”
-- “What information is missing from this heat assessment?”
-- “How should dry vegetation reports be prioritized?”
-
-The response source depends on the available local retrieval and external-model configuration.
-
----
-
-## 📱 EcoCool Resident Companion
-
-The repository includes a separate resident-facing static demonstration.
-
-To run it, open a **second terminal** from the repository root:
+Open a second terminal from the repository root:
 
 ```powershell
 .\.venv\Scripts\python.exe -m http.server 8080 --bind 127.0.0.1 --directory b2c_resident_app
 ```
 
-Open:
+Visit:
 
 ```text
 http://127.0.0.1:8080/
 ```
 
-Keep the Django server running separately on port `8000`.
+Django continues running separately on port `8000`.
 
-| Service | Local address |
-|---|---|
-| AeroThermal B2B dashboard | `http://127.0.0.1:8000/` |
-| EcoCool resident demonstration | `http://127.0.0.1:8080/` |
+The resident demonstration uses browser-local state and iframe messaging. It does not currently submit corresponding reports to Django.
 
-The dashboard’s **Resident App ↗** button opens the local resident demonstration.
+The repository’s companion links originally point to localhost. For hosted use, configure the actual hosted companion URL and the correct B2B project URL. A localhost link points to the visitor’s own computer.
 
-The resident demo’s return link currently uses B2B project ID `1`. Update the link in `b2c_resident_app/index.html` if your local project uses another ID.
+## Database Configuration
 
-**Integration status:** browser-local state and iframe messages support the resident demonstration. They do not currently create corresponding Django report records. B2B sample reports are loaded using `seed_app_reports`.
+The project selects PostgreSQL when `DATABASE_URL` is set and SQLite otherwise.
 
----
+In `config/settings.py`, ensure this database selection is outside any Render-only or DEBUG-only condition:
 
-## ⚙️ Optional Configuration
+```python
+database_url = os.environ.get("DATABASE_URL", "").strip()
 
-### Google Satellite Imagery
-
-Add your Maps browser key to `.env`:
-
-```dotenv
-GOOGLE_MAPS_API_KEY='YOUR_MAPS_BROWSER_KEY'
+if database_url:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            database_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 ```
 
-Configure the key for the Maps JavaScript API and the intended websites.
+Required imports:
 
-Local referrer examples:
+```python
+import os
+import dj_database_url
+```
+
+Keep one database-selection block. A later `DATABASES` assignment can override the intended connection.
+
+## Render Deployment
+
+The hosted prototype uses a Render Python web service and PostgreSQL.
+
+### Service settings
+
+| Setting | Value |
+|---|---|
+| Root Directory | Leave blank |
+| Build Command | `bash build.sh` |
+| Pre-deploy Command | Leave blank on the free plan |
+| Start Command | See below |
+
+Start command:
+
+```bash
+python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+```
+
+This applies migrations against the runtime database before starting Django.
+
+Create `build.sh` beside `manage.py`, using LF line endings:
+
+```bash
+#!/usr/bin/env bash
+set -o errexit
+
+python -m pip install -r requirements.txt
+python manage.py collectstatic --noinput
+```
+
+The start command handles migrations. If an older build script also runs migrations, completed migrations are tracked and will not be reapplied.
+
+### Required hosting packages
+
+Ensure `requirements.txt` includes:
+
+- `gunicorn`
+- `whitenoise`
+- `dj-database-url`
+- `psycopg2-binary`
+
+Preserve the project’s other dependencies.
+
+### Render environment variables
+
+| Key | Purpose |
+|---|---|
+| `PYTHON_VERSION` | Tested Python version, currently 3.12.10 |
+| `DJANGO_SECRET_KEY` | Private production secret |
+| `DJANGO_DEBUG` | Set to `False` |
+| `DATABASE_URL` | Internal URL of the connected Render PostgreSQL database |
+| `GOOGLE_MAPS_API_KEY` | Optional restricted Maps browser key |
+| `GEMINI_API_KEY` | Optional private model key |
+
+Keep the web service and database in the same region when using the internal database URL.
+
+### Host and HTTPS settings
+
+The deployed domain must be allowed in `config/settings.py`.
+
+```python
+render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+DEBUG = os.environ.get(
+    "DJANGO_DEBUG",
+    "False" if render_hostname else "True",
+).lower() == "true"
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "aerothermal.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://aerothermal.onrender.com",
+]
+
+if render_hostname:
+    if render_hostname not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_hostname)
+
+    render_origin = f"https://{render_hostname}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
+
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+```
+
+Update existing definitions instead of adding conflicting duplicates.
+
+### Static files
+
+Place WhiteNoise immediately after Django’s SecurityMiddleware, retaining the remaining middleware:
+
+```python
+"django.middleware.security.SecurityMiddleware",
+"whitenoise.middleware.WhiteNoiseMiddleware",
+```
+
+Configure:
+
+```python
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+```
+
+Preserve any separately configured cloud-upload backend.
+
+Run locally before pushing:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py collectstatic --noinput
+```
+
+Commit source assets under the app’s static directories. Do not commit the generated `staticfiles/` directory.
+
+### Free-plan storage considerations
+
+Render’s free web-service filesystem is temporary. Uploaded files are not durable across service replacement or redeployment.
+
+PostgreSQL stores database records separately. Durable uploaded photos require an appropriate external storage service or a hosting setup with persistent storage.
+
+Check the database plan’s expiry date and current limits before scheduling a demonstration.
+
+## Hosted Account Setup Without Render Shell
+
+Render’s free web service does not provide dashboard Shell access. Use your laptop to connect temporarily to the hosted PostgreSQL database.
+
+### 1. Obtain the correct connection URL
+
+Open the PostgreSQL database in Render:
+
+**Info → Connections → External Database URL**
+
+Use the database connected to the web service. Keep the URL private.
+
+### 2. Set the temporary connection
+
+In a new VS Code PowerShell terminal, from the project root:
+
+```powershell
+$renderDatabaseSecret = Read-Host "Paste Render External Database URL" -AsSecureString
+
+$env:DATABASE_URL = [System.Net.NetworkCredential]::new(
+    "",
+    $renderDatabaseSecret
+).Password
+
+$env:PGSSLMODE = "require"
+
+Remove-Variable renderDatabaseSecret
+```
+
+The URL is entered through a hidden prompt.
+
+### 3. Verify the target
+
+```powershell
+.\.venv\Scripts\python.exe manage.py shell -c "from django.db import connection; print('Database backend:', connection.vendor); connection.ensure_connection(); print('Connection successful')"
+```
+
+Expected:
+
+```text
+Database backend: postgresql
+Connection successful
+```
+
+If it says `sqlite`, stop and check the database configuration and environment variable.
+
+### 4. Create hosted tables and account
+
+```powershell
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py createsuperuser
+```
+
+If the account already exists and its password needs changing:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py changepassword YOUR_USERNAME
+```
+
+### 5. Create the project and membership
+
+While the same terminal remains connected to PostgreSQL, repeat **Local Setup steps 6 and 7**.
+
+Those commands now create the project, membership and sample data in the hosted database.
+
+Do not use a local photo directory when seeding hosted reports through this connection: the files would be saved on the laptop, where the hosted server cannot read them.
+
+### 6. Disconnect the terminal
+
+```powershell
+Remove-Item Env:DATABASE_URL -ErrorAction SilentlyContinue
+Remove-Item Env:PGSSLMODE -ErrorAction SilentlyContinue
+```
+
+Close the terminal.
+
+Visit the hosted website and log in. Database changes take effect without a redeployment.
+
+## Maps and Optional Integrations
+
+### Google Maps
+
+Configure Maps JavaScript API access and permitted website referrers for the browser key.
+
+Example referrers:
 
 ```text
 http://127.0.0.1:8000/*
 http://localhost:8000/*
+https://aerothermal.onrender.com/*
 ```
 
-Restart Django after changing configuration.
+Use browser Developer Tools → Console to inspect the exact error when imagery fails.
 
-If imagery does not load, open **F12 → Console** and inspect the exact Google Maps error.
+### Weather
 
-### Weather Retrieval
-
-The uploaded configuration enables warning retrieval with:
+Warning retrieval is controlled by:
 
 ```python
 AEROTHERMAL_LIVE_WARNINGS = True
 ```
 
-For an offline demonstration, change the existing setting to:
+Set it to `False` for an offline demonstration.
+
+Retrieved national bulletins require date and location review. Static example panels may remain visible without a successful live retrieval.
+
+### AI
+
+Configure `GEMINI_API_KEY` privately to enable the optional external-model path.
+
+Check response source indicators and review any project context sent to the provider. The Maps key and model key serve different purposes.
+
+## Logging and Troubleshooting
+
+Keep production `DEBUG=False`.
+
+To send Django request failures to Render logs, configure the following if no logging configuration exists:
 
 ```python
-AEROTHERMAL_LIVE_WARNINGS = False
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "ERROR",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
 ```
 
-Retrieved records require geographic and date review. An unavailable or empty feed does not establish that conditions are safe.
+If `LOGGING` already exists, merge the relevant entries.
 
-### Optional Gemini Connection
+| Symptom | Cause or next step |
+|---|---|
+| `DisallowedHost` | Add the deployed hostname to `ALLOWED_HOSTS` |
+| Login returns 500 | Inspect the complete traceback in Render Logs |
+| `relation "auth_user" does not exist` | Apply migrations to the database used by the hosted service |
+| Login says credentials are wrong | Create or reset the account in the hosted database |
+| “No project assigned” | Create the project and assign membership |
+| Connection check says `sqlite` | `DATABASE_URL` is missing, ignored or overwritten |
+| External database connection fails | Check the external URL, TLS and database IP-access rules |
+| Static collection reports missing Leaflet images | Restore the version-matched images beside `leaflet.css` |
+| Missing `Leaflet.GoogleMutant.js.map` | Restore the matching source map or remove its dangling source-map comment |
+| Old styling appears | Confirm deployed files and hard-refresh with Ctrl+F5 |
+| Map background fails | Inspect browser console and Maps key restrictions |
+| Resident App link fails | Start the local companion server or configure a hosted URL |
+| Shade calculations are unavailable | Current backend engine is a placeholder |
 
-Add a private model key to `.env`:
+### Leaflet static assets
 
-```dotenv
-GEMINI_API_KEY='YOUR_PRIVATE_MODEL_KEY'
-```
-
-Restart Django.
-
-The Maps browser key and Gemini model key serve different purposes. Keep model credentials private and review the response source when testing the assistant.
-
-### Sample Report Photos
-
-Prepare appropriate images you own using these filenames:
+For Leaflet 1.9.4, the source directory should contain these images:
 
 ```text
-blocked-drain.jpg
-fallen-branch.jpg
-dry-vegetation.jpg
-heat-exposure.jpg
+planner/static/planner/vendor/images/layers.png
+planner/static/planner/vendor/images/layers-2x.png
+planner/static/planner/vendor/images/marker-icon.png
+planner/static/planner/vendor/images/marker-icon-2x.png
+planner/static/planner/vendor/images/marker-shadow.png
 ```
 
-Attach them to the sample reports:
+The referenced Leaflet source map belongs at:
+
+```text
+planner/static/planner/vendor/leaflet.js.map
+```
+
+For GoogleMutant, if the matching source map is absent, remove only this dangling debugging comment from the source JavaScript file:
+
+```javascript
+//# sourceMappingURL=Leaflet.GoogleMutant.js.map
+```
+
+Then rerun:
 
 ```powershell
-.\.venv\Scripts\python.exe manage.py seed_app_reports --project 1 --photo-dir "C:\path\to\demo-photos"
+.\.venv\Scripts\python.exe manage.py collectstatic --noinput
 ```
 
-Replace the project ID and folder path.
+## Updating the Application
 
-Report location is stored separately from the image. The prototype does not infer report coordinates from photo EXIF.
+### Pull merged changes locally
 
-
-## 🔄 Opening & Updating the Project
-
-### Start an existing local installation
-
-```powershell
-cd C:\path\to\ecocool
-.\.venv\Scripts\python.exe manage.py runserver
-```
-
-There is no need to recreate the database or account each time.
-
-### Get the latest merged changes
-
-Stop the server and check your working tree:
+Preserve uncommitted work before updating.
 
 ```powershell
 git status
-```
-
-Preserve any uncommitted work before continuing.
-
-Then:
-
-```powershell
 git switch main
 git pull --ff-only origin main
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -620,72 +752,61 @@ git pull --ff-only origin main
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-If Git reports conflicts or divergent branches, resolve them before proceeding.
+Ensure the temporary hosted database connection has been removed before normal local development.
 
-Use **Ctrl+F5** in the browser after interface updates.
+### Publish a reviewed change
 
-Git transfers code. Local accounts, saved database records and private uploaded photos remain specific to each installation.
+Stage the specific files changed:
 
----
+```powershell
+git status
+git diff
+git add path/to/changed-file
+git commit -m "Describe the update"
+git push
+```
 
-## 🧩 Troubleshooting
+When automatic deployments are enabled, Render deploys changes to its connected branch. Otherwise use **Manual Deploy → Deploy latest commit**.
 
-| Issue | What to check |
+Code changes require deployment. Hosted database records and memberships do not require a code deployment.
+
+
+## Current Implementation Scope
+
+| Component | Status |
 |---|---|
-| `KeyError: DJANGO_SECRET_KEY` | Create `.env` beside `manage.py` and configure the secret |
-| `ModuleNotFoundError` | Use the project’s virtual environment and install `requirements.txt` |
-| `TemplateDoesNotExist` | Confirm the required template exists in the correct app directory |
-| “No project assigned” | Create a membership for the logged-in account |
-| Project page returns 404 | Check the project ID and account membership |
-| Old styling still appears | Confirm the updated files are present and press Ctrl+F5 |
-| Google satellite map fails | Inspect the browser console, API configuration and referrer restrictions |
-| Shade results are unavailable | The current backend simulation engine is a placeholder |
-| Resident App button fails | Start the separate server on port 8080 |
-| Resident demo report does not appear in B2B | A production intake connection is not implemented |
-| Viewer cannot update a report | Editing requires planner access |
-| Report photos are missing on another laptop | Uploaded media is not transferred through Git |
-| Weather retrieval fails | Check connectivity and the live-warning setting |
-
----
-
-## 📊 Prototype Data & Current Scope
-
-| Component | Current status |
-|---|---|
-| Project login and membership | Implemented |
-| B2B navigation and visual dashboard | Implemented |
-| Lake-storage scenario arithmetic | Implemented using demonstration inputs |
+| Hosted login and project membership | Configured |
+| Dashboard and geographic interface | Implemented |
+| Lake scenario arithmetic | Demonstration inputs |
 | Report inspection and staff workflow | Implemented |
-| Sample resident-report feed | Seeded demonstration records |
-| Official weather adapter | Available when enabled and reachable |
+| Resident input feed | Seeded sample reports |
+| Weather adapter | Available when enabled and reachable |
 | Tree layout editing and persistence | Available |
-| Backend shade calculation | Placeholder in the inspected repository snapshot |
-| Cooling preview figures | Illustrative unless supported by validated calculations |
-| AI assistant | Local retrieval with optional external-model connection |
+| Backend shade engine | Placeholder in the inspected repository snapshot |
+| Cooling preview values | Illustrative unless backed by validated calculations |
+| AI assistant | Local retrieval and optional external-model connection |
 | Resident companion | Separate static demonstration |
-| Production mobile report intake | Not implemented |
-| Physical sensor telemetry / gate control | Not connected |
+| Production mobile report intake | Not connected |
+| Physical telemetry and gate control | Not connected |
 
-Displayed weather examples, tree-insurance claims and notification/dispatch confirmations should be interpreted according to their actual data source and implementation.
+Displayed insurance values, weather examples and notification confirmations need supporting data or integration before being described as operational results.
 
----
-
-## 📂 Repository Guide
+## Repository Guide
 
 | Path | Purpose |
 |---|---|
-| `config/` | Django settings and root routes |
+| `config/` | Django settings and root routing |
 | `planner/` | Projects, memberships, tree layouts and saved scenarios |
-| `resilience/` | Dashboard, reports, climate scenarios and advisory features |
+| `resilience/` | Dashboard, reports, climate assessment and advisory features |
 | `resilience/knowledge/` | Local retrieval material |
 | `simulation/engine.py` | Simulation integration point |
-| `contracts/` | Payload and interface examples |
-| `elmina/site.json` | Reference site geometry |
+| `contracts/` | Payload examples |
+| `elmina/site.json` | Reference geometry |
 | `b2c_resident_app/` | Resident companion demonstration |
-| `create_elmina.py` | Reference-project setup script |
-| `docs/` | Additional integration and deployment documentation |
+| `create_elmina.py` | Project bootstrap script |
+| `build.sh` | Render dependency and static-file preparation |
 | `requirements.txt` | Python dependencies |
-| `.env.example` | Example environment-variable configuration |
+| `.env.example` | Example configuration without secrets |
 
 ---
 
@@ -694,5 +815,7 @@ Displayed weather examples, tree-insurance claims and notification/dispatch conf
 **AeroThermal SDP**
 
 *Explore township conditions. Review evidence. Plan informed responses.*
+
+[Open the dashboard](https://aerothermal.onrender.com/)
 
 </div>

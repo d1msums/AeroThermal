@@ -784,4 +784,3 @@ this.L.GridLayer.GoogleMutant = (function (leaflet) {
 
 	return GoogleMutant;
 })(L);
-//# sourceMappingURL=Leaflet.GoogleMutant.js.map

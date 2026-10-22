@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌿 AeroThermal SDP — Township Climate Resilience Dashboard
+# 🌿 AeroThermal SDP - Township Climate Resilience Dashboard
 
 ### *Interactive B2B Web Prototype for Leadership, ESG, Engineering & Operations*
 
